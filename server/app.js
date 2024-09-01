@@ -1,5 +1,6 @@
 const express = require("express")
 const errorHandler = require("./middlewares/errorHandler")
+const userRouter = require("./routes/userRoutes")
 
 const app = express()
 
@@ -7,6 +8,9 @@ const app = express()
 app.use(express.json())
 
 // Route Handlers
+
+app.use("/api/v1/users", userRouter)
+
 app.get("/", (req, res, next) => {
   res.status(200).json({
     status: "success",
