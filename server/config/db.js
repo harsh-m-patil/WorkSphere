@@ -1,6 +1,13 @@
 /* eslint-disable no-console */
 const mongoose = require("mongoose")
 
+/**
+ * Connect the application to MongoDB Database
+ * @example
+ * const connectDB = require('./path/to/connectDB')
+ *
+ * connectDB()
+ */
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URI, {})
