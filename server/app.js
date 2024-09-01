@@ -1,10 +1,12 @@
 const express = require("express")
+const morgan = require("morgan")
 const errorHandler = require("./middlewares/errorHandler")
 const userRouter = require("./routes/userRoutes")
 
 const app = express()
 
 // MIDDLEWARES
+app.use(morgan("dev"))
 app.use(express.json())
 
 // Route Handlers
