@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
-const dotenv = require("dotenv")
+import dotenv from "dotenv"
 
 dotenv.config()
-
-const app = require("./app")
-const connectDB = require("./config/db")
+import app from "./app.js"
+import connectDB from "./config/db.js"
 
 // CONNECT TO DB
 connectDB()

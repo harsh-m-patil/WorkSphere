@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken")
-const asyncHandler = require("../utils/asyncHandler")
-const User = require("../models/userModel")
-const AppError = require("../utils/appError")
+import jwt from "jsonwebtoken"
+import asyncHandler from "../utils/asyncHandler.js"
+import User from "../models/userModel.js"
+import AppError from "../utils/appError.js"
 
 /**
  * @param {string} id
@@ -81,4 +81,4 @@ const authController = {
   }),
 }
 
-module.exports = authController
+export default authController

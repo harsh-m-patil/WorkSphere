@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
-const bcrypt = require("bcrypt")
-const validator = require("validator")
+import mongoose from "mongoose"
+import bcrypt from "bcrypt"
+import validator from "validator"
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -42,12 +42,10 @@ const userSchema = new mongoose.Schema({
   },
 })
 
-userSchema.methods.correctPassword = async function (
+userSchema.methods.correctPassword = async (
   candidatePassword,
   userPassword,
-) {
-  return await bcrypt.compare(candidatePassword, userPassword)
-}
+) => await bcrypt.compare(candidatePassword, userPassword)
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next()
@@ -59,4 +57,4 @@ userSchema.pre("save", async function (next) {
 
 const User = mongoose.model("User", userSchema)
 
-module.exports = User
+export default User

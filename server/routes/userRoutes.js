@@ -1,7 +1,8 @@
-const express = require("express")
-const userController = require("../controllers/userController")
-const authController = require("../controllers/authController")
-const authMiddleware = require("../middlewares/authMiddleware")
+import express from "express"
+
+import userController from "../controllers/userController.js"
+import authController from "../controllers/authController.js"
+import authMiddleware from "../middlewares/authMiddleware.js"
 
 const router = express.Router()
 
@@ -26,4 +27,4 @@ router
     userController.deleteUser,
   )
 
-module.exports = router
+export default router

@@ -1,8 +1,8 @@
-const express = require("express")
-const morgan = require("morgan")
-const cors = require("cors")
-const errorHandler = require("./middlewares/errorHandler")
-const userRouter = require("./routes/userRoutes")
+import express from "express"
+import morgan from "morgan"
+import cors from "cors"
+import errorHandler from "./middlewares/errorHandler.js"
+import userRouter from "./routes/userRoutes.js"
 
 const app = express()
 
@@ -24,4 +24,4 @@ app.get("/", (req, res, next) => {
 
 app.use(errorHandler)
 
-module.exports = app
+export default app

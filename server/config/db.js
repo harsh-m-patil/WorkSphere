@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
 
 /**
  * Connect the application to MongoDB Database
@@ -18,4 +18,4 @@ const connectDB = async () => {
   }
 }
 
-module.exports = connectDB
+export default connectDB

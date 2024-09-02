@@ -1,5 +1,5 @@
-const AppError = require("../utils/appError")
-const asyncHandler = require("../utils/asyncHandler")
+import AppError from "../utils/appError.js"
+import asyncHandler from "../utils/asyncHandler.js"
 
 const factory = {
   /**
@@ -58,4 +58,4 @@ const factory = {
     }),
 }
 
-module.exports = factory
+export default factory

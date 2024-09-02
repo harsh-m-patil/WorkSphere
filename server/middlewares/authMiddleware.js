@@ -1,17 +1,14 @@
-const jwt = require("jsonwebtoken")
-const { promisify } = require("util")
-const AppError = require("../utils/appError")
-const asyncHandler = require("../utils/asyncHandler")
-const User = require("../models/userModel")
+import jwt from "jsonwebtoken"
+import { promisify } from "node:util"
+import AppError from "../utils/appError.js"
+import asyncHandler from "../utils/asyncHandler.js"
+import User from "../models/userModel.js"
 
 const authMiddleware = {
   protect: asyncHandler(async (req, res, next) => {
     // 1) Get token and check if it exists
     let token
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
+    if (req.headers.authorization?.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1]
     }
     if (!token) {
@@ -51,4 +48,4 @@ const authMiddleware = {
     },
 }
 
-module.exports = authMiddleware
+export default authMiddleware

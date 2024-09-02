@@ -1,7 +1,7 @@
-const User = require("../models/userModel")
-const AppError = require("../utils/appError")
-const asyncHandler = require("../utils/asyncHandler")
-const { deleteOne } = require("./factoryController")
+import User from "../models/userModel.js"
+import AppError from "../utils/appError.js"
+import asyncHandler from "../utils/asyncHandler.js"
+import factory from "./factoryController.js"
 
 const userController = {
   /**
@@ -51,7 +51,7 @@ const userController = {
     })
   }),
 
-  deleteUser: deleteOne(User),
+  deleteUser: factory.deleteOne(User),
 }
 
-module.exports = userController
+export default userController

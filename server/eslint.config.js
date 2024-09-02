@@ -1,28 +1,15 @@
+import globals from "globals"
+import node from "eslint-plugin-node"
 import prettier from "eslint-plugin-prettier"
-import path from "node:path"
-import { fileURLToPath } from "node:url"
-import js from "@eslint/js"
-import { FlatCompat } from "@eslint/eslintrc"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
+import pluginJs from "@eslint/js"
 
 export default [
-  ...compat.extends(
-    "airbnb",
-    "prettier",
-    "plugin:node/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-  ),
+  { languageOptions: { globals: globals.node } },
+  pluginJs.configs.recommended,
   {
     plugins: {
       prettier,
+      node,
     },
 
     rules: {
