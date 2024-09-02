@@ -30,6 +30,14 @@ const userSchema = new mongoose.Schema({
       message: "Passwords are not the same",
     },
   },
+  role: {
+    type: String,
+    enum: {
+      values: ["freelancer", "client", "admin"],
+      message: "Invalid role (must be user,employer or admin)",
+    },
+    default: "user",
+  },
 })
 
 userSchema.methods.correctPassword = async function (

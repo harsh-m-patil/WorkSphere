@@ -1,5 +1,7 @@
 const User = require("../models/userModel")
+const AppError = require("../utils/appError")
 const asyncHandler = require("../utils/asyncHandler")
+const { deleteOne } = require("./factoryController")
 
 const userController = {
   /**
@@ -37,6 +39,10 @@ const userController = {
   getUser: asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id)
 
+    if (!user) {
+      return next(new AppError("No User with that id found", 404))
+    }
+
     res.status(200).json({
       status: "success",
       data: {
@@ -44,6 +50,8 @@ const userController = {
       },
     })
   }),
+
+  deleteUser: deleteOne(User),
 }
 
 module.exports = userController
