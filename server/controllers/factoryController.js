@@ -1,5 +1,5 @@
-import AppError from "../utils/appError.js"
-import asyncHandler from "../utils/asyncHandler.js"
+import AppError from '../utils/appError.js'
+import asyncHandler from '../utils/asyncHandler.js'
 
 const factory = {
   /**
@@ -22,7 +22,7 @@ const factory = {
       }
 
       res.status(204).json({
-        status: "success",
+        status: 'success',
         data: null,
       })
     }),
@@ -50,7 +50,7 @@ const factory = {
       }
 
       res.status(200).json({
-        status: "success",
+        status: 'success',
         data: {
           [modelName]: doc,
         },

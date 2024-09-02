@@ -29,7 +29,7 @@ class AppError extends Error {
      * Status of the request, either 'fail' or 'error'.
      * @type {string}
      */
-    this.status = `${statusCode}`.startsWith("4") ? "fail" : "error"
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
 
     /**
      * Indicates whether the error is operational.

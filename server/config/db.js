@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 /**
  * Connect the application to MongoDB Database
@@ -11,9 +11,9 @@ import mongoose from "mongoose"
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URI, {})
-    console.log("DB Connected")
+    console.log('DB Connected')
   } catch (err) {
-    console.log("MongoDB Connection Error : ", err)
+    console.log('MongoDB Connection Error : ', err)
     process.exit(-1)
   }
 }

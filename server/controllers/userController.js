@@ -1,7 +1,7 @@
-import User from "../models/userModel.js"
-import AppError from "../utils/appError.js"
-import asyncHandler from "../utils/asyncHandler.js"
-import factory from "./factoryController.js"
+import User from '../models/userModel.js'
+import AppError from '../utils/appError.js'
+import asyncHandler from '../utils/asyncHandler.js'
+import factory from './factoryController.js'
 
 const userController = {
   /**
@@ -11,7 +11,7 @@ const userController = {
     const user = await User.create(req.body)
     user.password = undefined
     res.status(201).json({
-      status: "success",
+      status: 'success',
       data: {
         user,
       },
@@ -25,7 +25,7 @@ const userController = {
     const users = await User.find()
 
     res.status(200).json({
-      status: "success",
+      status: 'success',
       results: users.length,
       data: {
         users,
@@ -40,11 +40,11 @@ const userController = {
     const user = await User.findById(req.params.id)
 
     if (!user) {
-      return next(new AppError("No User with that id found", 404))
+      return next(new AppError('No User with that id found', 404))
     }
 
     res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
         user,
       },
