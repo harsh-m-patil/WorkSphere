@@ -7,10 +7,11 @@ import User from '../models/userModel.js'
 const authMiddleware = {
   protect: asyncHandler(async (req, res, next) => {
     // 1) Get token and check if it exists
-    let token
-    if (req.headers.authorization?.startsWith('Bearer')) {
-      token = req.headers.authorization.split(' ')[1]
-    }
+    let token =
+      req.cookies.jwt || req.headers.authorization?.startsWith('Bearer')
+        ? req.headers.authorization.split(' ')[1]
+        : null
+
     if (!token) {
       return next(
         new AppError('You are not logged in,please login to acesss', 401),

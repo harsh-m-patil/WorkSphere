@@ -36,9 +36,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: {
       values: ['freelancer', 'client', 'admin'],
-      message: 'Invalid role (must be user,employer or admin)',
+      message: 'Invalid role (must be freelancer,client or admin)',
     },
-    default: 'user',
+    default: 'freelancer',
   },
 })
 

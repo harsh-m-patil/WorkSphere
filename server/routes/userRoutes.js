@@ -20,7 +20,7 @@ router.post('/signup', authController.signup)
 
 router
   .route('/:id')
-  .get(authMiddleware.protect, userController.getUser)
+  .get(userController.getUser)
   .delete(
     authMiddleware.protect,
     authMiddleware.restrictTo('admin'),
