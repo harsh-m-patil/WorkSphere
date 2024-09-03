@@ -8,7 +8,7 @@ import userRouter from './routes/userRoutes.js'
 const app = express()
 
 // MIDDLEWARES
-app.use(morgan('dev'))
+if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())

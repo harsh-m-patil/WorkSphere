@@ -40,7 +40,7 @@ const userController = {
     const user = await User.findById(req.params.id)
 
     if (!user) {
-      return next(new AppError('No User with that id found', 404))
+      return next(new AppError('User not found', 404))
     }
 
     res.status(200).json({

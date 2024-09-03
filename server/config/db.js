@@ -8,7 +8,7 @@ import mongoose from 'mongoose'
  *
  * connectDB()
  */
-const connectDB = async () => {
+export const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URI, {})
     console.log('DB Connected')
@@ -18,4 +18,12 @@ const connectDB = async () => {
   }
 }
 
-export default connectDB
+export const closeDB = async () => {
+  try {
+    await mongoose.connection.close()
+    console.log('DB Connection Closed')
+  } catch (err) {
+    console.error('Error closing the DB connection:', err.message)
+    process.exit(1)
+  }
+}
