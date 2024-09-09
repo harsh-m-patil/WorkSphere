@@ -4,6 +4,8 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import errorHandler from './middlewares/errorHandler.js'
 import userRouter from './routes/userRoutes.js'
+import AppError from './utils/appError.js'
+import logger from './utils/logger.js'
 
 const app = express()
 
@@ -22,6 +24,11 @@ app.get('/', (req, res, next) => {
     status: 'success',
     message: 'Hello World',
   })
+})
+
+app.all('*', (req, res, next) => {
+  logger.error(`Can't find ${req.originalUrl}`)
+  next(new AppError(`Can't find ${req.originalUrl}`, 404))
 })
 
 app.use(errorHandler)

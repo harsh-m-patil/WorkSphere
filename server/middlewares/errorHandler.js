@@ -22,6 +22,8 @@ const handleJWTExpiredError = () =>
   new AppError('Your Token has been expired please login again', 401)
 
 /**
+ * @param {Error} err - The error object
+ * @param {Response} res - The response object
  * Send Error in development environment
  * Give more error details
  */

@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
 import mongoose from 'mongoose'
+import logger from '../utils/logger.js'
 
 /**
  * Connect the application to MongoDB Database
@@ -11,9 +11,9 @@ import mongoose from 'mongoose'
 export const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URI, {})
-    console.log('DB Connected')
+    logger.info('DB Connected')
   } catch (err) {
-    console.log('MongoDB Connection Error : ', err)
+    logger.error('MongoDB Connection Error : ', err)
     process.exit(-1)
   }
 }
@@ -21,9 +21,9 @@ export const connectDB = async () => {
 export const closeDB = async () => {
   try {
     await mongoose.connection.close()
-    console.log('DB Connection Closed')
+    logger.info('DB Connection Closed')
   } catch (err) {
-    console.error('Error closing the DB connection:', err.message)
+    logger.error('Error closing the DB connection:', err.message)
     process.exit(1)
   }
 }

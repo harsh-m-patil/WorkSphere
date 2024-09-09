@@ -64,7 +64,7 @@ describe('User Endpoints', () => {
     expect(res.body.data.user).toHaveProperty('name', newUser.name)
     expect(res.body.data.user).toHaveProperty('email', newUser.email)
     createdUserId = res.body.data.user._id
-  }, 10000) // Increased timeout for signup
+  })
 
   it('DELETE /users/:id should delete the user', async () => {
     await requestWithSupertest

@@ -10,6 +10,7 @@
  *  return next(new AppError("Please provide email and password",400))
  * }
  */
+
 class AppError extends Error {
   /**
    * Creates an instance of the class AppError.
