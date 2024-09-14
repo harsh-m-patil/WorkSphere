@@ -27,4 +27,10 @@ router
     userController.deleteUser,
   )
 
+router.patch(
+  '/me/extra-info',
+  authMiddleware.protect,
+  userController.addExtraInfo,
+)
+
 export default router

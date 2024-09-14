@@ -6,23 +6,18 @@ import { closeDB } from '../config/db.js'
 const requestWithSupertest = supertest(server)
 let createdUserId
 let adminToken
+let userToken
 
 beforeAll(async () => {
-  try {
-    const adminLoginResponse = await requestWithSupertest
-      .post('/api/v1/users/login')
-      .send({
-        email: 'admin@example.com',
-        password: '12345678', // Replace with actual admin credentials
-      })
-      .expect(200)
+  const adminLoginResponse = await requestWithSupertest
+    .post('/api/v1/users/login')
+    .send({
+      email: 'admin@example.com',
+      password: '12345678', // Replace with actual admin credentials
+    })
+    .expect(200)
 
-    adminToken = adminLoginResponse.body.token
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error logging in admin:', error)
-    throw error
-  }
+  adminToken = adminLoginResponse.body.token
 })
 
 afterAll(async () => {
@@ -59,11 +54,40 @@ describe('User Endpoints', () => {
       .expect('Content-Type', /json/)
       .expect(201)
 
+    userToken = res.body.token
+
     expect(res.body).toHaveProperty('data')
     expect(res.body.data).toHaveProperty('user')
     expect(res.body.data.user).toHaveProperty('name', newUser.name)
     expect(res.body.data.user).toHaveProperty('email', newUser.email)
     createdUserId = res.body.data.user._id
+  })
+
+  it('PATCH /users/me/extra-info should add extra info', async () => {
+    const updateDetails = {
+      skills: ['Node.js', 'Express.js', 'Javasript'],
+      languages: ['Marathi', 'Hindi', 'English'],
+      certificates: ['Complete Web Developer Udemy'],
+    }
+
+    const res = await requestWithSupertest
+      .patch('/api/v1/users/me/extra-info')
+      .set('Authorization', `Bearer ${userToken}`)
+      .send(updateDetails)
+      .expect('Content-Type', /json/)
+      .expect(200)
+
+    expect(res.body).toHaveProperty('data')
+    expect(res.body.data).toHaveProperty('user')
+    expect(res.body.data.user).toHaveProperty('skills', updateDetails.skills)
+    expect(res.body.data.user).toHaveProperty(
+      'languages',
+      updateDetails.languages,
+    )
+    expect(res.body.data.user).toHaveProperty(
+      'certificates',
+      updateDetails.certificates,
+    )
   })
 
   it('DELETE /users/:id should delete the user', async () => {

@@ -18,6 +18,31 @@ const userController = {
     })
   }),
 
+  addExtraInfo: asyncHandler(async (req, res, next) => {
+    const { skills, languages, certificates } = req.body
+
+    const updateData = {}
+    if (skills) updateData.skills = skills
+    if (languages) updateData.languages = languages
+    if (certificates) updateData.certificates = certificates
+
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, updateData, {
+      new: true,
+      runValidators: true,
+    })
+
+    if (!updatedUser) {
+      return next(new AppError('User not found', 404))
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: updatedUser,
+      },
+    })
+  }),
+
   /**
    * Get all users from the DB
    */

@@ -40,6 +40,14 @@ const userSchema = new mongoose.Schema({
     },
     default: 'freelancer',
   },
+  skills: [String],
+  languages: [String],
+  certificates: [String],
+  ratingsAverage: {
+    type: Number,
+    min: 1,
+    max: 5,
+  },
 })
 
 userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>

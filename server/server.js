@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import http from 'node:http'
-import { connectDB } from './config/db.js'
+import { connectDB, closeDB } from './config/db.js'
 import logger from './utils/logger.js'
 import app from './app.js'
 
@@ -29,6 +29,12 @@ process.on('unhandledRejection', (err) => {
   server.close(() => {
     process.exit(1)
   })
+})
+
+process.on('SIGINT', () => {
+  logger.info('Received SIGINT (Ctrl+C). Cleaning up and exiting...')
+  closeDB()
+  process.exit(0)
 })
 
 export default server
