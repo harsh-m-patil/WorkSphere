@@ -8,7 +8,7 @@ const router = express.Router()
 
 router
   .route('/')
-  .get(userController.getAllUsers)
+  .get(userController.getUsers())
   .post(
     authMiddleware.protect,
     authMiddleware.restrictTo('admin'),
@@ -17,6 +17,9 @@ router
 
 router.post('/login', authController.login)
 router.post('/signup', authController.signup)
+
+router.route('/freelancers').get(userController.getUsers('freelancer'))
+router.route('/clients').get(userController.getUsers('client'))
 
 router
   .route('/:id')

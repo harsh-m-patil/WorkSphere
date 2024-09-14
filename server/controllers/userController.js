@@ -5,7 +5,7 @@ import factory from './factoryController.js'
 
 const userController = {
   /**
-   * Create a new User
+   * @description Create a new User
    */
   createUser: asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body)
@@ -18,6 +18,9 @@ const userController = {
     })
   }),
 
+  /**
+   * @description add extra user details to the user
+   */
   addExtraInfo: asyncHandler(async (req, res, next) => {
     const { skills, languages, certificates } = req.body
 
@@ -44,22 +47,37 @@ const userController = {
   }),
 
   /**
-   * Get all users from the DB
+   * @param {string} role
+   * @description Get users according to there roles
+   * @example
+   *
+   * import {Router} from 'express'
+   * import {getUsers} from '../controllers/userController.js'
+   *
+   * const router = Router()
+   *
+   * router.get("/clients",getUsers("clients"))
    */
-  getAllUsers: asyncHandler(async (req, res, next) => {
-    const users = await User.find()
+  getUsers: (role) =>
+    asyncHandler(async (req, res, next) => {
+      const query = {}
 
-    res.status(200).json({
-      status: 'success',
-      results: users.length,
-      data: {
-        users,
-      },
-    })
-  }),
+      // If role is provided, add it to the query
+      if (role) query.role = role
+
+      const users = await User.find(query)
+
+      res.status(200).json({
+        status: 'success',
+        results: users.length,
+        data: {
+          users,
+        },
+      })
+    }),
 
   /**
-   * Get a user corresponding to a id given through `req.params`
+   * @description Get a user corresponding to a id given through `req.params`
    */
   getUser: asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.params.id)
@@ -76,7 +94,30 @@ const userController = {
     })
   }),
 
+  /**
+   * @description Delete a user by his userID
+   */
   deleteUser: factory.deleteOne(User),
+
+  /**
+   * @description Mark a user as inactive
+   */
+  deactivateUser: asyncHandler(async (req, res, next) => {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { active: false },
+      {
+        new: true,
+        runValidators: true,
+      },
+    )
+
+    if (!user) {
+      return next(new AppError('User not found', 404))
+    }
+
+    res.status(204).send()
+  }),
 }
 
 export default userController

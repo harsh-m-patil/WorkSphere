@@ -2,53 +2,62 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A user must have a name'],
-    trim: true,
-    maxLength: [40, 'Username must be less than 40 characters'],
-  },
-  email: {
-    type: String,
-    required: [true, 'Please provide your email'],
-    unique: [true, 'This email is already in use'],
-    lowercase: true,
-    validate: [validator.isEmail, 'Invalid Email'],
-  },
-  password: {
-    type: String,
-    required: [true, 'Please provide a password'],
-    minlength: [8, 'Password can be minimum of 08 length'],
-    select: false,
-  },
-  passwordConfirm: {
-    type: String,
-    required: [true, 'Please confirm your password'],
-    validate: {
-      validator: function (el) {
-        return el === this.password
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'A user must have a name'],
+      trim: true,
+      maxLength: [40, 'Username must be less than 40 characters'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Please provide your email'],
+      unique: [true, 'This email is already in use'],
+      lowercase: true,
+      validate: [validator.isEmail, 'Invalid Email'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Please provide a password'],
+      minlength: [8, 'Password can be minimum of 08 length'],
+      select: false,
+    },
+    passwordConfirm: {
+      type: String,
+      required: [true, 'Please confirm your password'],
+      validate: {
+        validator: function (el) {
+          return el === this.password
+        },
+        message: 'Passwords are not the same',
       },
-      message: 'Passwords are not the same',
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    role: {
+      type: String,
+      enum: {
+        values: ['freelancer', 'client', 'admin'],
+        message: 'Invalid role (must be freelancer,client or admin)',
+      },
+      default: 'freelancer',
+    },
+    skills: [String],
+    languages: [String],
+    certificates: [String],
+    ratingsAverage: {
+      type: Number,
+      min: 1,
+      max: 5,
     },
   },
-  role: {
-    type: String,
-    enum: {
-      values: ['freelancer', 'client', 'admin'],
-      message: 'Invalid role (must be freelancer,client or admin)',
-    },
-    default: 'freelancer',
+  {
+    timestamps: true,
   },
-  skills: [String],
-  languages: [String],
-  certificates: [String],
-  ratingsAverage: {
-    type: Number,
-    min: 1,
-    max: 5,
-  },
-})
+)
 
 userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>
   await bcrypt.compare(candidatePassword, userPassword)

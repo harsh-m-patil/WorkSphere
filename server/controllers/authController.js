@@ -51,11 +51,19 @@ const createSendToken = (user, statusCode, res) => {
 
 const authController = {
   signup: asyncHandler(async (req, res, next) => {
+    let { role } = req.body
+
+    // Restrict admin role for signup
+    if (req.body.role == 'admin') {
+      return next(new AppError('Restricted role', 400))
+    }
+
     const user = await User.create({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
+      role: role,
     })
 
     createSendToken(user, 201, res)
