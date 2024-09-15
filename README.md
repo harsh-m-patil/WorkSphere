@@ -1,8 +1,9 @@
 # WorkSphere
 
-1.Group No - 35  
+> Group No - 35
 
-Team Members
+
+## Team Members
 
 | Name                        | Roll No      |
 | --------------------------- | ------------ |
