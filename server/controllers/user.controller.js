@@ -1,7 +1,7 @@
-import User from '../models/userModel.js'
+import User from '../models/user.model.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
-import factory from './factoryController.js'
+import factory from './factory.controller.js'
 
 const userController = {
   /**
@@ -79,25 +79,16 @@ const userController = {
   /**
    * @description Get a user corresponding to a id given through `req.params`
    */
-  getUser: asyncHandler(async (req, res, next) => {
-    const user = await User.findById(req.params.id)
-
-    if (!user) {
-      return next(new AppError('User not found', 404))
-    }
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        user,
-      },
-    })
-  }),
-
+  getUser: factory.getOne(User),
   /**
    * @description Delete a user by his userID
    */
   deleteUser: factory.deleteOne(User),
+
+  getMe: (req, res, next) => {
+    req.params.id = req.user.id
+    next()
+  },
 
   /**
    * @description Mark a user as inactive

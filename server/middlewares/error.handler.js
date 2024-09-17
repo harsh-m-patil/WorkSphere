@@ -69,14 +69,15 @@ const errorHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500
   err.status = err.status || 'error'
 
-  if (
-    process.env.NODE_ENV === 'development' ||
+  if (process.env.NODE_ENV === 'development') {
+    sendErrorDev(err, res)
+  } else if (
+    process.env.NODE_ENV === 'production' ||
     process.env.NODE_ENV === 'test'
   ) {
-    sendErrorDev(err, res)
-  } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err }
-
+    error.message = err.message
+    error.name = err.name
     if (err.name === 'CastError') {
       error = handleCastErrorDB(err)
     } else if (err.code === 11000) {

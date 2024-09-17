@@ -2,14 +2,14 @@ import jwt from 'jsonwebtoken'
 import { promisify } from 'node:util'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
-import User from '../models/userModel.js'
+import User from '../models/user.model.js'
 
 const authMiddleware = {
   protect: asyncHandler(async (req, res, next) => {
     // 1) Get token and check if it exists
     let token =
       req.cookies.jwt || req.headers.authorization?.startsWith('Bearer')
-        ? req.headers.authorization.split(' ')[1]
+        ? req.headers.authorization?.split(' ')[1]
         : null
 
     if (!token) {

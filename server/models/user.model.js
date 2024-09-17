@@ -4,11 +4,19 @@ import validator from 'validator'
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, 'A user must have a name'],
-      trim: true,
-      maxLength: [40, 'Username must be less than 40 characters'],
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    userName: {
+      type: String,
+      required: [true, 'Please provide a username'],
+      unique: [true, 'This username is already exists'],
+      lowercase: true,
     },
     email: {
       type: String,
@@ -52,16 +60,28 @@ const userSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 5,
+      default: 4,
+    },
+    noOfRatings: {
+      type: Number,
+      default: 0,
     },
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 )
 
-userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>
-  await bcrypt.compare(candidatePassword, userPassword)
+userSchema.index({ username: 1 })
 
+// VIRTUAL
+userSchema.virtual('fullName').get(function () {
+  return this.firstName + ' ' + this.lastName
+})
+
+// MIDDLEWARES
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
 
@@ -69,6 +89,10 @@ userSchema.pre('save', async function (next) {
   this.passwordConfirm = undefined
   next()
 })
+
+// DOCUMENT METHODS
+userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>
+  await bcrypt.compare(candidatePassword, userPassword)
 
 const User = mongoose.model('User', userSchema)
 
