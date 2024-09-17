@@ -1,7 +1,7 @@
-import User from '../models/userModel.js'
+import User from '../models/user.model.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
-import factory from './factoryController.js'
+import factory from './factory.controller.js'
 
 const userController = {
   /**

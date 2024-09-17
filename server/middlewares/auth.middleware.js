@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { promisify } from 'node:util'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
-import User from '../models/userModel.js'
+import User from '../models/user.model.js'
 
 const authMiddleware = {
   protect: asyncHandler(async (req, res, next) => {
