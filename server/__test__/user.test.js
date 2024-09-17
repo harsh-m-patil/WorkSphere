@@ -42,7 +42,9 @@ describe('User Endpoints', () => {
 
   it('POST /users/signup should create a new user', async () => {
     const newUser = {
-      name: 'John Doe',
+      firstName: 'John',
+      lastName: 'Doe',
+      userName: 'johndoe',
       email: 'john.doe@example.com',
       password: 'password123',
       passwordConfirm: 'password123',
@@ -55,10 +57,13 @@ describe('User Endpoints', () => {
       .expect(201)
 
     userToken = res.body.token
+    console.log(res.body.data.user)
 
     expect(res.body).toHaveProperty('data')
     expect(res.body.data).toHaveProperty('user')
-    expect(res.body.data.user).toHaveProperty('name', newUser.name)
+    expect(res.body.data.user).toHaveProperty('firstName', newUser.firstName)
+    expect(res.body.data.user).toHaveProperty('lastName', newUser.lastName)
+    expect(res.body.data.user).toHaveProperty('userName', newUser.userName)
     expect(res.body.data.user).toHaveProperty('email', newUser.email)
     createdUserId = res.body.data.user._id
   })
