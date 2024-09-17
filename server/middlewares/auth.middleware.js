@@ -9,7 +9,7 @@ const authMiddleware = {
     // 1) Get token and check if it exists
     let token =
       req.cookies.jwt || req.headers.authorization?.startsWith('Bearer')
-        ? req.headers.authorization.split(' ')[1]
+        ? req.headers.authorization?.split(' ')[1]
         : null
 
     if (!token) {

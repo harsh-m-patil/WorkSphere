@@ -21,6 +21,13 @@ router.post('/signup', authController.signup)
 router.route('/freelancers').get(userController.getUsers('freelancer'))
 router.route('/clients').get(userController.getUsers('client'))
 
+router.get(
+  '/me',
+  authMiddleware.protect,
+  userController.getMe,
+  userController.getUser,
+)
+
 router
   .route('/:id')
   .get(userController.getUser)

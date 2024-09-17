@@ -56,6 +56,23 @@ const factory = {
         },
       })
     }),
+
+  getOne: (Model) =>
+    asyncHandler(async (req, res, next) => {
+      const doc = await Model.findById(req.params.id)
+
+      const modelName = Model.modelName.toLowerCase()
+      if (!doc) {
+        return next(new AppError(`${modelName} not found`, 404))
+      }
+
+      res.status(200).json({
+        status: 'success',
+        data: {
+          [modelName]: doc,
+        },
+      })
+    }),
 }
 
 export default factory
