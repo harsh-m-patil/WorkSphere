@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
+import slugify from 'slugify'
 
 const userSchema = new mongoose.Schema(
   {
@@ -52,7 +53,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: {
         values: ['freelancer', 'client', 'admin'],
-        message: 'Invalid role (must be freelancer,client or admin)',
+        message: '{VALUE} is invalid',
       },
       default: 'freelancer',
     },
@@ -72,17 +73,19 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
   },
 )
 
-userSchema.index({ username: 1 })
+userSchema.index({ userName: 1 })
 
 // VIRTUAL
 //userSchema.virtual('fullName').get(function () {
 //  return this.firstName + ' ' + this.lastName
 //})
+// VIRTUALS
+userSchema.virtual('fullName').get(function () {
+  return this.firstName + ' ' + this.lastName
+})
 
 // MIDDLEWARES
 userSchema.pre('save', async function (next) {
@@ -93,9 +96,61 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
+// SLUGIFY USERNAME
+userSchema.pre('save', function (next) {
+  if (!this.isModified('userName')) return next()
+
+  this.userName = slugify(this.userName, { lower: true })
+  next()
+})
+
+// QUERY MIDDLEWARE
+userSchema.pre(/^find/, function (next) {
+  // 'this' points to the current query
+  this.find({ active: { $ne: false } })
+  this.select(['-__v', '-active'])
+  next()
+})
+
 // DOCUMENT METHODS
 userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>
   await bcrypt.compare(candidatePassword, userPassword)
+
+// SET
+userSchema.set('toJSON', {
+  virtuals: true,
+  transform: function (doc, ret) {
+    // Remove skills, languages, certificates if the role is not freelancer
+    if (ret.role !== 'freelancer') {
+      delete ret.skills
+      delete ret.languages
+      delete ret.certificates
+    }
+    if (ret.role === 'admin') {
+      delete ret.ratingsAverage
+      delete ret.noOfRatings
+    }
+    return ret
+  },
+})
+
+userSchema.set('toObject', {
+  virtuals: true,
+  transform: function (doc, ret) {
+    // Remove skills, languages, certificates if the role is not freelancer
+    if (ret.role !== 'freelancer') {
+      delete ret.skills
+      delete ret.languages
+      delete ret.certificates
+    }
+
+    if (ret.role === 'admin') {
+      delete ret.ratingsAverage
+      delete ret.noOfRatings
+    }
+    return ret
+  },
+})
 
 const User = mongoose.model('User', userSchema)
 

@@ -86,17 +86,18 @@ const factory = {
 
   /**
    * @param {mongoose.Model} Model
-   * @returns {Function} create Handler Function
-   * @description create a document of a given Model
+   * @returns {Function} Post Handler Function
+   * @description Get a document of a given Model by ID
    * @example
    * import {createOne} from '../controllers/factory.controller.js'
    * import User from '../models/user.model.js'
    *
-   * exports.createUser = createUser(User)
+   * exports.createUser = createOne(User)
    */
   createOne: (Model) =>
     asyncHandler(async (req, res, next) => {
       const doc = await Model.create(req.body)
+
       const modelName = Model.modelName.toLowerCase()
 
       res.status(201).json({
