@@ -16,12 +16,7 @@ router
   .route('/me')
   .get(authMiddleware.protect, userController.getMe, userController.getUser)
   .patch(
-  .route('/me')
-  .get(authMiddleware.protect, userController.getMe, userController.getUser)
-  .patch(
     authMiddleware.protect,
-    userController.getMe,
-    userController.updateUser,
     userController.getMe,
     userController.updateUser,
   )
@@ -50,8 +45,6 @@ router.use(authMiddleware.restrictTo('admin'))
 
 router
   .route('/:id')
-  .delete(userController.deleteUser)
-  .patch(userController.updateUserForAdmin)
   .delete(userController.deleteUser)
   .patch(userController.updateUserForAdmin)
 
