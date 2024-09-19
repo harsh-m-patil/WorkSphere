@@ -87,7 +87,7 @@ const factory = {
   /**
    * @param {mongoose.Model} Model
    * @returns {Function} Post Handler Function
-   * @description Get a document of a given Model by ID
+   * @description Create a new document of a given Model
    * @example
    * const {createOne} = require('../controllers/factory.controller.js')
    * const User = require('../models/userModel')
@@ -99,29 +99,37 @@ const factory = {
       const doc = await Model.create(req.body)
 
       const modelName = Model.modelName.toLowerCase()
-      
+
       res.status(201).json({
         status: 'success',
         data: {
           [modelName]: doc,
         },
       })
-    },
-                 
+    }),
+
+  /**
+   * @param {mongoose.Model} Model
+   * @returns {Function} Get all documents of a given Model
+   * @example
+   * const {getAll} = require('../controllers/factory.controller.js')
+   * const User = require('../models/userModel')
+   *
+   * exports.getAllUsers = getAll(User)
+   */
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
       const docs = await Model.find()
       const modelName = Model.modelName.toLowerCase() + 's'
 
       res.status(200).json({
-        status: 'sucess',
+        status: 'success',
         results: docs.length,
         data: {
           [modelName]: docs,
         },
       })
     }),
-
 }
 
 export default factory
