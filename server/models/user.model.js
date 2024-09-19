@@ -80,9 +80,9 @@ const userSchema = new mongoose.Schema(
 userSchema.index({ username: 1 })
 
 // VIRTUAL
-userSchema.virtual('fullName').get(function () {
-  return this.firstName + ' ' + this.lastName
-})
+//userSchema.virtual('fullName').get(function () {
+//  return this.firstName + ' ' + this.lastName
+//})
 
 // MIDDLEWARES
 userSchema.pre('save', async function (next) {

@@ -11,6 +11,7 @@ const reviewSchema = new Schema(
       type: Number,
       min: 1,
       max: 5,
+      required: [true, 'a review must have a rating'],
     },
     freelancer: {
       type: Schema.ObjectId,
@@ -35,6 +36,11 @@ reviewSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'client',
     select: 'userName photo',
+  })
+
+  this.populate({
+    path: 'freelancer',
+    select: 'firstName',
   })
 
   next()
@@ -66,7 +72,7 @@ reviewSchema.statics.calcAverageRating = async function (freelancerId) {
 reviewSchema.post('save', function () {
   // this points to current review
   // this.constructor points to the model
-  this.constructor.calcAverageRatings(this.freelancer)
+  this.constructor.calcAverageRating(this.freelancer)
 })
 
 const Review = model('Review', reviewSchema)

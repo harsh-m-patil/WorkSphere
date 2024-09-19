@@ -7,47 +7,10 @@ const userController = {
   /**
    * @description Create a new User
    */
-  createUser: asyncHandler(async (req, res, next) => {
-    const user = await User.create(req.body)
-    user.password = undefined
-    res.status(201).json({
-      status: 'success',
-      data: {
-        user,
-      },
-    })
-  }),
+  createUser: factory.createOne(User),
 
   /**
-   * @description add extra user details to the user
-   */
-  addExtraInfo: asyncHandler(async (req, res, next) => {
-    const { skills, languages, certificates } = req.body
-
-    const updateData = {}
-    if (skills) updateData.skills = skills
-    if (languages) updateData.languages = languages
-    if (certificates) updateData.certificates = certificates
-
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, updateData, {
-      new: true,
-      runValidators: true,
-    })
-
-    if (!updatedUser) {
-      return next(new AppError('User not found', 404))
-    }
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        user: updatedUser,
-      },
-    })
-  }),
-
-  /**
-   * @param {string} role
+   * @param {Array} roles
    * @description Get users according to there roles
    * @example
    *
@@ -58,12 +21,11 @@ const userController = {
    *
    * router.get("/clients",getUsers("clients"))
    */
-  getUsers: (role) =>
+  getUsers: (...roles) =>
     asyncHandler(async (req, res, next) => {
       const query = {}
 
-      // If role is provided, add it to the query
-      if (role) query.role = role
+      if (roles.length > 0) query.role = { $in: roles }
 
       const users = await User.find(query)
 
@@ -80,15 +42,20 @@ const userController = {
    * @description Get a user corresponding to a id given through `req.params`
    */
   getUser: factory.getOne(User),
-  /**
-   * @description Delete a user by his userID
-   */
-  deleteUser: factory.deleteOne(User),
 
+  /**
+   * @description Get details of logged in user by putting logged in users id
+   * on req.params
+   */
   getMe: (req, res, next) => {
     req.params.id = req.user.id
     next()
   },
+
+  /**
+   * @description Delete a user by his userID
+   */
+  deleteUser: factory.deleteOne(User),
 
   /**
    * @description Mark a user as inactive
@@ -108,6 +75,41 @@ const userController = {
     }
 
     res.status(204).send()
+  }),
+
+  updateUserForAdmin: factory.updateOne(User),
+
+  updateUser: asyncHandler(async (req, res, next) => {
+    //NOTE: Because Query Middleware doesnt work on findByIdAndUpdate
+    if (req.body.password || req.body.passwordConfirm) {
+      return next(new AppError('This route is not for updating passwords', 400))
+    }
+
+    if (req.body.userName) {
+      return next(new AppError('this route is not for updating userName', 400))
+    }
+
+    if (req.body.role) {
+      return next(
+        new AppError('You dont have the permission to change your role', 403),
+      )
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
+      new: true,
+      runValidators: true,
+    })
+
+    if (!updatedUser) {
+      return next(new AppError('User not found', 404))
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: updatedUser,
+      },
+    })
   }),
 }
 

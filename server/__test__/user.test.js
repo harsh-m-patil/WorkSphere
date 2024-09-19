@@ -90,9 +90,17 @@ describe('User Endpoints', () => {
     expect(res.body.data.user).toHaveProperty('email', userCreds.email)
   })
 
-  it('PATCH /users/me/extra-info should add extra info', async () => {
+  it('POST /users should be restricted for normal user', async () => {
+    await requestWithSupertest
+      .post('/api/v1/users')
+      .set('Authorization', `Bearer ${userToken}`)
+      .expect('Content-Type', /json/)
+      .expect(403)
+  })
+
+  it('PATCH /users/me/ should update the user', async () => {
     const res = await requestWithSupertest
-      .patch('/api/v1/users/me/extra-info')
+      .patch('/api/v1/users/me')
       .set('Authorization', `Bearer ${userToken}`)
       .send(updateDetails)
       .expect('Content-Type', /json/)

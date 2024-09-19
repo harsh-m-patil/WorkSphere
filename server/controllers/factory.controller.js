@@ -7,8 +7,8 @@ const factory = {
    * @returns {Function} delete Handler Function
    * @description Delete a document of a given Model by ID
    * @example
-   * const {deleteOne} = require('../controllers/factoryController')
-   * const User = require('../models/userModel')
+   * import {deleteOne} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
    *
    * exports.deleteUser = deleteOne(User)
    */
@@ -32,8 +32,8 @@ const factory = {
    * @returns {Function} update Handler Function
    * @description Update a document of a given Model by ID
    * @example
-   * const {UpdateOne} = require('../controllers/factoryController')
-   * const User = require('../models/userModel')
+   * const {UpdateOne} = require('../controllers/factory.controller.js')
+   * import User from '../models/user.model.js'
    *
    * exports.updateUser = updateOne(User)
    */
@@ -57,6 +57,16 @@ const factory = {
       })
     }),
 
+  /**
+   * @param {mongoose.Model} Model
+   * @returns {Function} delete Handler Function
+   * @description Get a document of a given Model by ID
+   * @example
+   * import {getOne} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
+   *
+   * exports.getUser = getOne(User)
+   */
   getOne: (Model) =>
     asyncHandler(async (req, res, next) => {
       const doc = await Model.findById(req.params.id)
@@ -79,8 +89,8 @@ const factory = {
    * @returns {Function} create Handler Function
    * @description create a document of a given Model
    * @example
-   * const {createOne} = require('../controllers/factoryController')
-   * const User = require('../models/userModel')
+   * import {createOne} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
    *
    * exports.createUser = createUser(User)
    */
@@ -89,7 +99,7 @@ const factory = {
       const doc = await Model.create(req.body)
       const modelName = Model.modelName.toLowerCase()
 
-      res.status(200).json({
+      res.status(201).json({
         status: 'success',
         data: {
           [modelName]: doc,
@@ -97,6 +107,16 @@ const factory = {
       })
     }),
 
+  /**
+   * @param {mongoose.Model} Model
+   * @returns {Function} get All Docs Handler Function
+   * @description get all documents of a given Model
+   * @example
+   * import {getAll} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
+   *
+   * exports.getUsers = getAll(User)
+   */
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
       const docs = await Model.find()
