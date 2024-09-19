@@ -1,5 +1,10 @@
 import AppError from '../utils/appError.js'
 
+/**
+ * @param {Error} err - The error object
+ * @returns {AppError} - An AppError Object
+ * Handle CastError from MongoDB
+ */
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`
   return new AppError(message, 400)
