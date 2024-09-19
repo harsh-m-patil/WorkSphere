@@ -7,8 +7,8 @@ const factory = {
    * @returns {Function} delete Handler Function
    * @description Delete a document of a given Model by ID
    * @example
-   * const {deleteOne} = require('../controllers/factory.controller.js')
-   * const User = require('../models/userModel')
+   * import {deleteOne} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
    *
    * exports.deleteUser = deleteOne(User)
    */
@@ -33,7 +33,7 @@ const factory = {
    * @description Update a document of a given Model by ID
    * @example
    * const {UpdateOne} = require('../controllers/factory.controller.js')
-   * const User = require('../models/userModel')
+   * import User from '../models/user.model.js'
    *
    * exports.updateUser = updateOne(User)
    */
@@ -59,11 +59,11 @@ const factory = {
 
   /**
    * @param {mongoose.Model} Model
-   * @returns {Function} get Handler Function
+   * @returns {Function} delete Handler Function
    * @description Get a document of a given Model by ID
    * @example
-   * const {getOne} = require('../controllers/factory.controller.js')
-   * const User = require('../models/userModel')
+   * import {getOne} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
    *
    * exports.getUser = getOne(User)
    */
@@ -89,8 +89,8 @@ const factory = {
    * @returns {Function} Post Handler Function
    * @description Create a new document of a given Model
    * @example
-   * const {createOne} = require('../controllers/factory.controller.js')
-   * const User = require('../models/userModel')
+   * import {createOne} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
    *
    * exports.createUser = createOne(User)
    */
@@ -110,12 +110,14 @@ const factory = {
 
   /**
    * @param {mongoose.Model} Model
-   * @returns {Function} Get all documents of a given Model
+   * @returns {Function} get All Docs Handler Function
+   * @description get all documents of a given Model
    * @example
-   * const {getAll} = require('../controllers/factory.controller.js')
-   * const User = require('../models/userModel')
+   * import {getAll} from '../controllers/factory.controller.js'
+   * import User from '../models/user.model.js'
    *
-   * exports.getAllUsers = getAll(User)
+   * exports.getUsers = getAll(User)
+
    */
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
