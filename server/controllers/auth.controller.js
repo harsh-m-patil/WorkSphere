@@ -52,7 +52,7 @@ const createSendToken = (user, statusCode, res) => {
 const authController = {
   signup: asyncHandler(async (req, res, next) => {
     // Restrict admin role for signup
-    if (req.body?.role == 'admin') {
+    if (req.body?.role === 'admin') {
       return next(new AppError('Restricted role', 400))
     }
 

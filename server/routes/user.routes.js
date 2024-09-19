@@ -6,14 +6,18 @@ import authMiddleware from '../middlewares/auth.middleware.js'
 
 const router = express.Router()
 
+router.route('/').get(userController.getUsers('freelancer', 'client'))
+
 router
-  .route('/')
-  .get(userController.getUsers())
-  .post(
+  .route('/me')
+  .get(authMiddleware.protect, userController.getMe, userController.getUser)
+  .patch(
     authMiddleware.protect,
-    authMiddleware.restrictTo('admin'),
-    userController.createUser,
+    userController.getMe,
+    userController.updateUser,
   )
+
+router.get('/:id', userController.getUser)
 
 router.post('/login', authController.login)
 router.post('/signup', authController.signup)
@@ -21,26 +25,20 @@ router.post('/signup', authController.signup)
 router.route('/freelancers').get(userController.getUsers('freelancer'))
 router.route('/clients').get(userController.getUsers('client'))
 
-router.get(
-  '/me',
-  authMiddleware.protect,
-  userController.getMe,
-  userController.getUser,
-)
+// Routes below this are protected
+router.use(authMiddleware.protect)
+
+// Routes below this are restricted to admin
+router.use(authMiddleware.restrictTo('admin'))
 
 router
   .route('/:id')
-  .get(userController.getUser)
-  .delete(
-    authMiddleware.protect,
-    authMiddleware.restrictTo('admin'),
-    userController.deleteUser,
-  )
+  .delete(userController.deleteUser)
+  .patch(userController.updateUserForAdmin)
 
-router.patch(
-  '/me/extra-info',
-  authMiddleware.protect,
-  userController.addExtraInfo,
-)
+router.post('/', userController.createUser)
+
+router.get('/all', userController.getUsers())
+router.route('/admins').get(userController.getUsers('admin'))
 
 export default router

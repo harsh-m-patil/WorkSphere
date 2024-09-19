@@ -33,6 +33,7 @@ const authMiddleware = {
     req.user = user
     next()
   }),
+
   restrictTo:
     (...roles) =>
     (req, res, next) => {

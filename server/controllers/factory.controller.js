@@ -7,7 +7,7 @@ const factory = {
    * @returns {Function} delete Handler Function
    * @description Delete a document of a given Model by ID
    * @example
-   * const {deleteOne} = require('../controllers/factoryController')
+   * const {deleteOne} = require('../controllers/factory.controller.js')
    * const User = require('../models/userModel')
    *
    * exports.deleteUser = deleteOne(User)
@@ -32,7 +32,7 @@ const factory = {
    * @returns {Function} update Handler Function
    * @description Update a document of a given Model by ID
    * @example
-   * const {UpdateOne} = require('../controllers/factoryController')
+   * const {UpdateOne} = require('../controllers/factory.controller.js')
    * const User = require('../models/userModel')
    *
    * exports.updateUser = updateOne(User)
@@ -57,6 +57,16 @@ const factory = {
       })
     }),
 
+  /**
+   * @param {mongoose.Model} Model
+   * @returns {Function} get Handler Function
+   * @description Get a document of a given Model by ID
+   * @example
+   * const {getOne} = require('../controllers/factory.controller.js')
+   * const User = require('../models/userModel')
+   *
+   * exports.getUser = getOne(User)
+   */
   getOne: (Model) =>
     asyncHandler(async (req, res, next) => {
       const doc = await Model.findById(req.params.id)
@@ -76,27 +86,28 @@ const factory = {
 
   /**
    * @param {mongoose.Model} Model
-   * @returns {Function} create Handler Function
-   * @description create a document of a given Model
+   * @returns {Function} Post Handler Function
+   * @description Get a document of a given Model by ID
    * @example
-   * const {createOne} = require('../controllers/factoryController')
+   * const {createOne} = require('../controllers/factory.controller.js')
    * const User = require('../models/userModel')
    *
-   * exports.createUser = createUser(User)
+   * exports.createUser = createOne(User)
    */
   createOne: (Model) =>
     asyncHandler(async (req, res, next) => {
       const doc = await Model.create(req.body)
-      const modelName = Model.modelName.toLowerCase()
 
-      res.status(200).json({
+      const modelName = Model.modelName.toLowerCase()
+      
+      res.status(201).json({
         status: 'success',
         data: {
           [modelName]: doc,
         },
       })
-    }),
-
+    },
+                 
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
       const docs = await Model.find()
@@ -110,6 +121,7 @@ const factory = {
         },
       })
     }),
+
 }
 
 export default factory
