@@ -99,13 +99,29 @@ const factory = {
       const doc = await Model.create(req.body)
 
       const modelName = Model.modelName.toLowerCase()
+      
       res.status(201).json({
         status: 'success',
         data: {
           [modelName]: doc,
         },
       })
+    },
+                 
+  getAll: (Model) =>
+    asyncHandler(async (req, res, next) => {
+      const docs = await Model.find()
+      const modelName = Model.modelName.toLowerCase() + 's'
+
+      res.status(200).json({
+        status: 'sucess',
+        results: docs.length,
+        data: {
+          [modelName]: docs,
+        },
+      })
     }),
+
 }
 
 export default factory
