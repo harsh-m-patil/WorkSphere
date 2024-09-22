@@ -1,12 +1,17 @@
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Main from "./pages/Main";
+import Users from "./pages/Users";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
-    <>
-      <main>
-        <h1 className="bg-slate-700 text-cyan-400">WorkSphere</h1>
-      </main>
-    </>
+    <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Main />}></Route>
+        <Route path="/users" element={<Users />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
