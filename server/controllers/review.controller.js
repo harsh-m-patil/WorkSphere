@@ -16,7 +16,6 @@ const reviewController = {
   //TODO: modify to avoid multiple querys from database
   checkUser: asyncHandler(async (req, res, next) => {
     const review = await Review.findById(req.params.id)
-    console.log(review)
 
     if (review.client?.id != req.user.id) {
       return next(
@@ -40,7 +39,12 @@ const reviewController = {
    * @description get reviews of a given user
    */
   getReviewsOf: asyncHandler(async (req, res, next) => {
-    const reviews = await Review.find({ freelancer: req.params.id })
+    const query = {}
+    if (req.params.id) {
+      query.freelancer = req.params.id
+    }
+
+    const reviews = await Review.find(query)
 
     res.status(200).json({
       status: 'success',

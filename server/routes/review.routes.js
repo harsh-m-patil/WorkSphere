@@ -6,11 +6,13 @@ const reviewRouter = Router({ mergeParams: true })
 
 reviewRouter.get('/', reviewController.getReviewsOf)
 
+reviewRouter.route('/:id').get(reviewController.getReview)
+
 //NOTE: Routes below this are protected
 reviewRouter.use(authMiddleware.protect)
+
 reviewRouter
   .route('/:id')
-  .get(reviewController.getReview)
   .patch(reviewController.checkUser, reviewController.updateReview)
   .delete(reviewController.checkUser, reviewController.deleteReview)
 

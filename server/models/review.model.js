@@ -5,7 +5,7 @@ const reviewSchema = new Schema(
   {
     review: {
       type: String,
-      required: [true, 'review cannot be empty'],
+      required: [true, 'A review cannot be empty'],
     },
     rating: {
       type: Number,
@@ -17,11 +17,13 @@ const reviewSchema = new Schema(
       type: Schema.ObjectId,
       ref: 'User',
       required: [true, 'A review must have a freelancer'],
+      immutable: true,
     },
     client: {
       type: Schema.ObjectId,
       ref: 'User',
       required: [true, 'A review must have a client'],
+      immutable: true,
     },
   },
   {
@@ -30,21 +32,6 @@ const reviewSchema = new Schema(
     timestamps: true,
   },
 )
-
-reviewSchema.pre(/^find/, function (next) {
-  // this points to query
-  this.populate({
-    path: 'client',
-    select: 'userName photo',
-  })
-
-  this.populate({
-    path: 'freelancer',
-    select: 'firstName',
-  })
-
-  next()
-})
 
 reviewSchema.statics.calcAverageRating = async function (freelancerId) {
   // this points to the model
@@ -66,6 +53,11 @@ reviewSchema.statics.calcAverageRating = async function (freelancerId) {
       ratingsAverage: stats[0].avgRating,
       noOfRatings: stats[0].nRatings,
     })
+  } else {
+    await User.findByIdAndUpdate(freelancerId, {
+      ratingsAverage: 4,
+      noOfRatings: 0,
+    })
   }
 }
 
@@ -73,6 +65,32 @@ reviewSchema.post('save', function () {
   // this points to current review
   // this.constructor points to the model
   this.constructor.calcAverageRating(this.freelancer)
+})
+
+reviewSchema.pre(/^find/, function (next) {
+  // this points to query
+  this.populate({
+    path: 'client',
+    select: 'userName photo',
+  })
+
+  this.populate({
+    path: 'freelancer',
+    select: 'firstName',
+  })
+
+  next()
+})
+
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  this.r = await this.model.findOne(this.getQuery())
+  next()
+})
+
+reviewSchema.post(/^findOneAnd/, async function () {
+  if (this.r) {
+    await this.r.constructor.calcAverageRating(this.r.freelancer._id)
+  }
 })
 
 const Review = model('Review', reviewSchema)
