@@ -31,15 +31,15 @@ const workSchema = new mongoose.Schema(
             type: [String]
         },
         active: {
-            type: boolean,
+            type: Boolean,
             default: true,
         },
         client_id: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
         freelancer_id: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
     }   
