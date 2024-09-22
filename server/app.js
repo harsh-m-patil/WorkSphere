@@ -7,6 +7,7 @@ import userRouter from './routes/user.routes.js'
 import reviewRouter from './routes/review.routes.js'
 import AppError from './utils/appError.js'
 import logger from './utils/logger.js'
+import workRouter from './routes/work.routes.js'
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.use(cookieParser())
 
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
+app.use('/api/v1/work',workRouter)
 
 app.get('/', (req, res, next) => {
   res.status(200).json({
