@@ -4,10 +4,13 @@ import userController from '../controllers/user.controller.js'
 import authController from '../controllers/auth.controller.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
 import reviewRouter from './review.routes.js'
+import { getAppInfo } from '../controllers/app.controller.js'
 
 const router = express.Router()
 
 router.use('/:id/reviews', reviewRouter)
+
+router.get('/appInfo', getAppInfo)
 
 // get users except the admins
 router.route('/').get(userController.getUsers('freelancer', 'client'))
@@ -39,6 +42,7 @@ router.post('/signup', authController.signup)
 
 // Routes below this are protected
 router.use(authMiddleware.protect)
+router.post('/logout', authController.logout)
 
 // Routes below this are restricted to admin
 router.use(authMiddleware.restrictTo('admin'))

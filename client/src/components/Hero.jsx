@@ -1,3 +1,4 @@
+import BlurredShape from "./BlurredShape";
 import Button from "./Button";
 import SecButton from "./SecButton";
 
@@ -5,7 +6,7 @@ const Hero = () => {
   return (
     <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center">
       {/* Blurred Square Background */}
-      <div className="absolute z-[-1] h-4/6 w-3/6 rotate-[26deg] rounded-[200px] bg-[#2F9C95] opacity-15 blur-lg"></div>
+      <BlurredShape size="large" />
 
       {/* Hero Content */}
       <div className="space-y-3 text-center">
