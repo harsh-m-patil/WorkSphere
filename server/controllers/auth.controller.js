@@ -51,6 +51,9 @@ const createSendToken = (user, statusCode, res) => {
 
 const authController = {
   signup: asyncHandler(async (req, res, next) => {
+    // set balance to zero
+    req.body.balance = 0
+
     // Restrict admin role for signup
     if (req.body?.role === 'admin') {
       return next(new AppError('Restricted role', 400))
@@ -78,6 +81,11 @@ const authController = {
     }
 
     createSendToken(user, 200, res)
+  }),
+
+  logout: asyncHandler((req, res, next) => {
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
+    res.status(200).json({ status: 'success' })
   }),
 }
 

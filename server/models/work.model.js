@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-import User from './user.model.js'
+import { Schema, model } from 'mongoose'
 
 const workSchema = new mongoose.Schema(
     {
@@ -45,6 +44,6 @@ const workSchema = new mongoose.Schema(
     }   
 )
 
-const Work = mongoose.model('Work', workSchema)
+const Work = model('Work', workSchema)
 
 export default Work
