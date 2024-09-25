@@ -1,3 +1,4 @@
+import APIFeatures from '../utils/apiFeatures.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
@@ -121,7 +122,13 @@ const factory = {
    */
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
-      const docs = await Model.find()
+      const features = new APIFeatures(Model.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate()
+
+      const docs = await features.query
       const modelName = Model.modelName.toLowerCase() + 's'
 
       res.status(200).json({
