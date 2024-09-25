@@ -9,6 +9,7 @@ import appRouter from './routes/app.routes.js'
 import workRouter from './routes/work.routes.js'
 import AppError from './utils/appError.js'
 import logger from './utils/logger.js'
+import workRouter from './routes/work.routes.js'
 
 const app = express()
 
