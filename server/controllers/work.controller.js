@@ -19,7 +19,7 @@ const workController = {
   /**
    * @description Gives the all the works available
    */
-  getWorks: factory.createOne(Work),
+  getWorks: factory.getAll(Work),
 
 
   /**
