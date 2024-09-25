@@ -22,4 +22,12 @@ workController.assignWork);
 
 
 
+router.get("/",authMiddleware.protect, authMiddleware.restrictTo('freelance'),workController.getWorks)
+
+router.post("/assign", authMiddleware.protect, authMiddleware.restrictTo('client'),
+workController.deactivateWork,
+workController.assignWork);
+
+
+
 export default router
