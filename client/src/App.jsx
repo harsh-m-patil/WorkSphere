@@ -31,8 +31,8 @@ function PrivateRoute({ children }) {
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
           <NavBar />
           <Routes>
             <Route path="/" element={<Main />} />
@@ -50,8 +50,8 @@ function App() {
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/freelancers" element={<Users />} />
           </Routes>
-        </QueryClientProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }
