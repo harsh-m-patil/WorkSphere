@@ -7,10 +7,12 @@ import User from '../models/user.model.js'
 const authMiddleware = {
   protect: asyncHandler(async (req, res, next) => {
     // 1) Get token and check if it exists
-    let token =
-      req.cookies.jwt || req.headers.authorization?.startsWith('Bearer')
+    let token = req.cookies?.jwt
+    if (!token) {
+      token = req.headers.authorization?.startsWith('Bearer')
         ? req.headers.authorization?.split(' ')[1]
         : null
+    }
 
     if (!token) {
       return next(

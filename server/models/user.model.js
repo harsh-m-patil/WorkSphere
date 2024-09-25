@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema(
       unique: [true, 'This username is already exists'],
       lowercase: true,
     },
+    description: {
+      type: String,
+      default: 'No description provided',
+    },
     email: {
       type: String,
       required: [true, 'Please provide your email'],
@@ -28,6 +32,11 @@ const userSchema = new mongoose.Schema(
     },
     photo: {
       type: String,
+      default: './photo.jpg',
+    },
+    banner: {
+      type: String,
+      default: './banner.jpg',
     },
     password: {
       type: String,
@@ -48,6 +57,10 @@ const userSchema = new mongoose.Schema(
     active: {
       type: Boolean,
       default: true,
+    },
+    balance: {
+      type: Number,
+      default: 0,
     },
     role: {
       type: String,
@@ -78,13 +91,15 @@ const userSchema = new mongoose.Schema(
 
 userSchema.index({ userName: 1 })
 
-// VIRTUAL
+//// VIRTUALS
 //userSchema.virtual('fullName').get(function () {
 //  return this.firstName + ' ' + this.lastName
 //})
-// VIRTUALS
-userSchema.virtual('fullName').get(function () {
-  return this.firstName + ' ' + this.lastName
+
+userSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'freelancer',
+  localField: '_id',
 })
 
 // MIDDLEWARES
@@ -109,6 +124,11 @@ userSchema.pre(/^find/, function (next) {
   // 'this' points to the current query
   this.find({ active: { $ne: false } })
   this.select(['-__v', '-active'])
+  next()
+})
+
+userSchema.pre('findOne', function (next) {
+  this.populate('reviews')
   next()
 })
 

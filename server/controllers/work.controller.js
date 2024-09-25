@@ -7,10 +7,10 @@ const workController = {
    */
   createWork: factory.createOne(Work),
 
-  setId: (req,res,next) => {
+  setId: (req, res, next) => {
     req.body.client_id = req.user._id
     next()
-  }
+  },
 }
 
 export default workController
