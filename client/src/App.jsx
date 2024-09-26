@@ -8,6 +8,8 @@ import UserDashBoard from "./pages/UserDashBoard";
 import LoginPage from "./pages/Login";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import UserDashboardWorks from "./components/UserDashboardWorks";
+import UserDashboardReviews from "./components/UserDashboardReviews";
+import UserSettings from "./components/UserDashBoardSettings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +22,7 @@ const queryClient = new QueryClient({
 
 // Create a PrivateRoute component to protect dashboard routes
 function PrivateRoute({ children }) {
-  const { isAuthenticated, loading, user } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>; // Add a loading state
@@ -61,6 +63,22 @@ function App() {
               element={
                 <PrivateRoute>
                   <UserDashboardWorks />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/user/dashboard/reviews"
+              element={
+                <PrivateRoute>
+                  <UserDashboardReviews />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/user/dashboard/settings"
+              element={
+                <PrivateRoute>
+                  <UserSettings />
                 </PrivateRoute>
               }
             />

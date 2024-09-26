@@ -1,20 +1,46 @@
 import { FiMoreHorizontal } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import profileImage from "../assets/profile.jpg"; // Placeholder profile image
 import { API_URL } from "../utils/constants"; // Assuming you have a constants file
 
-const ProfileSection = ({ user }) => {
-  const localUser = user;
+const ProfileSection = () => {
+  const [user, setUser] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    description: user.description,
+    firstName: "",
+    lastName: "",
+    email: "",
+    description: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Fetch user data on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/users/me`, {
+          withCredentials: true, // If using cookies for authentication
+        });
+        const userData = response.data.data.user; // Adjust according to your response structure
+
+        // Set the user and initialize updatedUser state
+        setUser(userData);
+        setUpdatedUser({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          description: userData.description,
+        });
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+        setError("Failed to load user data.");
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleChange = (e) => {
     setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
@@ -66,6 +92,11 @@ const ProfileSection = ({ user }) => {
     }
   };
 
+  // Show a loading state or error message if user data hasn't loaded yet
+  if (!user) {
+    return <div className="text-center">Loading user data...</div>;
+  }
+
   return (
     <div className="w-full rounded-md bg-white p-6 shadow-md lg:w-2/3">
       {/* Profile */}
@@ -94,23 +125,28 @@ const ProfileSection = ({ user }) => {
               />
             </>
           ) : (
-            <h3 className="text-lg font-bold">{`${localUser.firstName} ${localUser.lastName}`}</h3>
+            <h3 className="text-lg font-bold">
+              {`${user.firstName} ${user.lastName}`}{" "}
+              <span className="ml-1 rounded-3xl bg-teal-100 p-1 px-2">
+                {user.ratingsAverage}
+              </span>
+            </h3>
           )}
           {editMode ? (
             <input
               type="text"
               name="userName"
-              value={updatedUser.userName}
+              value={updatedUser.userName || ""}
               onChange={handleChange}
               className="border-b-2 text-gray-500"
             />
           ) : (
-            <p className="text-gray-500">{localUser.userName}</p>
+            <p className="text-gray-500">{user.userName}</p>
           )}
         </div>
         <div className="ml-auto">
           <FiMoreHorizontal
-            className="text-xl"
+            className="cursor-pointer text-xl"
             onClick={() => setEditMode(!editMode)}
           />
         </div>
@@ -126,7 +162,7 @@ const ProfileSection = ({ user }) => {
             className="mb-4 w-full rounded-lg border p-2 text-gray-700"
           />
         ) : (
-          <p className="mb-4 text-gray-700">{localUser.description}</p>
+          <p className="mb-4 text-gray-700">{user.description}</p>
         )}
       </div>
 
@@ -142,8 +178,30 @@ const ProfileSection = ({ user }) => {
             className="w-full border-b-2"
           />
         ) : (
-          <p>{localUser.email}</p>
+          <p>{user.email}</p>
         )}
+      </div>
+
+      {/* Skills */}
+      <div className="mb-4">
+        <h2>Skills</h2>
+        <p>{user.skills.join(", ") || "No skills listed"}</p>
+      </div>
+
+      {/* Languages */}
+      <div className="mb-4">
+        <h2>Languages</h2>
+        <p>{user.languages.join(", ") || "No languages listed"}</p>
+      </div>
+
+      {/* Certificates */}
+      <div className="mb-4">
+        <h2>Certificates</h2>
+        <p>
+          {user.certificates.length > 0
+            ? user.certificates.join(", ")
+            : "No certificates listed"}
+        </p>
       </div>
 
       {editMode && (

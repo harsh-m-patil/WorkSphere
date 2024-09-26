@@ -6,7 +6,7 @@ const WorkSection = ({ works }) => {
 
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("works");
+    navigate("/user/dashboard/works");
   };
 
   return (
