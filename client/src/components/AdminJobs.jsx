@@ -52,7 +52,7 @@ const Jobs = () => {
     <div className="flex">
       <Sidebar />
       <div className="w-full">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="p-4">
           <div className="p-6">
             <h2 className="mb-6 text-2xl font-bold text-gray-700">

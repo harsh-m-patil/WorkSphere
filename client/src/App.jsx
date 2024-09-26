@@ -4,7 +4,6 @@ import Main from "./pages/Main";
 import Users from "./pages/Users";
 import NavBar from "./components/NavBar";
 import UserProfile from "./components/UserProfile";
-
 import UserDashBoard from "./pages/UserDashBoard";
 import LoginPage from "./pages/Login";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -43,6 +42,7 @@ function App() {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <NavBar/>
           <Routes>
             <Route
               path="/admin/dashboard"

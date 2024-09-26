@@ -43,7 +43,7 @@ const Users = () => {
     <div className="flex">
       <Sidebar />
       <div className="w-full">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="p-4"></div>
 
         <div className="p-6">

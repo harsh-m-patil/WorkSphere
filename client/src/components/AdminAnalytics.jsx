@@ -33,7 +33,7 @@ const Analytics = () => {
     <div className="flex">
       <Sidebar />
       <div className="w-full">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="p-4">
           <div className="p-6">
             <h1 className="mb-6 text-3xl font-bold">Analytics Overview</h1>
