@@ -102,6 +102,12 @@ userSchema.virtual('reviews', {
   localField: '_id',
 })
 
+userSchema.virtual('works', {
+  ref: 'Work',
+  foreignField: 'freelancer_id',
+  localField: '_id',
+})
+
 // MIDDLEWARES
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
@@ -129,6 +135,7 @@ userSchema.pre(/^find/, function (next) {
 
 userSchema.pre('findOne', function (next) {
   this.populate('reviews')
+  this.populate('works')
   next()
 })
 
