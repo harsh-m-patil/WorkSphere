@@ -23,7 +23,7 @@ const workController = {
 
   /**
    * @description Deactivate the some work by putting workId
-   * 
+   *
    */
   deactivateWork: asyncHandler(async (req, res, next) => {
     const work = await Work.findByIdAndUpdate(req.body.workId, {
@@ -42,52 +42,46 @@ const workController = {
    *
    */
 
-  assignWork : asyncHandler( async (req,res,next)=>{
-      const work = await Work.findByIdAndUpdate(req.body.workId,{
-        freelancer_id: req.body.freelancerId,
-        active : false,
-      })
+  assignWork: asyncHandler(async (req, res, next) => {
+    const work = await Work.findByIdAndUpdate(req.body.workId, {
+      freelancer_id: req.body.freelancerId,
+      active: false,
+    })
 
-      
+    if (!work) {
+      return next(new AppError(`No Work with that id found`, 404))
+    }
 
-      if(!work){
-        return next(new AppError(`No Work with that id found`, 404))
-      }
-      
-      res.status(200).json({
-        status: 'success',
-        data: {
-          work,
-        },
-      })
+    res.status(200).json({
+      status: 'success',
+      data: {
+        work,
+      },
+    })
   }),
 
   /**
    * @description Apply to the Work by getting WorkId && freelancerId
    */
-  applyWork : asyncHandler(async(req,res,next)=>{
-      const work = await Work.findById(req.body.workId);
+  applyWork: asyncHandler(async (req, res, next) => {
+    const work = await Work.findById(req.body.workId)
 
-      if(!work){
-        return next(new AppError(`No work with that id found`,404))
-      }
-      work.applied_status.push(req.body.userId);
-      await work.save();
+    if (!work) {
+      return next(new AppError(`No work with that id found`, 404))
+    }
+    work.applied_status.push(req.body.userId)
+    await work.save()
 
-      
-      // console.log(req.body,req.user);
-      
-      
-      // console.log(req.body);
-      res.status(200).json({
-        status: 'success',
-        data: {
-          work,
-        }
-      })
+    // console.log(req.body,req.user);
 
-  })
-
+    // console.log(req.body);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        work,
+      },
+    })
+  }),
 }
 
 export default workController

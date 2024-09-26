@@ -7,35 +7,34 @@ import ReviewsSection from "../components/ReviewsSection";
 import ProfileSection from "../components/ProfileSection";
 import WorkSection from "../components/WorkSection";
 
-
 const ClientDashBoard = () => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true); // Loading state
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
 
-    useEffect(()=>{
-        async function fetchUser() {
-            try {
-              const response = await axios.get(`${API_URL}/users/me`, {
-                withCredentials: true,
-              });
-              setUser(response.data.data.user); // Correctly set the user data
-              console.log("User data:",user);
-            } catch (error) {
-              console.error("Error fetching user data:", error);
-            } finally {
-              setLoading(false); // Set loading to false after fetching
-            }
-          }
-      
-          fetchUser();
-    },[])
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const response = await axios.get(`${API_URL}/users/me`, {
+          withCredentials: true,
+        });
+        setUser(response.data.data.user); // Correctly set the user data
+        console.log("User data:", user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    }
+
+    fetchUser();
+  }, []);
 
   if (loading) {
-      return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50">
-          <p className="text-lg text-[#2f9c95]">Loading user data...</p>
-        </div>
-      ); // Loading state UI
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <p className="text-lg text-[#2f9c95]">Loading user data...</p>
+      </div>
+    ); // Loading state UI
   }
   return (
     <div className="flex min-h-screen">

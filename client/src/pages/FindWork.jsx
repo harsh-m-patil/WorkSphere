@@ -6,14 +6,14 @@ import WorkCard from "../components/WorkCard";
 
 const FindWork = () => {
   const [works, setWorks] = useState([]);
-  const [user, setUser] = useState({});  // Empty object as initial value
+  const [user, setUser] = useState({}); // Empty object as initial value
 
   useEffect(() => {
     async function fetchWorks() {
       const response = await axios.get(`${API_URL}/work`);
-      const respArr = response.data.data.works;  
+      const respArr = response.data.data.works;
       console.log("Work data:", respArr);
-      setWorks(respArr);  // Correctly set the Work Array Data 
+      setWorks(respArr); // Correctly set the Work Array Data
     }
 
     async function fetchUser() {
@@ -23,12 +23,12 @@ const FindWork = () => {
         });
         const det = response.data.data.user;
         console.log("Fetched User Data", det);
-        setUser(det);  // Correctly set the user data
+        setUser(det); // Correctly set the user data
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     }
-    
+
     fetchUser();
     fetchWorks();
   }, []);
@@ -45,9 +45,10 @@ const FindWork = () => {
       <div className="container mx-auto p-4">
         <h1 className="mb-4 text-3xl font-bold">Available Jobs</h1>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          { Object.keys(user).length!==0 && works.map((work) => (
-            <WorkCard key={work._id} work={work} user={user} />
-          ))}
+          {Object.keys(user).length !== 0 &&
+            works.map((work) => (
+              <WorkCard key={work._id} work={work} user={user} />
+            ))}
           {/* {user} */}
         </div>
       </div>

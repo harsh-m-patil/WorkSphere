@@ -39,6 +39,7 @@ const authMiddleware = {
   restrictTo:
     (...roles) =>
     (req, res, next) => {
+      console.log(req.user)
       if (!roles.includes(req.user.role)) {
         return next(
           new AppError(
@@ -47,7 +48,6 @@ const authMiddleware = {
           ),
         )
       }
-
       next()
     },
 }
