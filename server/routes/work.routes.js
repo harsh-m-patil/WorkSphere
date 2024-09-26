@@ -14,19 +14,18 @@ router.post(
   workController.createWork,
 )
 
-router.get("/",authMiddleware.protect, authMiddleware.restrictTo('freelance'),workController.getWorks)
+router.get("/",workController.getWorks)
 
 router.post("/assign", authMiddleware.protect, authMiddleware.restrictTo('client'),
 workController.deactivateWork,
 workController.assignWork);
 
+// router.post("/apply",authMiddleware.protect, authMiddleware.restrictTo('freelancer'),
+// workController.applyWork)
+
+router.post("/apply",authMiddleware.protect,authMiddleware.restrictTo('freelancer'),workController.applyWork)
 
 
-router.get("/",authMiddleware.protect, authMiddleware.restrictTo('freelance'),workController.getWorks)
-
-router.post("/assign", authMiddleware.protect, authMiddleware.restrictTo('client'),
-workController.deactivateWork,
-workController.assignWork);
 
 
 
