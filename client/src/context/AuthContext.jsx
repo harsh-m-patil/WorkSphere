@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../utils/constants";
+import Cookies from 'js-cookie';
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -40,6 +41,7 @@ export const AuthProvider = ({ children }) => {
   // Log in function
   const login = async (credentials) => {
     try {
+      //  Cookies.remove("jwt")
       const response = await axios.post(`${API_URL}/users/login`, credentials, {
         withCredentials: true,
       });
@@ -59,6 +61,10 @@ export const AuthProvider = ({ children }) => {
         {},
         { withCredentials: true },
       );
+      const allCookies = Cookies.get(); // Get all cookies
+      for (const cookieName in allCookies) {
+        Cookies.remove(cookieName); // Remove each cookie
+      }
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Logout failed", error);
