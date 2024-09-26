@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 
 const NavBar = () => {
   const { isAuthenticated, logout } = useAuth(); // Get the logout function from AuthContext
-  console.log("navbar loaded");
 
   const handleLogout = async () => {
     try {
@@ -27,7 +26,9 @@ const NavBar = () => {
 
         {/* Navigation Links */}
         <div className="flex items-center gap-6">
-          <span>Business</span>
+          <Link to="/client/signup">
+            <span>Business</span>
+          </Link>
           <Link to="/freelancers">
             <span>Discover</span>
           </Link>
@@ -57,7 +58,9 @@ const NavBar = () => {
 
       {/* Navigation Links */}
       <div className="flex items-center gap-6">
-        <span>Business</span>
+        <Link to="/client/signup">
+          <span>Business</span>
+        </Link>
         <Link to="/freelancers">
           <span>Discover</span>
         </Link>

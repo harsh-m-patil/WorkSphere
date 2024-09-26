@@ -83,10 +83,10 @@ const authController = {
     createSendToken(user, 200, res)
   }),
 
-  logout: asyncHandler((req, res, next) => {
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
-    res.status(200).json({ status: 'success' })
-  }),
+  logout: (req, res, next) => {
+    res.clearCookie('jwt')
+    return res.status(200).json({ status: 'success' })
+  },
 }
 
 export default authController

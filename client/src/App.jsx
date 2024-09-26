@@ -18,6 +18,8 @@ import AdminDashboard from "./components/AdminDashboard";
 import AdminUsers from "./components/AdminUsers";
 import AdminJobs from "./components/AdminJobs"; // Import Jobs component
 import AdminAnalytics from "./components/AdminAnalytics";
+import Freelancersignup from "./pages/FreelancerSignup";
+import Clientsignup from "./pages/ClientSignup";
 
 
 const queryClient = new QueryClient({
@@ -83,6 +85,9 @@ function App() {
 
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/freelancer/signup" element={<Freelancersignup />} />
+            <Route path="/client/signup" element={<Clientsignup />} />
+
 
             {/* Protect this route with PrivateRoute */}
             <Route

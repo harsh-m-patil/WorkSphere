@@ -97,7 +97,7 @@ const LoginPage = () => {
         {/* Redirect to sign up */}
         <p className="mt-4 text-center text-sm text-gray-500">
           Don&apos;t have an account?{" "}
-          <a href="/signup" className="text-[#2f9c95] hover:underline">
+          <a href="/freelancer/signup" className="text-[#2f9c95] hover:underline">
             Sign Up
           </a>
         </p>
