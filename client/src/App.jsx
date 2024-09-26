@@ -14,6 +14,11 @@ import FindWork from "./pages/FindWork";
 import ClientDashBoard from "./pages/ClientDashBoard";
 import ClientWorksPosted from "./components/ClientWorksPosted";
 import ClientFilterWork from "./components/ClientFilterWork";
+import AdminDashboard from "./components/AdminDashboard";
+import AdminUsers from "./components/AdminUsers";
+import AdminJobs from "./components/AdminJobs"; // Import Jobs component
+import AdminAnalytics from "./components/AdminAnalytics";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,8 +45,42 @@ function App() {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <NavBar />
+          <NavBar/>
           <Routes>
+            <Route
+              path="/admin/dashboard"
+              element={
+                <PrivateRoute>
+                  <AdminDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard/users"
+              element={
+                <PrivateRoute>
+                  <AdminUsers />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard/jobs"
+              element={
+                <PrivateRoute>
+                  <AdminJobs />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard/analytics"
+              element={
+                <PrivateRoute>
+                  <AdminAnalytics />
+                </PrivateRoute>
+              }
+            />
+            {/* <NavBar /> */}
+
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<LoginPage />} />
 
