@@ -47,7 +47,7 @@ function UserDashBoard() {
           <ProfileSection user={user} />
 
           {/* Team Section */}
-          <WorkSection />
+          <WorkSection works={user.works} />
         </div>
 
         {/* Meeting Section */}

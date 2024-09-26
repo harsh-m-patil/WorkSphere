@@ -1,49 +1,13 @@
 import profileImage from "../assets/profile.jpg"; // Placeholder profile image
 import { useNavigate } from "react-router-dom";
 
-const WorkSection = () => {
+const WorkSection = ({ works }) => {
   // Example works data based on the new Mongoose schema
 
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("works");
   };
-
-  const works = [
-    {
-      title: "Project A",
-      description: "This is a description of Project A.",
-      pay: 500,
-      joblevel: "Medium",
-      skills_Required: ["JavaScript", "React"],
-      applied_status: ["Applied", "Pending"],
-      active: true,
-      client_id: "client123",
-      freelancer_id: "freelancer456",
-    },
-    {
-      title: "Project B",
-      description: "This is a description of Project B.",
-      pay: 300,
-      joblevel: "Easy",
-      skills_Required: ["HTML", "CSS"],
-      applied_status: ["Not Applied"],
-      active: true,
-      client_id: "client789",
-      freelancer_id: null,
-    },
-    {
-      title: "Project C",
-      description: "This is a description of Project C.",
-      pay: 800,
-      joblevel: "Hard",
-      skills_Required: ["Node.js", "MongoDB"],
-      applied_status: ["Applied"],
-      active: true,
-      client_id: "client012",
-      freelancer_id: "freelancer345",
-    },
-  ];
 
   return (
     <div className="w-full rounded-md bg-white p-6 shadow-md lg:w-1/3">

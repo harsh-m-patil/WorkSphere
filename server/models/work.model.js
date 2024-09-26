@@ -42,6 +42,14 @@ const workSchema = new mongoose.Schema({
   },
 })
 
+workSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'client_id',
+    select: 'userName email',
+  })
+  next()
+})
+
 const Work = mongoose.model('Work', workSchema)
 
 export default Work
