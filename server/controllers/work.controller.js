@@ -19,7 +19,6 @@ const workController = {
   /**
    * @description Gives the all the works available
    */
-
   getWorks: factory.getAll(Work),
 
   /**
@@ -42,22 +41,24 @@ const workController = {
    * in req.body
    *
    */
-  assignWork: asyncHandler(async (req, res, next) => {
-    const work = await Work.findByIdAndUpdate(req.body.workId, {
-      freelancer_id: req.body.freelancerId,
-    })
 
-    if (!work) {
-      return next(new AppError(`No Work with that id found`, 404))
-    }
+  assignWork : asyncHandler( async (req,res,next)=>{
+      const work = await Work.findByIdAndUpdate(req.body.workId,{
+        freelancer_id: req.body.freelancerId
+      })
 
-    res.status(200).json({
-      status: 'success',
-      data: {
-        work,
-      },
-    })
-  }),
+      if(!work){
+        return next(new AppError(`No Work with that id found`, 404))
+      }
+      
+      res.status(200).json({
+        status: 'success',
+        data: {
+          work,
+        },
+      })
+  })
+
 }
 
 export default workController
