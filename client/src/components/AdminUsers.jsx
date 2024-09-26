@@ -1,12 +1,12 @@
 // src/components/Users.jsx
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import Sidebar from "./AdminSidebar";
-import Navbar from "./AdminNavbar";
 import axios from "axios";
 import { API_URL } from "../utils/constants";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [change, setChange] = useState(false);
 
   // Fetch users from the API
   useEffect(() => {
@@ -18,7 +18,7 @@ const Users = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [change]);
 
   // Function to delete a user
 
@@ -28,9 +28,10 @@ const Users = () => {
         withCredentials: true,
       });
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         // Remove the user from the state if deletion is successful
         setUsers(users.filter((user) => user.id !== id));
+        setChange(!change)
       } else {
         console.error("Failed to delete the user:", response.statusText);
       }
