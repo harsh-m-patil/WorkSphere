@@ -12,7 +12,8 @@ import UserDashboardReviews from "./components/UserDashboardReviews";
 import UserSettings from "./components/UserDashBoardSettings";
 import FindWork from "./pages/FindWork";
 import ClientDashBoard from "./pages/ClientDashBoard";
-
+import ClientWorksPosted from "./components/ClientWorksPosted";
+import ClientFilterWork from "./components/ClientFilterWork";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -85,8 +86,16 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/client/dashboard" element={<ClientDashBoard/>}/>
-            <Route path="/works" element={ <FindWork/> } />
+            <Route path="/client/dashboard" element={<ClientDashBoard />} />
+            <Route
+              path="/client/dashboard/works"
+              element={<ClientWorksPosted />}
+            />
+            <Route
+              path="/client/dashboard/works/single"
+              element={<ClientFilterWork />}
+            />
+            <Route path="/works" element={<FindWork />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/freelancers" element={<Users />} />
           </Routes>

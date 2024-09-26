@@ -32,8 +32,8 @@ const NavBar = () => {
             <span>Discover</span>
           </Link>
           <Link to="/works">
-          <span>Find Work</span>
-        </Link>
+            <span>Find Work</span>
+          </Link>
           <Link to="/user/dashboard">
             <span>Profile</span>
           </Link>

@@ -23,12 +23,16 @@ const workController = {
 
   /**
    * @description Deactivate the some work by putting workId
-   * 
+   *
    */
   deactivateWork: asyncHandler(async (req, res, next) => {
-    const work = await Work.findByIdAndUpdate(req.body.workId, {
-      active: false,
-    })
+    const work = await Work.findByIdAndUpdate(
+      req.body.workId,
+      {
+        active: false,
+      },
+      { new: true },
+    )
 
     if (!work) {
       return next(new AppError(`No Work with that id found`, 404))
@@ -42,52 +46,86 @@ const workController = {
    *
    */
 
-  assignWork : asyncHandler( async (req,res,next)=>{
-      const work = await Work.findByIdAndUpdate(req.body.workId,{
+  assignWork: asyncHandler(async (req, res, next) => {
+    const work = await Work.findByIdAndUpdate(
+      req.body.workId,
+      {
         freelancer_id: req.body.freelancerId,
-        active : false,
-      })
+      },
+      { new: true },
+    )
 
-      
+    console.log(work)
 
-      if(!work){
-        return next(new AppError(`No Work with that id found`, 404))
-      }
-      
-      res.status(200).json({
-        status: 'success',
-        data: {
-          work,
-        },
-      })
+    if (!work) {
+      return next(new AppError(`No Work with that id found`, 404))
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        work,
+      },
+    })
   }),
 
   /**
    * @description Apply to the Work by getting WorkId && freelancerId
    */
-  applyWork : asyncHandler(async(req,res,next)=>{
-      const work = await Work.findById(req.body.workId);
+  applyWork: asyncHandler(async (req, res, next) => {
+    const work = await Work.findById(req.body.workId)
 
-      if(!work){
-        return next(new AppError(`No work with that id found`,404))
-      }
-      work.applied_status.push(req.body.userId);
-      await work.save();
+    if (!work) {
+      return next(new AppError(`No work with that id found`, 404))
+    }
+    work.applied_status.push(req.body.userId)
+    await work.save()
 
-      
-      // console.log(req.body,req.user);
-      
-      
-      // console.log(req.body);
-      res.status(200).json({
-        status: 'success',
-        data: {
-          work,
-        }
-      })
+    // console.log(req.body,req.user);
 
-  })
+    // console.log(req.body);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        work,
+      },
+    })
+  }),
 
+  /**
+   * @description Gives all works created by specific client by taking client id
+   */
+  getmyWorks: asyncHandler(async (req, res, next) => {
+    const works = await Work.find({ client_id: req.body.clientId })
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        works,
+      },
+    })
+  }),
+
+  /**
+   * @desciption Gives all the users list who have applied for particular work
+   */
+
+  getUsersForWork: asyncHandler(async (req, res, next) => {
+    const workdetails = await Work.findById(req.body.workId).populate(
+      'applied_status',
+    )
+    // console.log(users);
+
+    if (!workdetails) {
+      return next(new AppError(`No user for this work found`, 404))
+    }
+    res.status(200).json({
+      status: 'success',
+      data: {
+        workdetails,
+      },
+    })
+  }),
 }
 
 export default workController
