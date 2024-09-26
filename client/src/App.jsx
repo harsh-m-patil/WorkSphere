@@ -7,8 +7,12 @@ import UserProfile from "./components/UserProfile";
 import UserDashBoard from "./pages/UserDashBoard";
 import LoginPage from "./pages/Login";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import UserDashboardWorks from "./components/UserDashboardWorks";
+import UserDashboardReviews from "./components/UserDashboardReviews";
+import UserSettings from "./components/UserDashBoardSettings";
 import FindWork from "./pages/FindWork";
 import ClientDashBoard from "./pages/ClientDashBoard";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,8 +37,8 @@ function PrivateRoute({ children }) {
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
           <NavBar />
           <Routes>
             <Route path="/" element={<Main />} />
@@ -49,13 +53,45 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/user/dashboard/applications"
+              element={
+                <PrivateRoute>
+                  <UserDashBoard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/user/dashboard/works"
+              element={
+                <PrivateRoute>
+                  <UserDashboardWorks />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/user/dashboard/reviews"
+              element={
+                <PrivateRoute>
+                  <UserDashboardReviews />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/user/dashboard/settings"
+              element={
+                <PrivateRoute>
+                  <UserSettings />
+                </PrivateRoute>
+              }
+            />
             <Route path="/client/dashboard" element={<ClientDashBoard/>}/>
             <Route path="/works" element={ <FindWork/> } />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/freelancers" element={<Users />} />
           </Routes>
-        </QueryClientProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }

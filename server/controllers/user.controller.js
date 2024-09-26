@@ -1,4 +1,5 @@
 import User from '../models/user.model.js'
+import Work from '../models/work.model.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import factory from './factory.controller.js'
@@ -108,6 +109,18 @@ const userController = {
       status: 'success',
       data: {
         user: updatedUser,
+      },
+    })
+  }),
+
+  //TODO: implement get my applications
+  getMyApplications: asyncHandler(async (req, res, next) => {
+    const works = Work.find({})
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        works,
       },
     })
   }),
