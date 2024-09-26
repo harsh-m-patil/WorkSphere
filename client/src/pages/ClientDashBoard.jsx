@@ -5,10 +5,13 @@ import axios from "axios";
 import { API_URL } from "../utils/constants";
 import ClientProfileSection from "../components/ClientProfileSection";
 import ClientSeeWork from "../components/ClientSeeWork";
+import { useNavigate } from "react-router-dom";
+import ClientSideBar from "../components/ClientSideBar";
 
 const ClientDashBoard = () => {
   const [client, setClient] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUser() {
@@ -38,7 +41,7 @@ const ClientDashBoard = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <Sidebar />
+      <ClientSideBar />
 
       {/* Main content */}
       <div className="flex w-full flex-col bg-gray-50 p-6">
