@@ -7,6 +7,8 @@ import UserProfile from "./components/UserProfile";
 import UserDashBoard from "./pages/UserDashBoard";
 import LoginPage from "./pages/Login";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import FindWork from "./pages/FindWork";
+import ClientDashBoard from "./pages/ClientDashBoard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +49,8 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="/client/dashboard" element={<ClientDashBoard/>}/>
+            <Route path="/works" element={ <FindWork/> } />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/freelancers" element={<Users />} />
           </Routes>

@@ -5,10 +5,12 @@ import ReviewsSection from "../components/ReviewsSection";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../utils/constants";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function UserDashBoard() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUser() {
@@ -33,6 +35,10 @@ function UserDashBoard() {
         <p className="text-lg text-[#2f9c95]">Loading user data...</p>
       </div>
     ); // Loading state UI
+  }
+
+  if(user.role==='client'){
+    navigate("/client/dashboard");
   }
 
   return (
