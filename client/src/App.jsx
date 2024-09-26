@@ -14,6 +14,7 @@ import FindWork from "./pages/FindWork";
 import ClientDashBoard from "./pages/ClientDashBoard";
 import ClientWorksPosted from "./components/ClientWorksPosted";
 import ClientFilterWork from "./components/ClientFilterWork";
+import ClientPostWork from "./components/ClientPostWork";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminUsers from "./components/AdminUsers";
 import AdminJobs from "./components/AdminJobs"; // Import Jobs component
@@ -133,6 +134,10 @@ function App() {
             <Route
               path="/client/dashboard/works/single"
               element={<ClientFilterWork />}
+            />
+            <Route
+              path="/client/dashboard/postwork"
+              element={<ClientPostWork/>}
             />
             <Route path="/works" element={<FindWork />} />
             <Route path="/user/:id" element={<UserProfile />} />
