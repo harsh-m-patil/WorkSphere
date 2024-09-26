@@ -12,10 +12,13 @@ import UserDashboardReviews from "./components/UserDashboardReviews";
 import UserSettings from "./components/UserDashBoardSettings";
 import FindWork from "./pages/FindWork";
 import ClientDashBoard from "./pages/ClientDashBoard";
+import ClientWorksPosted from "./components/ClientWorksPosted";
+import ClientFilterWork from "./components/ClientFilterWork";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminUsers from "./components/AdminUsers";
 import AdminJobs from "./components/AdminJobs"; // Import Jobs component
 import AdminAnalytics from "./components/AdminAnalytics";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -123,6 +126,14 @@ function App() {
               }
             />
             <Route path="/client/dashboard" element={<ClientDashBoard />} />
+            <Route
+              path="/client/dashboard/works"
+              element={<ClientWorksPosted />}
+            />
+            <Route
+              path="/client/dashboard/works/single"
+              element={<ClientFilterWork />}
+            />
             <Route path="/works" element={<FindWork />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/freelancers" element={<Users />} />

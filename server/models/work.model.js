@@ -25,9 +25,12 @@ const workSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
-  applied_status: {
-    type: [String],
-  },
+  applied_status: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   active: {
     type: Boolean,
     default: true,
