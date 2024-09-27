@@ -20,7 +20,8 @@ import AdminJobs from "./components/AdminJobs"; // Import Jobs component
 import AdminAnalytics from "./components/AdminAnalytics";
 import Freelancersignup from "./pages/FreelancerSignup";
 import Clientsignup from "./pages/ClientSignup";
-
+import AboutUs from "./pages/Aboutus";
+// import CreateReview from "./pages/CreateReview";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -142,6 +143,8 @@ function App() {
             <Route path="/works" element={<FindWork />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/freelancers" element={<Users />} />
+            <Route path="/about" element={<AboutUs />} />
+            {/* <Route path="/review" element={<CreateReview freelancer={"ahdfjsdhfk"}/>} /> */}
           </Routes>
         </AuthProvider>
       </QueryClientProvider>

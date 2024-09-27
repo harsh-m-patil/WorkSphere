@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './CreateReview.css'; // Link the CSS file
+import { useAuth } from '../context/AuthContext';
 
-const CreateReview = () => {
+const CreateReview = ({freelancer}) => {
+  const {user} = useAuth()
   const [formData, setFormData] = useState({
     rating: '',
     review: '',
+    freelancer: freelancer,
+    client: user.id
   });
   const [error, setError] = useState('');
 
@@ -29,6 +33,8 @@ const CreateReview = () => {
       return;
     }
 
+    console.log(formData);
+    
     // Submit the review
     console.log('Review submitted:', formData);
 
