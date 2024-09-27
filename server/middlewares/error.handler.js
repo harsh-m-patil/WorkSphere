@@ -33,6 +33,9 @@ const handleJWTExpiredError = () =>
  * Give more error details
  */
 const sendErrorDev = (err, res) => {
+  if (res.headersSent) {
+    return
+  }
   res.status(err.statusCode).json({
     status: err.status,
     error: err,

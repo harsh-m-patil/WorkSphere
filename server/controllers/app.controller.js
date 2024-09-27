@@ -31,7 +31,15 @@ export const getAppInfo = asyncHandler(async (req, res, next) => {
       // Group by role
       { $group: { _id: '$role', newUsers: { $sum: 1 } } },
     ]),
-    Work.aggregate([{ $group: { _id: '$status', totalTasks: { $sum: 1 } } }]),
+    Work.aggregate([
+      {
+        $group: {
+          _id: '$active',
+          totalTasks: { $sum: 1 },
+          totalPay: { $sum: '$pay' },
+        },
+      },
+    ]),
   ])
 
   res.status(200).json({

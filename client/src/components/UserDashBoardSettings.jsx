@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import Sidebar from "./UserSideBar";
 import { API_URL } from "../utils/constants";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const UserSettings = () => {
   const [user, setUser] = useState(null);
+  const { logout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
@@ -83,6 +85,7 @@ const UserSettings = () => {
     if (window.confirm("Are you sure you want to delete your account?")) {
       try {
         await axios.delete(`${API_URL}/users/me`, { withCredentials: true });
+        await logout();
         alert("User deleted successfully!");
         // Optionally redirect to a different page after deletion
       } catch (error) {

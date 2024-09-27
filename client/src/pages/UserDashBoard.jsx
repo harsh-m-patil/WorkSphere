@@ -5,7 +5,7 @@ import ReviewsSection from "../components/ReviewsSection";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../utils/constants";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function UserDashBoard() {
   const [user, setUser] = useState(null);
@@ -37,7 +37,8 @@ function UserDashBoard() {
     ); // Loading state UI
   }
 
-  if(user.role==='client'){
+  console.log(user);
+  if (user.role === "client") {
     navigate("/client/dashboard");
   }
 

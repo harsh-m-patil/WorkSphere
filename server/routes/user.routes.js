@@ -23,6 +23,11 @@ router
     userController.getMe,
     userController.updateUser,
   )
+  .delete(
+    authMiddleware.protect,
+    userController.getMe,
+    authController.deleteUser,
+  )
 
 // This routes will users
 router.route('/freelancers').get(userController.getUsers('freelancer'))

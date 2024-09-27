@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import asyncHandler from '../utils/asyncHandler.js'
 import User from '../models/user.model.js'
 import AppError from '../utils/appError.js'
+import factory from './factory.controller.js'
 
 /**
  * @param {string} id
@@ -84,9 +85,17 @@ const authController = {
   }),
 
   logout: asyncHandler((req, res, next) => {
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None' })
-    res.status(200).json({ status: 'success' })
+    res
+      .clearCookie('jwt', {
+        httpOnly: true, // Protects against XSS attacks
+        sameSite: 'None', // Allows cross-site cookies (for cross-origin requests)
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      })
+      .status(200)
+      .json({ status: 'success', message: 'Logged out successfully' })
   }),
+
+  deleteUser: factory.deleteOne(User),
 }
 
 export default authController
