@@ -185,13 +185,16 @@ const ProfileSection = () => {
       {/* Skills */}
       <div className="mb-4">
         <h2>Skills</h2>
-        <p>{user.skills.join(", ") || "No skills listed"}</p>
+        <p>{(user.skills && user.skills.join(", ")) || "No skills listed"}</p>
       </div>
 
       {/* Languages */}
       <div className="mb-4">
         <h2>Languages</h2>
-        <p>{user.languages.join(", ") || "No languages listed"}</p>
+        <p>
+          {(user.languages && user.languages.join(", ")) ||
+            "No languages listed"}
+        </p>
       </div>
 
       {/* Certificates */}

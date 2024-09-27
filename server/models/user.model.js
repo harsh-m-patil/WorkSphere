@@ -96,12 +96,14 @@ userSchema.index({ userName: 1 })
 //  return this.firstName + ' ' + this.lastName
 //})
 
+// Get reviews of current user
 userSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'freelancer',
   localField: '_id',
 })
 
+// Get applied status
 userSchema.virtual('works', {
   ref: 'Work',
   foreignField: 'freelancer_id',
@@ -143,7 +145,6 @@ userSchema.pre('findOne', function (next) {
 userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>
   await bcrypt.compare(candidatePassword, userPassword)
 
-// SET
 userSchema.set('toJSON', {
   virtuals: true,
   transform: function (doc, ret) {
