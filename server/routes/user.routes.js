@@ -26,7 +26,7 @@ router
   .delete(
     authMiddleware.protect,
     userController.getMe,
-    authController.deleteUser,
+    userController.deleteUser,
   )
 
 // This routes will users
