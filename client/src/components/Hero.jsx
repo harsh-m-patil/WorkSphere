@@ -1,8 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import BlurredShape from "./BlurredShape";
 import Button from "./Button";
 import SecButton from "./SecButton";
 
 const Hero = () => {
+
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate("/freelancer/signup")
+  }
+
   return (
     <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center">
       {/* Blurred Square Background */}
@@ -24,7 +31,7 @@ const Hero = () => {
 
         {/* Call to Action Buttons */}
         <div className="space-x-4">
-          <Button text="Get Started" />
+          <Button text="Get Started" onClick={handleClick}/>
           <SecButton text="Learn More" />
         </div>
       </div>

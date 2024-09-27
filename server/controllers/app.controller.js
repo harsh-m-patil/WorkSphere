@@ -3,6 +3,7 @@ import Work from '../models/work.model.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
 export const getAppInfo = asyncHandler(async (req, res, next) => {
+  console.log('Hi I am Admin')
   const [userStats, newUserStats, workStats] = await Promise.all([
     User.aggregate([
       {

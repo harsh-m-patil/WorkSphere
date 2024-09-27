@@ -9,16 +9,27 @@ const Users = () => {
 
   useEffect(() => {
     async function fetchUsers() {
-      try {
-        const res = await fetch(`${API_URL}/users/freelancers`);
-        if (!res.ok) throw new Error("Failed to fetch users");
-        const json = await res.json();
-        setUsers(json.data.users);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
+      setIsLoading(true); // Start loading state
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", `${API_URL}/users/freelancers`, true);
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const json = JSON.parse(xhr.responseText);
+          setUsers(json.data.users);
+        } else {
+          setError("Failed to fetch users");
+        }
+        setIsLoading(false); // End loading state
+      };
+
+      xhr.onerror = () => {
+        setError("Network error");
+        setIsLoading(false); // End loading state
+      };
+
+      xhr.send();
     }
 
     fetchUsers();

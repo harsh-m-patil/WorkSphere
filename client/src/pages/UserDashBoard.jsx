@@ -37,7 +37,9 @@ function UserDashBoard() {
     ); // Loading state UI
   }
 
-  console.log(user);
+  if(user.role === 'admin') {
+    navigate("/admin/dashboard")
+  }
   if (user.role === "client") {
     navigate("/client/dashboard");
   }

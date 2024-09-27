@@ -84,18 +84,10 @@ const authController = {
     createSendToken(user, 200, res)
   }),
 
-  logout: asyncHandler((req, res, next) => {
-    res
-      .clearCookie('jwt', {
-        httpOnly: true, // Protects against XSS attacks
-        sameSite: 'None', // Allows cross-site cookies (for cross-origin requests)
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-      })
-      .status(200)
-      .json({ status: 'success', message: 'Logged out successfully' })
-  }),
-
-  deleteUser: factory.deleteOne(User),
+  logout: (req, res, next) => {
+    res.clearCookie('jwt')
+    return res.status(200).json({ status: 'success' })
+  },
 }
 
 export default authController

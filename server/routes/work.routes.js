@@ -4,6 +4,7 @@ import workController from '../controllers/work.controller.js'
 
 const router = express.Router()
 
+// for client to post about a work / create the work
 router.post(
   '/',
   authMiddleware.protect,
@@ -12,8 +13,10 @@ router.post(
   workController.createWork,
 )
 
+// for everyone to get the works posted
 router.get('/', workController.getWorks)
 
+//for client to lastly assign work to some user
 router.post(
   '/assign',
   authMiddleware.protect,
@@ -22,14 +25,18 @@ router.post(
   workController.assignWork,
 )
 
-// router.post("/apply",authMiddleware.protect, authMiddleware.restrictTo('freelancer'),
-// workController.applyWork)
-
+// for freelancer
 router.post(
   '/apply',
   authMiddleware.protect,
   authMiddleware.restrictTo('freelancer'),
   workController.applyWork,
 )
+
+// for client to fetch his works
+router.post('/myworks', workController.getmyWorks)
+
+//for client to get users applied for specific work
+router.post('/getUsersForWork', workController.getUsersForWork)
 
 export default router

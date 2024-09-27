@@ -12,6 +12,15 @@ import UserDashboardReviews from "./components/UserDashboardReviews";
 import UserSettings from "./components/UserDashBoardSettings";
 import FindWork from "./pages/FindWork";
 import ClientDashBoard from "./pages/ClientDashBoard";
+import ClientWorksPosted from "./components/ClientWorksPosted";
+import ClientFilterWork from "./components/ClientFilterWork";
+import ClientPostWork from "./components/ClientPostWork";
+import AdminDashboard from "./components/AdminDashboard";
+import AdminUsers from "./components/AdminUsers";
+import AdminJobs from "./components/AdminJobs"; // Import Jobs component
+import AdminAnalytics from "./components/AdminAnalytics";
+import Freelancersignup from "./pages/FreelancerSignup";
+import Clientsignup from "./pages/ClientSignup";
 
 
 const queryClient = new QueryClient({
@@ -39,10 +48,47 @@ function App() {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <NavBar />
+          <NavBar/>
           <Routes>
+            <Route
+              path="/admin/dashboard"
+              element={
+                <PrivateRoute>
+                  <AdminDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard/users"
+              element={
+                <PrivateRoute>
+                  <AdminUsers />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard/jobs"
+              element={
+                <PrivateRoute>
+                  <AdminJobs />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard/analytics"
+              element={
+                <PrivateRoute>
+                  <AdminAnalytics />
+                </PrivateRoute>
+              }
+            />
+            {/* <NavBar /> */}
+
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/freelancer/signup" element={<Freelancersignup />} />
+            <Route path="/client/signup" element={<Clientsignup />} />
+
 
             {/* Protect this route with PrivateRoute */}
             <Route
@@ -85,8 +131,20 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/client/dashboard" element={<ClientDashBoard/>}/>
-            <Route path="/works" element={ <FindWork/> } />
+            <Route path="/client/dashboard" element={<ClientDashBoard />} />
+            <Route
+              path="/client/dashboard/works"
+              element={<ClientWorksPosted />}
+            />
+            <Route
+              path="/client/dashboard/works/single"
+              element={<ClientFilterWork />}
+            />
+            <Route
+              path="/client/dashboard/postwork"
+              element={<ClientPostWork/>}
+            />
+            <Route path="/works" element={<FindWork />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/freelancers" element={<Users />} />
           </Routes>
