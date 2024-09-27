@@ -10,6 +10,10 @@ const Hero = () => {
     navigate("/freelancer/signup")
   }
 
+  const handleAboutClick = () => {
+    navigate("/about")
+  }
+
   return (
     <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center">
       {/* Blurred Square Background */}
@@ -32,7 +36,7 @@ const Hero = () => {
         {/* Call to Action Buttons */}
         <div className="space-x-4">
           <Button text="Get Started" onClick={handleClick}/>
-          <SecButton text="Learn More" />
+          <SecButton text="Learn More"onClick={handleAboutClick}/>
         </div>
       </div>
     </div>
