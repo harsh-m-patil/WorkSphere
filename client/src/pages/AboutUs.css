@@ -1,0 +1,72 @@
+.about-us-container {
+    background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c'); /* Change the path as per your setup */
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Cover full page height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: #ffffff;
+}
+
+.content-overlay {
+    background-color: rgba(235, 228, 228, 0); /* Fully transparent */
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 800px;
+    text-align: center;
+}
+
+.about-us-content {
+    background-color: #ffffff; /* White background for the title and description */
+    padding: 2rem; /* Optional padding for spacing */
+    border-radius: 10px; /* Optional rounded corners */
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #0d0d0d;
+    margin-bottom: 1rem;
+}
+
+.highlight {
+    color: #0a0b0b; /* Highlight WorkSphere company name */
+    font-weight: bolder;
+}
+
+.info-section .description {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold; /* Makes the font bold */
+    color: #121110;
+}
+
+.grid-container {
+    display: flex;
+    gap: 8rem; /* Increased the space between the boxes */
+    margin-top: 2rem;
+    width: 100%; /* Make it full width */
+    max-width: 1200px; /* Set a maximum width to control the size on larger screens */
+}
+
+.freelancer-section, .client-section {
+    flex: 1;
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text */
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for a nice effect */
+}
+
+.freelancer-section h2, .client-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #000000; /* Black text */
+}
+
+.freelancer-section p, .client-section p {
+    font-size: 1rem;
+    color: #000000; /* Black text */
+}
