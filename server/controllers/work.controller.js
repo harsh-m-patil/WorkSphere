@@ -55,8 +55,6 @@ const workController = {
       { new: true },
     )
 
-    console.log(work)
-
     if (!work) {
       return next(new AppError(`No Work with that id found`, 404))
     }
@@ -81,9 +79,6 @@ const workController = {
     work.applied_status.push(req.body.userId)
     await work.save()
 
-    // console.log(req.body,req.user);
-
-    // console.log(req.body);
     res.status(200).json({
       status: 'success',
       data: {
@@ -114,7 +109,6 @@ const workController = {
     const workdetails = await Work.findById(req.body.workId).populate(
       'applied_status',
     )
-    // console.log(users);
 
     if (!workdetails) {
       return next(new AppError(`No user for this work found`, 404))

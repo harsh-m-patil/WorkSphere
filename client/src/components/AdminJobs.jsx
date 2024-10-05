@@ -1,7 +1,6 @@
 // src/components/Jobs.jsx
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import Sidebar from "./AdminSidebar";
-import Navbar from "./AdminNavbar";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -69,9 +68,9 @@ const Jobs = () => {
                     <th className="px-4 py-2 text-left text-gray-600">
                       Description
                     </th>
-                    <th className="px-4 py-2 text-left text-gray-600">
+                    {/* <th className="px-4 py-2 text-left text-gray-600">
                       Actions
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -82,14 +81,14 @@ const Jobs = () => {
                       <td className="px-4 py-2 text-gray-700">
                         {job.description}
                       </td>
-                      <td className="px-4 py-2 text-gray-700">
+                      {/* <td className="px-4 py-2 text-gray-700">
                         <button
                           onClick={() => handleDelete(job.id)}
                           className="rounded bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
                         >
                           Delete
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
