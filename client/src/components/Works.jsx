@@ -3,6 +3,7 @@ import WorkCard from './WorkCard';
 import { SearchBar } from './SearchBar';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import NoWorkFound from './NoWorkFound';
 
 const Works = () => {
   const works = useSelector((state) => state.work);
@@ -83,14 +84,6 @@ const Works = () => {
           )}
         </div>
       </div>
-    </div>
-  );
-};
-
-const NoWorkFound = () => {
-  return (
-    <div className="flex h-96 w-full place-items-center justify-center">
-      <h1 className="text-center text-3xl text-gray-700">No Works Found</h1>
     </div>
   );
 };
