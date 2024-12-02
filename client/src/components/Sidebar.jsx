@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { SideBarElement } from './SideBarElement';
 
 const Sidebar = () => {
   return (
@@ -7,40 +7,12 @@ const Sidebar = () => {
         <span className="font-semibold text-teal-600">WorkSphere</span>.
       </p>
       <ul>
-        <Element text="Overview" isActive={true} />
-        <Element text="Applications" to="applications" />
-        <Element text="My Works" to="works" />
-        <Element text="Settings" to="settings" />
+        <SideBarElement text="Overview" to="/" />
+        <SideBarElement text="Applications" to="applications" />
+        <SideBarElement text="My Works" to="works" />
+        <SideBarElement text="Settings" to="settings" />
       </ul>
     </div>
-  );
-};
-
-const Element = ({ text, isActive, to }) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(to);
-  };
-
-  if (!isActive) {
-    return (
-      <li
-        onClick={handleClick}
-        className="m-5 cursor-pointer rounded-lg p-3 hover:border hover:bg-gray-50"
-      >
-        {text}
-      </li>
-    );
-  }
-
-  return (
-    <li
-      onClick={handleClick}
-      className="m-5 cursor-pointer rounded-lg bg-gray-100 p-3"
-    >
-      {text}
-    </li>
   );
 };
 
