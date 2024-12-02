@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PageNotFound from './pages/404';
 import Applications from './components/Applications';
 import Works from './components/Works';
+import Dummy from './pages/Dummy';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="applications" element={<Applications />} />
         </Route>
         <Route path="/" element={<MainLayout />}>
+          <Route index element={<Dummy />} />
           <Route path="works" element={<Works />}></Route>
         </Route>
         {/* Catch-all route for 404 page */}
