@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+
 const WorkCard = ({ work, index }) => {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/works/${work._id}`);
   };
   return (
-    <div className="h-96 w-80 rounded-3xl border p-2 pb-6">
+    <div className="h-96 w-80 rounded-3xl border p-2 pb-6 shadow-xl">
       <div
         className={`h-5/6 w-full rounded-3xl px-4 py-8 ${getColor(index)} flex flex-col`}
       >

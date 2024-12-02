@@ -4,6 +4,7 @@ import workController from '../controllers/work.controller.js'
 
 const router = express.Router()
 
+router.get('/:id', workController.getWork)
 // for client to post about a work / create the work
 router.post(
   '/',
@@ -40,3 +41,4 @@ router.post('/myworks', workController.getmyWorks)
 router.post('/getUsersForWork', workController.getUsersForWork)
 
 export default router
+

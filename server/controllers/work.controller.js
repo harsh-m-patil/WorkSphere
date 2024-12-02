@@ -8,6 +8,7 @@ const workController = {
    * @description Create new Work post
    */
   createWork: factory.createOne(Work),
+  getWork: factory.getOne(Work),
   /**
    * @description Gives Client Id in Req_Body
    */
