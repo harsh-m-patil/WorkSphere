@@ -24,7 +24,7 @@ const OverviewSection = () => {
     },
   };
   return (
-    <div className="p-5">
+    <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
       <h1 className="p-5 text-4xl font-medium">Overview</h1>
       <div className="flex flex-wrap justify-start">
         <OverviewCard {...data.applications} />
