@@ -1,4 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 const WorkCard = ({ work, index }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/works/${work._id}`);
+  };
   return (
     <div className="h-96 w-80 rounded-3xl border p-2 pb-6">
       <div
@@ -32,7 +37,10 @@ const WorkCard = ({ work, index }) => {
           <p className="text-gray-600">Remote</p>
         </div>
         <div>
-          <button className="rounded-3xl bg-black px-5 py-2 text-white">
+          <button
+            onClick={handleClick}
+            className="rounded-3xl bg-black px-5 py-2 text-white"
+          >
             Details
           </button>
         </div>
