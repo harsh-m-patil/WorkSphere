@@ -1,11 +1,17 @@
 import WorksSideBar from './WorksSideBar';
-import { works } from '../dummydata/works';
 import WorkCard from './WorkCard';
 import { SearchBar } from './SearchBar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const Works = () => {
-  const [filteredWorks, setFilteredWorks] = useState(works);
+  const works = useSelector((state) => state.work);
+  const [filteredWorks, setFilteredWorks] = useState([]);
+
+  useEffect(() => {
+    setFilteredWorks(works);
+  }, [works]);
+
   const [filters, setFilters] = useState({
     joblevel: '',
     pay: '',
@@ -68,13 +74,23 @@ const Works = () => {
         </div>
         {/* Works section */}
         <div className="mx-auto flex w-full flex-wrap gap-10">
-          {filteredWorks.length === 0
-            ? 'No Works found'
-            : filteredWorks.map((work, index) => (
-                <WorkCard work={work} key={work._id} index={index} />
-              ))}
+          {filteredWorks.length === 0 ? (
+            <NoWorkFound />
+          ) : (
+            filteredWorks.map((work, index) => (
+              <WorkCard work={work} key={work._id} index={index} />
+            ))
+          )}
         </div>
       </div>
+    </div>
+  );
+};
+
+const NoWorkFound = () => {
+  return (
+    <div className="flex h-96 w-full place-items-center justify-center">
+      <h1 className="text-center text-3xl text-gray-700">No Works Found</h1>
     </div>
   );
 };
