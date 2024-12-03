@@ -1,7 +1,7 @@
 import OverviewSection from './OverviewSection';
 import Recent from './Recent';
 
-const Dashboard = () => {
+const UserDashboard = () => {
   return (
     <div className="flex w-full flex-col gap-4 bg-gray-50 p-10">
       <OverviewSection />
@@ -10,4 +10,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default UserDashboard;
