@@ -16,6 +16,14 @@ import MyWorks from './components/MyWorks';
 import SettingsPage from './components/UserSettings';
 import ProfilePage from './components/UserProfile';
 import { Toaster } from 'sonner';
+import Products from './components/AdminProducts';
+import Dashboard from './components/AdminDashboard';
+import Layout from './components/shared/Adminlayout';
+import './index.css';
+import ManageUsers from './components/AdminManageUsers';
+import ManageJobs from './components/AdminManageJobs';
+import Analytics from './components/AdminAnalytics';
+import ManageClients from './components/AdminManageClients';
 
 function App() {
   return (
@@ -26,6 +34,13 @@ function App() {
           toastOptions={{ className: 'text-xl border border-xl' }}
         />
         <Routes>
+          <Route path="/admin" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="ManageClients" element={<ManageClients />} />
+            <Route path="ManageUsers" element={<ManageUsers />} />
+            <Route path="ManageJobs" element={<ManageJobs />} />
+            <Route path="Analytics" element={<Analytics />} />
+          </Route>
           <Route path="/user/dashboard" element={<DashboardLayout />}>
             <Route index element={<UserDashboard />} />
             <Route path="applications" element={<Applications />} />
