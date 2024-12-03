@@ -15,11 +15,16 @@ import Login from './components/Login';
 import MyWorks from './components/MyWorks';
 import SettingsPage from './components/UserSettings';
 import ProfilePage from './components/UserProfile';
+import { Toaster } from 'sonner';
 
 function App() {
   return (
     <Router>
       <Provider store={store}>
+        <Toaster
+          richColors
+          toastOptions={{ className: 'text-xl border border-xl' }}
+        />
         <Routes>
           <Route path="/user/dashboard" element={<DashboardLayout />}>
             <Route index element={<UserDashboard />} />
