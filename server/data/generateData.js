@@ -4,7 +4,6 @@ import User from '../models/user.model.js'
 import Work from '../models/work.model.js'
 import bcrypt from 'bcrypt'
 
-// MongoDB connection
 const DATABASE_URL = 'mongodb://localhost:27017/WorkSpherev2'
 mongoose
   .connect(DATABASE_URL)
@@ -88,7 +87,6 @@ const generateDummyWorks = async () => {
   const clients = await User.find({ role: 'client' })
   const freelancers = await User.find({ role: 'freelancer' })
   const works = []
-
   for (let i = 0; i < 20; i++) {
     const client = faker.helpers.arrayElement(clients)
     const freelancer = faker.helpers.arrayElement(freelancers)
@@ -97,6 +95,7 @@ const generateDummyWorks = async () => {
     const pay = faker.number.int({ min: 100, max: 1000 })
     const jobLevel = faker.helpers.arrayElement(['Easy', 'Medium', 'Hard'])
     const skillsRequired = faker.helpers.arrayElements(skillsList, 3)
+    const applied_status = faker.helpers.arrayElements(freelancers, 10)
 
     works.push({
       title,
@@ -106,48 +105,25 @@ const generateDummyWorks = async () => {
       skills_Required: skillsRequired,
       client_id: client._id,
       freelancer_id: freelancer._id,
-      applied_status: [], // Empty initially
+      applied_status: applied_status, // Empty initially
     })
   }
 
   await Work.insertMany(works)
   console.log('Dummy works added.')
-  return works // Return works to be used for applying
-}
-
-// Function to make each freelancer apply to 10 works
-const assignFreelancersToWorks = async (works) => {
-  const freelancers = await User.find({ role: 'freelancer' })
-  for (const freelancer of freelancers) {
-    const appliedWorks = faker.helpers.arrayElements(works, 10) // Get 10 random works
-
-    for (const work of appliedWorks) {
-      // Check if the freelancer has already applied to this work
-      if (!work.applied_status.includes(freelancer._id)) {
-        // Add freelancer ID to the applied_status array
-        work.applied_status.push(freelancer._id)
-
-        // Use `updateOne()` to update the applied_status array in the database
-        await Work.updateOne(
-          { _id: work._id }, // Filter by work ID
-          { $push: { applied_status: freelancer._id } }, // Push the freelancer's ID into applied_status
-        )
-      }
-    }
-  }
-  console.log('Freelancers have applied to 10 works each.')
 }
 
 // Admin user creation function
 const createAdminUser = async () => {
   try {
+    const password = await bcrypt.hash('Password123', 10) // Default password
     const admin = await User.create({
       firstName: 'Admin',
       lastName: 'User',
       userName: 'admin',
       email: 'admin@worksphere.com',
-      password: 'Password123',
-      passwordConfirm: 'Password123',
+      password: password,
+      passwordConfirm: password,
       role: 'admin',
       active: true,
       balance: 0,
@@ -156,6 +132,16 @@ const createAdminUser = async () => {
     console.log('Admin user created:', admin)
   } catch (err) {
     console.error('Error creating admin user:', err)
+  }
+}
+const updateUsers = async () => {
+  const freelancers = await User.find({ role: 'freelancer' })
+
+  for (let i = 0; i < freelancers.length; i++) {
+    const id = freelancers[i]._id
+    const works = await Work.find({ applied_status: { $in: [id] } })
+    freelancers[i].noOfApplications = works.length
+    await freelancers[i].save({ validateBeforeSave: false })
   }
 }
 
@@ -167,9 +153,9 @@ const seedDatabase = async () => {
 
     // Generate new data
     await generateDummyUsers()
-    const works = await generateDummyWorks() // Get generated works
-    await assignFreelancersToWorks(works) // Assign freelancers to 10 works
+    await generateDummyWorks() // Get generated works
     await createAdminUser()
+    await updateUsers()
 
     console.log('Database seeded successfully.')
     mongoose.connection.close()
