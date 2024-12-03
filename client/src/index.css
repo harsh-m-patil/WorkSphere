@@ -4,16 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* @layer base {
   body {
     font-family: 'Inter', sans-serif;
   }
   input {
     @apply rounded-xl;
   }
-}
+} */
 
-.total {
+/* .total {
   @apply border-sky-500 bg-sky-50;
 }
 
@@ -28,3 +28,25 @@
 .earning {
   @apply border-green-500 bg-green-50;
 }
+
+
+@layer base {
+	html {
+		font-family: 'Inter', sans-serif;
+		line-height: 1.3;
+	}
+	table {
+	}
+	th,
+	td {
+		@apply py-3 px-2.5 text-sm text-left border-y border-gray-200;
+	}
+	thead {
+		@apply bg-neutral-100;
+	}
+	th {
+		@apply font-semibold;
+	}
+	/* a {
+		@apply text-sky-500 hover:underline;
+	} */
