@@ -10,7 +10,7 @@ import logger from '../utils/logger.js'
  */
 export const connectDB = async () => {
   try {
-    let db_uri = 'mongodb://localhost:27017/WorkSphere'
+    let db_uri = 'mongodb://localhost:27017/WorkSpherev2'
     if (process.env.NODE_ENV === 'production') {
       db_uri = process.env.DB_URI
     }
