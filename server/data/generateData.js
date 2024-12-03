@@ -47,12 +47,12 @@ const jobTitles = [
 
 const generateDummyUsers = async () => {
   const users = []
+  const password = await bcrypt.hash('Password123', 10) // Default password
   for (let i = 0; i < 20; i++) {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
     const userName = faker.internet.username(firstName, lastName).toLowerCase()
     const email = faker.internet.email(firstName, lastName)
-    const password = await bcrypt.hash('Password123', 10) // Default password
     const role = faker.helpers.arrayElement(['freelancer', 'client'])
     const skills =
       role === 'freelancer' ? faker.helpers.arrayElements(skillsList, 3) : []
@@ -78,6 +78,16 @@ const generateDummyUsers = async () => {
       balance,
     })
   }
+
+  users.push({
+    firstName: 'Admin',
+    lastName: 'User',
+    userName: 'admin',
+    email: 'admin@work.com',
+    password,
+    passwordConfirm: password,
+    role: 'admin',
+  })
 
   await User.insertMany(users)
   console.log('Dummy users added.')
@@ -122,7 +132,7 @@ const createAdminUser = async () => {
       lastName: 'User',
       userName: 'admin',
       email: 'admin@worksphere.com',
-      password: password,
+      password,
       passwordConfirm: password,
       role: 'admin',
       active: true,
@@ -154,7 +164,7 @@ const seedDatabase = async () => {
     // Generate new data
     await generateDummyUsers()
     await generateDummyWorks() // Get generated works
-    await createAdminUser()
+    //await createAdminUser()
     await updateUsers()
 
     console.log('Database seeded successfully.')
