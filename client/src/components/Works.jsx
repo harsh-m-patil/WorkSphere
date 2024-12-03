@@ -74,7 +74,7 @@ const Works = () => {
           <SearchBar onSearch={handleSearch} />
         </div>
         {/* Works section */}
-        <div className="mx-auto flex w-full flex-wrap gap-10">
+        <div className="mx-auto grid w-full grid-cols-1 gap-10 px-10 sm:grid-cols-2 md:grid-cols-4">
           {filteredWorks.length === 0 ? (
             <NoWorkFound />
           ) : (

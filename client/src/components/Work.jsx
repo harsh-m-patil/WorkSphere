@@ -7,6 +7,9 @@ import WorkStat from './WorkStat';
 import Button from './Button';
 import UserInfoWork from './UserInfoWork';
 import WorkDescCard from './WorkDescCard';
+import axios from 'axios';
+import { API_URL } from '../redux/utils/constants';
+import { toast } from 'sonner';
 
 const Work = () => {
   const works = useSelector((state) => state.work);
@@ -33,9 +36,10 @@ const Work = () => {
   }, [id]);
 
   if (error) {
+    console.log('Inside error');
     return (
       <div className="grid h-96 items-center">
-        <h1 className="text-center text-2xl text-red-800">{error}</h1>;
+        <h1 className="text-center text-2xl text-red-800">{error.message}</h1>;
       </div>
     );
   }
@@ -49,8 +53,25 @@ const Work = () => {
   }
 
   // TODO: Apply now logic
-  const handleClick = () => {
-    console.log('clicked');
+  const handleClick = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `${API_URL}/work/apply`,
+        {
+          workId: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success(response.data.message, { position: 'top-center' });
+    } catch (err) {
+      toast.error(err.response.data.message, { position: 'top-center' });
+    }
   };
 
   const handleToggleClick = () => {

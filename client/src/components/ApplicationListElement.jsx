@@ -1,4 +1,4 @@
-export const ApplicationListElement = ({ appl, cancelApplication }) => {
+export const ApplicationListElement = ({ appl, cancelApplication, userId }) => {
   return (
     <tr className="hover:bg-gray-50">
       <td className="border border-gray-300 px-4 py-3">{appl._id}</td>
@@ -6,9 +6,9 @@ export const ApplicationListElement = ({ appl, cancelApplication }) => {
       <td className="border border-gray-300 px-4 py-3">₹{appl.pay}</td>
       <td className="p-x-3 p-y-2 border border-gray-300 text-center">
         <span
-          className={`rounded-xl border border-dashed px-4 py-1 text-center ${getStatusClass(appl.status)}`}
+          className={`rounded-xl border border-dashed px-4 py-1 text-center ${getStatusClass(getStatus(appl, userId))}`}
         >
-          {appl.status}
+          {getStatus(appl, userId)}
         </span>
       </td>
       <td className="border border-gray-300 px-4 py-3 text-center">
@@ -24,6 +24,17 @@ export const ApplicationListElement = ({ appl, cancelApplication }) => {
     </tr>
   );
 };
+
+function getStatus(appl, userId) {
+  console.log(appl, userId);
+  if (appl.freelancer_id === userId) {
+    return 'Accepted';
+  } else if (appl.freelancer_id) {
+    return 'Rejected';
+  } else {
+    return 'Pending';
+  }
+}
 
 // Helper function for dynamic status colors
 const getStatusClass = (status) => {
