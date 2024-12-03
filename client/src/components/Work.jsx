@@ -6,12 +6,14 @@ import { SideWorks } from './SideWorks';
 import WorkStat from './WorkStat';
 import Button from './Button';
 import UserInfoWork from './UserInfoWork';
+import WorkDescCard from './WorkDescCard';
 
 const Work = () => {
   const works = useSelector((state) => state.work);
   const { id } = useParams();
   const [error, setError] = useState(null);
   const [fetchedWork, setFetchedWork] = useState(null);
+  const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
     async function fetchWork() {
@@ -51,8 +53,12 @@ const Work = () => {
     console.log('clicked');
   };
 
+  const handleToggleClick = () => {
+    setIsActive((prev) => !prev);
+  };
+
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen flex-col md:flex-row">
       <SideWorks works={works} />
       <div className="sticky top-0 w-7/12 p-10">
         <div className="h-5/6 w-full rounded-xl bg-neutral-50 p-8 shadow-lg">
@@ -93,6 +99,22 @@ const Work = () => {
               statName="Status"
               statValue={fetchedWork.active ? 'Active' : 'InActive'}
               styles="bg-purple-100"
+            />
+          </div>
+          <div className="m-3 grid grid-cols-2 rounded-xl text-center">
+            <WorkDescCard
+              title="Description"
+              type="job"
+              desc={fetchedWork}
+              isActive={isActive}
+              onClick={handleToggleClick}
+            />
+            <WorkDescCard
+              title="Company"
+              type="client"
+              desc={fetchedWork.client_id}
+              isActive={!isActive}
+              onClick={handleToggleClick}
             />
           </div>
         </div>
