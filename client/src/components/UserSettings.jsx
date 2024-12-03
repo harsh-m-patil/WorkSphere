@@ -1,228 +1,321 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../redux/utils/constants';
 
-const SettingsPage = () => {
-  const [user, setUser] = useState({
-    firstName: '',
-    lastName: '',
-    userName: '',
-    email: '',
-    description: '',
+const UserSettings = () => {
+  const [user, setUser] = useState(null);
+  console.log(user);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
     skills: [],
     languages: [],
     certificates: [],
+    firstName: '',
+    lastName: '',
   });
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+
+  const [newSkill, setNewSkill] = useState('');
+  const [newLanguage, setNewLanguage] = useState('');
+  const [newCertificate, setNewCertificate] = useState('');
 
   useEffect(() => {
-    // Fetch user data
-    async function fetchUserData() {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get('/api/v1/users/me');
-        setUser(response.data.data.user);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching user data', err);
+        const token = localStorage.getItem('token'); // Get the token from localStorage
+        const response = await axios.get(`${API_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const userData = response.data?.data?.user;
+
+        setUser(userData);
+        setFormData({
+          firstName: userData.firstName || '',
+          lastName: userData.lastName || '',
+          skills: userData.skills || [],
+          languages: userData.languages || [],
+          certificates: userData.certificates || [],
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setError('Failed to load user data.');
+      } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchUserData();
-  }, []);
+  }, [setUser]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({
-      ...user,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
+    const updatedData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      skills: formData.skills,
+      languages: formData.languages,
+      certificates: formData.certificates,
+    };
+
     try {
-      const response = await axios.patch('/api/v1/users/me', user);
-      setUser(response.data.data.user);
-      alert('Profile updated successfully');
-      navigate('/profile'); // redirect to profile page or anywhere else
-    } catch (err) {
-      console.error('Error updating profile', err);
-      alert('Error updating profile');
+      const token = localStorage.getItem('token'); // Get the token from localStorage
+      const response = await axios.patch(`${API_URL}/users/me`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('Response', response);
+      alert('User updated successfully!');
+    } catch (error) {
+      console.error('Error updating user:', error);
+      setError('Failed to update user data.');
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete your account?')) {
+      try {
+        const token = localStorage.getItem('token'); // Get the token from localStorage
+        await axios.delete(`${API_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        alert('User deleted successfully!');
+        // Optionally redirect to a different page after deletion
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        setError('Failed to delete user.');
+      }
+    }
+  };
+
+  const addSkill = () => {
+    if (newSkill.trim()) {
+      setFormData((prevData) => ({
+        ...prevData,
+        skills: [...prevData.skills, newSkill],
+      }));
+      setNewSkill(''); // Clear input after adding
+    }
+  };
+
+  const removeSkill = (skillToRemove) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      skills: prevData.skills.filter((skill) => skill !== skillToRemove),
+    }));
+  };
+
+  const addLanguage = () => {
+    if (newLanguage.trim()) {
+      setFormData((prevData) => ({
+        ...prevData,
+        languages: [...prevData.languages, newLanguage],
+      }));
+      setNewLanguage(''); // Clear input after adding
+    }
+  };
+
+  const removeLanguage = (languageToRemove) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      languages: prevData.languages.filter(
+        (language) => language !== languageToRemove
+      ),
+    }));
+  };
+
+  const addCertificate = () => {
+    if (newCertificate.trim()) {
+      setFormData((prevData) => ({
+        ...prevData,
+        certificates: [...prevData.certificates, newCertificate],
+      }));
+      setNewCertificate(''); // Clear input after adding
+    }
+  };
+
+  const removeCertificate = (certificateToRemove) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      certificates: prevData.certificates.filter(
+        (certificate) => certificate !== certificateToRemove
+      ),
+    }));
+  };
+
+  if (loading) return <div className="text-center">Loading...</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
-    <div className="min-h-screen w-full">
-      <div className="min-h-screen bg-gray-100 px-6 py-10">
-        <div className="mx-auto max-w-2xl rounded-lg bg-white p-8 shadow-lg">
-          <h1 className="mb-6 text-3xl font-semibold text-gray-800">
-            Update Profile
-          </h1>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={user.firstName}
-                  onChange={handleChange}
-                  placeholder={user.firstName || 'Enter your first name'}
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={user.lastName}
-                  onChange={handleChange}
-                  placeholder={user.lastName || 'Enter your last name'}
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
+    <div className="flex min-h-screen w-full bg-gray-100">
+      <div className="mx-4 flex-1 p-8">
+        <div className="mx-auto max-w-xl rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-semibold">User Settings</h2>
+          <form onSubmit={handleUpdate} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Username
+                First Name
               </label>
               <input
                 type="text"
-                name="userName"
-                value={user.userName}
+                name="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
-                placeholder={user.userName || 'Enter your username'}
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Email
+                Last Name
               </label>
               <input
-                type="email"
-                name="email"
-                value={user.email}
+                type="text"
+                name="lastName"
+                value={formData.lastName}
                 onChange={handleChange}
-                placeholder={user.email || 'Enter your email'}
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <textarea
-                name="description"
-                value={user.description}
-                onChange={handleChange}
-                placeholder={
-                  user.description || 'Write a brief description about yourself'
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
+            {/* Skills Section */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Skills
               </label>
-              <input
-                type="text"
-                name="skills"
-                value={user.skills.join(', ')}
-                onChange={(e) =>
-                  handleChange({
-                    target: {
-                      name: 'skills',
-                      value: e.target.value.split(', '),
-                    },
-                  })
-                }
-                placeholder={
-                  user.skills.length > 0
-                    ? user.skills.join(', ')
-                    : 'Enter your skills'
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={newSkill}
+                  onChange={(e) => setNewSkill(e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
+                  placeholder="Add a new skill"
+                />
+                <button
+                  type="button"
+                  onClick={addSkill}
+                  className="mt-1 rounded-md bg-blue-600 p-2 text-white transition duration-200 hover:bg-blue-700"
+                >
+                  Add
+                </button>
+              </div>
+              <ul className="mt-2">
+                {formData.skills.map((skill) => (
+                  <li key={skill} className="flex justify-between">
+                    <span className="text-gray-700">{skill}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeSkill(skill)}
+                      className="text-red-600 hover:underline"
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
 
+            {/* Languages Section */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Languages
               </label>
-              <input
-                type="text"
-                name="languages"
-                value={user.languages.join(', ')}
-                onChange={(e) =>
-                  handleChange({
-                    target: {
-                      name: 'languages',
-                      value: e.target.value.split(', '),
-                    },
-                  })
-                }
-                placeholder={
-                  user.languages.length > 0
-                    ? user.languages.join(', ')
-                    : 'Enter languages you know'
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={newLanguage}
+                  onChange={(e) => setNewLanguage(e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
+                  placeholder="Add a new language"
+                />
+                <button
+                  type="button"
+                  onClick={addLanguage}
+                  className="mt-1 rounded-md bg-blue-600 p-2 text-white transition duration-200 hover:bg-blue-700"
+                >
+                  Add
+                </button>
+              </div>
+              <ul className="mt-2">
+                {formData.languages.map((language) => (
+                  <li key={language} className="flex justify-between">
+                    <span className="text-gray-700">{language}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeLanguage(language)}
+                      className="text-red-600 hover:underline"
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
 
+            {/* Certificates Section */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Certificates
               </label>
-              <input
-                type="text"
-                name="certificates"
-                value={user.certificates.join(', ')}
-                onChange={(e) =>
-                  handleChange({
-                    target: {
-                      name: 'certificates',
-                      value: e.target.value.split(', '),
-                    },
-                  })
-                }
-                placeholder={
-                  user.certificates.length > 0
-                    ? user.certificates.join(', ')
-                    : 'Enter your certificates'
-                }
-                className="mt-1 block w-full rounded-md border border-gray-300 p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={newCertificate}
+                  onChange={(e) => setNewCertificate(e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
+                  placeholder="Add a new certificate"
+                />
+                <button
+                  type="button"
+                  onClick={addCertificate}
+                  className="mt-1 rounded-md bg-blue-600 p-2 text-white transition duration-200 hover:bg-blue-700"
+                >
+                  Add
+                </button>
+              </div>
+              <ul className="mt-2">
+                {formData.certificates.map((certificate) => (
+                  <li key={certificate} className="flex justify-between">
+                    <span className="text-gray-700">{certificate}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeCertificate(certificate)}
+                      className="text-red-600 hover:underline"
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <button
-              type="submit"
-              className="w-full rounded-md bg-blue-600 py-2 font-semibold text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Save Changes
-            </button>
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                className="rounded-md bg-green-600 px-4 py-2 text-white transition duration-200 hover:bg-green-700"
+              >
+                Update
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="rounded-md bg-red-600 px-4 py-2 text-white transition duration-200 hover:bg-red-700"
+              >
+                Delete Account
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -230,4 +323,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default UserSettings;
