@@ -15,7 +15,7 @@ function App() {
     <Router>
       <Provider store={store}>
         <Routes>
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="/user/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="applications" element={<Applications />} />
           </Route>

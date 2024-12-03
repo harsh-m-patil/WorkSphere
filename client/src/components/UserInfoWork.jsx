@@ -19,7 +19,7 @@ const UserInfoWork = () => {
   }
 
   return (
-    <div className="mt-6 h-5/6 w-2/12 rounded-3xl p-4">
+    <div className="mt-6 h-5/6 w-2/12 rounded-3xl p-2">
       <div className="flex h-2/6 w-full flex-col justify-around rounded-xl bg-neutral-50 p-4 text-center">
         <div className="flex justify-center">
           <img
@@ -54,7 +54,7 @@ const UserInfoWork = () => {
 
 const SkillPill = ({ skill }) => {
   return (
-    <li className="w-3/6 rounded-xl bg-sky-50 p-3 text-lg shadow-lg">
+    <li className="w-fit rounded-xl bg-sky-50 p-3 text-lg shadow-lg">
       {skill}
     </li>
   );

@@ -7,9 +7,9 @@ const WorkCard = ({ work, index }) => {
   };
 
   return (
-    <div className="h-96 w-80 rounded-3xl border p-2 pb-6 shadow-xl">
+    <div className="h-fit w-72 rounded-3xl border p-2 pb-6 shadow-xl">
       <div
-        className={`h-5/6 w-full rounded-3xl px-4 py-8 ${getColor(index)} flex flex-col`}
+        className={`h-5/6 w-full rounded-3xl px-4 py-5 ${getColor(index)} flex flex-col`}
       >
         {/* Date Section */}
         <div>
@@ -19,7 +19,7 @@ const WorkCard = ({ work, index }) => {
         <div className="flex h-5/6 flex-col justify-between gap-10 px-3 pt-6">
           <div className="flex justify-between">
             <div>
-              <p className="py-1 text-sm text-gray-700">
+              <p className="pb-1 text-sm text-gray-700">
                 {work.client_id?.userName}
               </p>
               {/* Add multi-line truncation for the title */}
@@ -40,7 +40,7 @@ const WorkCard = ({ work, index }) => {
           </div>
         </div>
       </div>
-      <div className="flex h-1/6 justify-between rounded-3xl p-4">
+      <div className="flex h-1/6 justify-between rounded-3xl p-4 pb-1">
         <div>
           <span className="font-semibold">$ {work.pay}</span>
           <p className="text-gray-600">Remote</p>

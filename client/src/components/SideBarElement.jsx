@@ -10,7 +10,7 @@ export const SideBarElement = ({ text, to }) => {
 
   const checkActive = () => {
     // Define the base and active classes
-    const relativePathName = pathname.split('/').at(2);
+    const relativePathName = pathname.split('/').at(3);
     const baseClasses =
       'm-5 cursor-pointer rounded-lg p-3 hover:bg-gray-800 hover:text-teal-300';
     const activeClasses = 'bg-gray-800 text-teal-300';

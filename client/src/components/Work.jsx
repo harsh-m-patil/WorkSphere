@@ -101,7 +101,7 @@ const Work = () => {
               styles="bg-purple-100"
             />
           </div>
-          <div className="m-3 grid grid-cols-2 rounded-xl text-center">
+          <div className="m-1 grid grid-cols-2 rounded-xl text-center">
             <WorkDescCard
               title="Description"
               type="job"
