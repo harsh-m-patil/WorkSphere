@@ -5,26 +5,34 @@ const WorkCard = ({ work, index }) => {
   const handleClick = () => {
     navigate(`/works/${work._id}`);
   };
+
   return (
     <div className="h-96 w-80 rounded-3xl border p-2 pb-6 shadow-xl">
       <div
         className={`h-5/6 w-full rounded-3xl px-4 py-8 ${getColor(index)} flex flex-col`}
       >
-        {/*Date Section*/}
+        {/* Date Section */}
         <div>
-          <span className="rounded-2xl bg-white px-3 py-2">20 May,2023</span>
+          <span className="rounded-2xl bg-white px-3 py-2">20 May, 2023</span>
         </div>
-        {/*More Info*/}
+        {/* More Info */}
         <div className="flex h-5/6 flex-col justify-between gap-10 px-3 pt-6">
           <div className="flex justify-between">
             <div>
-              <p className="py-1">{work.client_id?.userName}</p>
-              <p className="max-w-36 text-2xl font-medium">{work.title}</p>
+              <p className="py-1 text-sm text-gray-700">
+                {work.client_id?.userName}
+              </p>
+              {/* Add multi-line truncation for the title */}
+              <p
+                className="line-clamp-2 max-w-36 overflow-hidden text-2xl font-medium"
+                title={work.title} // Tooltip for full title
+              >
+                {work.title}
+              </p>
             </div>
-            <img src="/vite.svg" />
+            <img src="/vite.svg" alt="icon" />
           </div>
-
-          {/*Tags*/}
+          {/* Tags */}
           <div className="flex flex-wrap gap-2">
             {work.skills_Required.map((skill, index) => (
               <Pill skill={skill} key={index} />
