@@ -112,6 +112,27 @@ const generateDummyWorks = async () => {
   console.log('Dummy works added.')
 }
 
+// Admin user creation function
+const createAdminUser = async () => {
+  try {
+    const admin = await User.create({
+      firstName: 'Admin',
+      lastName: 'User',
+      userName: 'admin',
+      email: 'admin@worksphere.com',
+      password: 'Password123',
+      passwordConfirm: 'Password123',
+      role: 'admin',
+      active: true,
+      balance: 0,
+    })
+
+    console.log('Admin user created:', admin)
+  } catch (err) {
+    console.error('Error creating admin user:', err)
+  }
+}
+
 const seedDatabase = async () => {
   try {
     // Clear existing data
@@ -121,6 +142,7 @@ const seedDatabase = async () => {
     // Generate new data
     await generateDummyUsers()
     await generateDummyWorks()
+    await createAdminUser()
 
     console.log('Database seeded successfully.')
     mongoose.connection.close()

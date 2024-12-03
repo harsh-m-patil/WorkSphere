@@ -1,12 +1,12 @@
 const OverviewCard = ({ title, data, type }) => {
   return (
     <div
-      className={`m-5 h-36 w-80 rounded-lg border border-dashed p-5 ${type}`}
+      className={`m-3 h-fit max-h-36 rounded-lg border border-dashed p-5 shadow-lg transition-shadow ease-in-out hover:shadow-2xl ${type}`}
     >
-      <p className="mb-10 text-2xl font-semibold text-gray-800">
+      <p className="text-2xl font-semibold text-gray-800">
         {title || 'Default'}
       </p>
-      <p className="text-xl text-gray-600">{data || 'data'}</p>
+      <p className="pt-4 text-xl text-gray-600">{data || 'data'}</p>
     </div>
   );
 };

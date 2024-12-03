@@ -1,16 +1,44 @@
 import { SideBarElement } from './SideBarElement';
+import {
+  HomeIcon,
+  DocumentIcon,
+  CogIcon,
+  UsersIcon,
+  UserIcon,
+} from '@heroicons/react/outline'; // Importing icons
 
 const Sidebar = () => {
   return (
-    <div className="sticky top-0 hidden h-screen w-80 bg-gray-900 px-5 py-16 text-xl text-gray-200 sm:block">
+    <div className="sticky top-0 hidden h-screen w-80 bg-gray-900 px-5 py-16 text-xl text-gray-200 md:block">
       <p className="mb-10 rounded-[40px] border border-teal-400 bg-teal-900 py-2 text-center text-3xl font-medium">
         <span className="font-semibold text-teal-300">WorkSphere</span>.
       </p>
       <ul>
-        <SideBarElement text="Overview" to="" />
-        <SideBarElement text="Applications" to="applications" />
-        <SideBarElement text="My Works" to="works" />
-        <SideBarElement text="Settings" to="settings" />
+        <SideBarElement
+          text="Overview"
+          to=""
+          icon={<HomeIcon className="h-5 w-5" />}
+        />
+        <SideBarElement
+          text="Applications"
+          to="applications"
+          icon={<DocumentIcon className="h-5 w-5" />}
+        />
+        <SideBarElement
+          text="My Works"
+          to="works"
+          icon={<UsersIcon className="h-5 w-5" />}
+        />
+        <SideBarElement
+          text="Profile"
+          to="profile"
+          icon={<UserIcon className="h-5 w-5" />}
+        />
+        <SideBarElement
+          text="Settings"
+          to="settings"
+          icon={<CogIcon className="h-5 w-5" />}
+        />
       </ul>
     </div>
   );

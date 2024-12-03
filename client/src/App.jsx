@@ -2,7 +2,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import DashboardLayout from './layouts/DashboardLayout';
 import MainLayout from './layouts/MainLayout';
-import Dashboard from './components/Dashboard';
+import UserDashboard from './components/UserDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PageNotFound from './pages/404';
 import Applications from './components/Applications';
@@ -11,18 +11,26 @@ import Dummy from './pages/Dummy';
 import Work from './components/Work';
 import Freelancers from './components/Freelancers';
 import Freelancer from './components/Freelancer';
+import Login from './components/Login';
+import MyWorks from './components/MyWorks';
+import SettingsPage from './components/UserSettings';
+import ProfilePage from './components/UserProfile';
 
 function App() {
   return (
     <Router>
       <Provider store={store}>
         <Routes>
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<Dashboard />} />
+          <Route path="/user/dashboard" element={<DashboardLayout />}>
+            <Route index element={<UserDashboard />} />
             <Route path="applications" element={<Applications />} />
+            <Route path="works" element={<MyWorks />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Route>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Dummy />} />
+            <Route path="login" element={<Login />}></Route>
             <Route path="works" element={<Works />}></Route>
             <Route path="works/:id" element={<Work />}></Route>
             <Route path="freelancers" element={<Freelancers />}></Route>
