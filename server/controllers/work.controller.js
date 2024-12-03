@@ -1,4 +1,5 @@
 import Work from '../models/work.model.js'
+import User from '../models/user.model.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import factory from './factory.controller.js'
@@ -72,16 +73,32 @@ const workController = {
    * @description Apply to the Work by getting WorkId && freelancerId
    */
   applyWork: asyncHandler(async (req, res, next) => {
-    const work = await Work.findById(req.body.workId)
+    const { workId } = req.body
+    const userId = req.user.id
 
+    // Find the work and ensure it exists
+    const work = await Work.findById(workId)
     if (!work) {
-      return next(new AppError(`No work with that id found`, 404))
+      return next(new AppError(`No work with that ID found`, 404))
     }
-    work.applied_status.push(req.body.userId)
+
+    // Check if the user has already applied
+    if (work.applied_status.includes(userId)) {
+      return next(new AppError(`User has already applied for this work`, 400))
+    }
+
+    // Update user's application count
+    await User.findByIdAndUpdate(req.user.id, {
+      $inc: { noOfApplications: 1 },
+    })
+
+    // Add user to applied_status and save work
+    work.applied_status.push(userId)
     await work.save()
 
     res.status(200).json({
       status: 'success',
+      message: 'Application Accepted',
       data: {
         work,
       },

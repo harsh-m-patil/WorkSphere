@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
+import UserSidebar from '../components/UserSideBar';
 
 const DashboardLayout = () => {
   return (
     <div className="flex">
-      <Sidebar />
+      <UserSidebar />
       <Outlet />
     </div>
   );

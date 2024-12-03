@@ -70,12 +70,11 @@ const UserSettings = () => {
 
     try {
       const token = localStorage.getItem('token'); // Get the token from localStorage
-      const response = await axios.patch(`${API_URL}/users/me`, updatedData, {
+      await axios.patch(`${API_URL}/users/me`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('Response', response);
       alert('User updated successfully!');
     } catch (error) {
       console.error('Error updating user:', error);

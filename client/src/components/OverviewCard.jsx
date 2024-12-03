@@ -6,7 +6,7 @@ const OverviewCard = ({ title, data, type }) => {
       <p className="text-2xl font-semibold text-gray-800">
         {title || 'Default'}
       </p>
-      <p className="pt-4 text-xl text-gray-600">{data || 'data'}</p>
+      <p className="pt-4 text-xl text-gray-600">{data}</p>
     </div>
   );
 };

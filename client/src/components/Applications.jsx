@@ -8,6 +8,7 @@ const Applications = () => {
   const [filteredAppls, setFilteredAppls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const id = localStorage.getItem('id'); // Retrieve token from localStorage
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -84,7 +85,12 @@ const Applications = () => {
 
   return (
     <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-50 p-10 shadow">
-      <h1 className="text-3xl font-bold text-gray-700">Applications</h1>
+      <h1 className="text-3xl font-bold text-gray-700">
+        Applications{' '}
+        <span className="ml-6 rounded-xl bg-green-100 p-2 px-4 text-2xl">
+          {filteredAppls.length}
+        </span>
+      </h1>
       <SearchBar onSearch={handleSearch} />
       <div className="overflow-x-auto rounded-lg shadow">
         <table className="w-full border-collapse border border-gray-300 text-left">
@@ -113,6 +119,7 @@ const Applications = () => {
                   appl={appl}
                   key={appl._id}
                   cancelApplication={cancelApplication}
+                  userId={id}
                 />
               ))
             )}

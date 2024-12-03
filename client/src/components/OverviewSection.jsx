@@ -26,7 +26,7 @@ const OverviewSection = () => {
         setUser(response.data.data.user); // Set the fetched user data
         setLoading(false);
       } catch (err) {
-        console.log(err);
+        console.err(err);
         setError('Failed to fetch user data');
         setLoading(false);
       }

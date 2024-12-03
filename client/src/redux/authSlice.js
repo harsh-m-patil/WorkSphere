@@ -16,6 +16,7 @@ const authSlice = createSlice({
 
       // Persist data in localStorage
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('id', user._id);
       localStorage.setItem('token', token);
     },
     logout: (state) => {
