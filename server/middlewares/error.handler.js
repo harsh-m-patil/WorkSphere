@@ -36,6 +36,7 @@ const sendErrorDev = (err, res) => {
   if (res.headersSent) {
     return
   }
+  console.log(err)
   res.status(err.statusCode).json({
     status: err.status,
     error: err,
