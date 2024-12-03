@@ -8,7 +8,7 @@ import Button from './Button';
 import UserInfoWork from './UserInfoWork';
 import WorkDescCard from './WorkDescCard';
 import axios from 'axios';
-import { API_URL } from '../redux/utils/constants';
+import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
 
 const Work = () => {
@@ -52,10 +52,15 @@ const Work = () => {
     );
   }
 
-  // TODO: Apply now logic
   const handleClick = async () => {
     try {
       const token = localStorage.getItem('token');
+
+      if (!token) {
+        toast.error('Please Login first', { position: 'top-center' });
+        return;
+      }
+
       const response = await axios.post(
         `${API_URL}/work/apply`,
         {
@@ -82,13 +87,13 @@ const Work = () => {
     <div className="flex h-screen flex-col md:flex-row">
       <SideWorks works={works} />
       <div className="sticky top-0 w-7/12 p-10">
-        <div className="h-5/6 w-full rounded-xl bg-neutral-50 p-8 shadow-lg">
+        <div className="h-5/6 w-full rounded-xl bg-neutral-50 p-8 shadow-xl">
           <div className="flex justify-between">
             <div className="flex place-items-center">
-              <img src="/vite.svg" className="h-24" />
+              <img src={'/deno.svg'} className="h-24" />
               <div className="p-4">
                 <p className="text-2xl font-medium">
-                  {fetchedWork.client_id.userName}
+                  {fetchedWork.client_id?.userName}
                 </p>
                 <p className="text-lg">{fetchedWork.title}</p>
                 <p className="text-lg text-gray-500">

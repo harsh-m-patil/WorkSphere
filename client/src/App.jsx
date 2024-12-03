@@ -9,12 +9,13 @@ import Applications from './components/Applications';
 import Works from './components/Works';
 import Dummy from './pages/Dummy';
 import Work from './components/Work';
+import Freelancers from './components/Freelancers';
+import Freelancer from './components/Freelancer';
 import Login from './components/Login';
 import MyWorks from './components/MyWorks';
 import SettingsPage from './components/UserSettings';
 import ProfilePage from './components/UserProfile';
 import { Toaster } from 'sonner';
-import Products from './components/AdminProducts';
 import Dashboard from './components/AdminDashboard';
 import Layout from './components/shared/Adminlayout';
 import './index.css';
@@ -51,6 +52,8 @@ function App() {
             <Route path="login" element={<Login />}></Route>
             <Route path="works" element={<Works />}></Route>
             <Route path="works/:id" element={<Work />}></Route>
+            <Route path="freelancers" element={<Freelancers />}></Route>
+            <Route path="freelancers/:id" element={<Freelancer />}></Route>
           </Route>
           {/* Catch-all route for 404 page */}
           <Route path="*" element={<PageNotFound />} />

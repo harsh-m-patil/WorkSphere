@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 import { ApplicationListElement } from './ApplicationListElement';
+import UserDashboardHeader from './UserDashboardHeader';
 
 const Applications = () => {
   const [applications, setApplications] = useState([]);
@@ -68,12 +69,11 @@ const Applications = () => {
 
   if (loading) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="flex flex-col items-center justify-center gap-4">
-          <div className="spinner-border h-16 w-16 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
-          <p className="text-xl font-semibold text-gray-600">
-            Loading applications...
-          </p>
+      <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-50 p-10 shadow">
+        <UserDashboardHeader title="My Applications" array={filteredAppls} />
+        <SearchBar onSearch={handleSearch} />
+        <div className="flex w-full place-items-center justify-center overflow-x-auto rounded-lg shadow">
+          <h1 className="3xl text-center">Loading Data</h1>
         </div>
       </div>
     );
@@ -85,22 +85,27 @@ const Applications = () => {
 
   return (
     <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-50 p-10 shadow">
-      <h1 className="text-3xl font-bold text-gray-700">
-        Applications{' '}
-        <span className="ml-6 rounded-xl bg-green-100 p-2 px-4 text-2xl">
-          {filteredAppls.length}
-        </span>
-      </h1>
+      <UserDashboardHeader title="My Applications" array={filteredAppls} />
       <SearchBar onSearch={handleSearch} />
       <div className="overflow-x-auto rounded-lg shadow">
         <table className="w-full border-collapse border border-gray-300 text-left">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-200 text-lg uppercase text-gray-700">
             <tr>
-              <th className="border border-gray-300 px-4 py-3">ID</th>
-              <th className="border border-gray-300 px-4 py-3">Title</th>
-              <th className="border border-gray-300 px-4 py-3">Pay</th>
-              <th className="border border-gray-300 px-4 py-3">Status</th>
-              <th className="border border-gray-300 px-4 py-3">Action</th>
+              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+                ID
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+                Title
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+                Pay
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-center font-semibold">
+                Status
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-center font-semibold">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>

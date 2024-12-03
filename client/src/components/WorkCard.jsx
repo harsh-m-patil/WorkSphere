@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
 
 const WorkCard = ({ work, index }) => {
   const navigate = useNavigate();
@@ -7,7 +8,12 @@ const WorkCard = ({ work, index }) => {
   };
 
   return (
-    <div className="min-h-72 rounded-3xl border p-2 pb-6 shadow-xl">
+    <motion.div
+      className="min-h-72 rounded-3xl border p-2 pb-6 shadow-xl"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1.0 }}
+      whileHover={{ scale: 1.05, shadow: 1.1 }}
+    >
       <div
         className={`h-5/6 w-full rounded-3xl px-4 py-5 ${getColor(index)} flex flex-col`}
       >
@@ -30,7 +36,7 @@ const WorkCard = ({ work, index }) => {
                 {work.title}
               </p>
             </div>
-            <img src="/vite.svg" alt="icon" />
+            <img src={getSvg(index)} alt="icon" />
           </div>
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
@@ -54,7 +60,7 @@ const WorkCard = ({ work, index }) => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -69,6 +75,19 @@ const getColor = (idx) => {
   ];
 
   return colors[idx % 6];
+};
+
+const getSvg = (idx) => {
+  const svgs = [
+    '/svelte.svg',
+    '/astro.svg',
+    '/deno.svg',
+    '/vite.svg',
+    '/bun.svg',
+    '/next.svg',
+    '/turbopack.svg',
+  ];
+  return svgs[idx % 7];
 };
 
 export default WorkCard;
