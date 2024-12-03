@@ -113,16 +113,19 @@ const userController = {
     })
   }),
 
-  //TODO: implement get my applications
   getMyApplications: asyncHandler(async (req, res, next) => {
-    const works = Work.find({})
+    try {
+      const works = await Work.find({ applied_status: { $in: [req.user.id] } })
 
-    res.status(200).json({
-      status: 'success',
-      data: {
-        works,
-      },
-    })
+      res.status(200).json({
+        status: 'success',
+        data: {
+          works,
+        },
+      })
+    } catch (error) {
+      next(error) // Pass error to global error handler
+    }
   }),
 }
 

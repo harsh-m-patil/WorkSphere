@@ -86,6 +86,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    virtuals: true,
   },
 )
 
@@ -108,6 +109,13 @@ userSchema.virtual('works', {
   ref: 'Work',
   foreignField: 'freelancer_id',
   localField: '_id',
+})
+
+userSchema.virtual('noOfApplications', {
+  ref: 'Work', // Reference to the 'Work' model
+  foreignField: 'applied_status', // Field in 'Work' that holds applied users' ids
+  localField: '_id', // Current user's id
+  count: true, // This will count how many works the user has applied to
 })
 
 // MIDDLEWARES

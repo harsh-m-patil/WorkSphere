@@ -40,6 +40,12 @@ router.get(
   userController.getUsers(),
 )
 
+router.get(
+  '/applications',
+  authMiddleware.protect,
+  userController.getMyApplications,
+)
+
 router.get('/:id', userController.getUser)
 
 router.post('/login', authController.login)
