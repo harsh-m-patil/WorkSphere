@@ -90,7 +90,7 @@ const Work = () => {
         <div className="h-5/6 w-full rounded-xl bg-neutral-50 p-8 shadow-xl">
           <div className="flex justify-between">
             <div className="flex place-items-center">
-              <img src="/vite.svg" className="h-24" />
+              <img src={'/deno.svg'} className="h-24" />
               <div className="p-4">
                 <p className="text-2xl font-medium">
                   {fetchedWork.client_id?.userName}

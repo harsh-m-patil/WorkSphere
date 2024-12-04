@@ -30,7 +30,7 @@ const WorkCard = ({ work, index }) => {
                 {work.title}
               </p>
             </div>
-            <img src="/vite.svg" alt="icon" />
+            <img src={getSvg(index)} alt="icon" />
           </div>
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
@@ -69,6 +69,19 @@ const getColor = (idx) => {
   ];
 
   return colors[idx % 6];
+};
+
+const getSvg = (idx) => {
+  const svgs = [
+    '/svelte.svg',
+    '/astro.svg',
+    '/deno.svg',
+    '/vite.svg',
+    '/bun.svg',
+    '/next.svg',
+    '/turbopack.svg',
+  ];
+  return svgs[idx % 7];
 };
 
 export default WorkCard;
