@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import OverviewCard from './OverviewCard';
 import axios from 'axios';
+import UserDashboardHeader from './UserDashboardHeader';
 
 const OverviewSection = () => {
   const [user, setUser] = useState({});
@@ -91,7 +92,7 @@ const OverviewSection = () => {
 
   return (
     <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
-      <h1 className="p-5 text-4xl font-medium">Overview</h1>
+      <UserDashboardHeader title="My Profile" />
       <div className="grid grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
         {/* Total Applications Card */}
         <OverviewCard
@@ -111,7 +112,7 @@ const OverviewSection = () => {
         {/* Earnings Card */}
         <OverviewCard
           {...data.earning}
-          data={user.balance} // Pass balance data (earnings)
+          data={`$ ${user.balance}`} // Pass balance data (earnings)
         />
       </div>
     </div>

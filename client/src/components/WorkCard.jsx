@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
 
 const WorkCard = ({ work, index }) => {
   const navigate = useNavigate();
@@ -7,7 +8,12 @@ const WorkCard = ({ work, index }) => {
   };
 
   return (
-    <div className="min-h-72 rounded-3xl border p-2 pb-6 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <motion.div
+      className="min-h-72 rounded-3xl border p-2 pb-6 shadow-xl"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1.0 }}
+      whileHover={{ scale: 1.05, shadow: 1.1 }}
+    >
       <div
         className={`h-5/6 w-full rounded-3xl px-4 py-5 ${getColor(index)} flex flex-col`}
       >
@@ -54,7 +60,7 @@ const WorkCard = ({ work, index }) => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
