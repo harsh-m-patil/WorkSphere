@@ -15,8 +15,6 @@ const UserSettings = () => {
     lastName: '',
   });
 
-  console.log(user);
-
   const [newSkill, setNewSkill] = useState('');
   const [newLanguage, setNewLanguage] = useState('');
   const [newCertificate, setNewCertificate] = useState('');

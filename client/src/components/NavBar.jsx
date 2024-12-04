@@ -24,7 +24,7 @@ const NavBar = () => {
       {/* Navigation Links */}
       <div className="hidden items-center gap-6 md:flex">
         <NavLink
-          to="/client/signup"
+          to="/business"
           className={({ isActive }) =>
             isActive ? 'font-semibold text-[#40c9a2]' : 'hover:text-[#40c9a2]'
           }

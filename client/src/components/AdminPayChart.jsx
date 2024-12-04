@@ -29,7 +29,6 @@ export default function PayChart() {
         );
 
         setStats(response.data.data);
-        console.log(response.data.data.monthlyWorkStats); // Check the structure of the data
       } catch (error) {
         console.log(error);
       }

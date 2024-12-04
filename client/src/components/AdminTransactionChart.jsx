@@ -29,7 +29,6 @@ export default function TransactionChart() {
         );
 
         setStats(response.data.data);
-        console.log(response.data.data.monthlyWorkStats); // Check the structure of the data
       } catch (error) {
         console.log(error);
       }
@@ -54,7 +53,9 @@ export default function TransactionChart() {
       style={{ height: '600px', width: '100%' }}
       className="rounded-sm border border-gray-200 bg-white p-8"
     >
-      <strong className="font-medium text-gray-700 text-2xl">Freelancers vs Jobs</strong>
+      <strong className="text-2xl font-medium text-gray-700">
+        Freelancers vs Jobs
+      </strong>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={chartData} // Use dynamically fetched data
@@ -65,10 +66,12 @@ export default function TransactionChart() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="jobs" fill="#6C63FF" />        {/* Purple Blue for Jobs */}
-<Bar dataKey="freelancers" fill="#FFC75F" /> {/* Soft Yellow for Freelancers */}
-
-
+          <Bar
+            dataKey="jobs"
+            fill="#6C63FF"
+          /> {/* Purple Blue for Jobs */}
+          <Bar dataKey="freelancers" fill="#FFC75F" />{' '}
+          {/* Soft Yellow for Freelancers */}
           {/* <Bar dataKey="totalPay" fill="#ff7300" /> */}
         </BarChart>
       </ResponsiveContainer>

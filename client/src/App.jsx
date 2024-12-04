@@ -23,6 +23,7 @@ import ManageUsers from './components/AdminManageUsers';
 import ManageJobs from './components/AdminManageJobs';
 import Analytics from './components/AdminAnalytics';
 import ManageClients from './components/AdminManageClients';
+import BusinessModelPage from './components/BusinessModelPage';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           </Route>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Dummy />} />
+            <Route path="business" element={<BusinessModelPage />}></Route>
             <Route path="login" element={<Login />}></Route>
             <Route path="works" element={<Works />}></Route>
             <Route path="works/:id" element={<Work />}></Route>

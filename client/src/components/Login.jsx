@@ -21,8 +21,6 @@ const Login = () => {
           password,
         }
       );
-      console.log(response.data)
-      console.log(email,password)
       const { data, token } = response.data;
       const { user } = data;
 

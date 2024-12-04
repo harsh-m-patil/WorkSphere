@@ -41,7 +41,6 @@ const Recent = () => {
 
 const RecentElement = ({ el }) => {
   const id = localStorage.getItem('id');
-  console.log('recen');
   return (
     <tr className="hover:bg-gray-50">
       <td className="px-4 py-2">{el.title}</td>
@@ -58,7 +57,6 @@ const RecentElement = ({ el }) => {
 };
 
 function getStatus(appl, userId) {
-  console.log(appl, userId);
   if (appl.freelancer_id === userId) {
     return 'Accepted';
   } else if (appl.freelancer_id) {
