@@ -22,29 +22,16 @@ const Works = () => {
 
   const applyFilters = (query = '') => {
     const filtered = works.filter((work) => {
-      const matchesJobLevel = filters.joblevel
-        ? work.joblevel === filters.joblevel
-        : true;
-      const matchesPay = filters.pay ? work.pay >= +filters.pay : true;
-      const matchesActive = filters.active
-        ? work.active === (filters.active === 'true')
-        : true;
-      const matchesSkills = filters.skills
-        ? work.skills_Required.some((skill) =>
-            skill.toLowerCase().includes(filters.skills.toLowerCase())
-          )
-        : true;
       const matchesSearch = work.title
         .toLowerCase()
         .includes(query.toLowerCase());
 
-      return (
-        matchesJobLevel &&
-        matchesPay &&
-        matchesActive &&
-        matchesSkills &&
-        matchesSearch
-      );
+      const matchesSkills = work.skills_Required
+        .join()
+        .toLowerCase()
+        .includes(query.toLowerCase());
+
+      return matchesSkills || matchesSearch;
     });
 
     setFilteredWorks(filtered);
