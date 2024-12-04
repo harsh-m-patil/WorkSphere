@@ -40,7 +40,7 @@ function Analytics() {
 
   return (
     <div className="grid grid-cols-2  p-10">
-      <div className="flex w-full flex-col gap-10 p-1">
+      <div className="pl-20 flex w-full flex-col gap-10 p-1">
         <BoxWrapper bgColor="bg-orange-100">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-500">
             <HiOutlineUsers className="text-4xl text-white" />
@@ -76,7 +76,7 @@ function Analytics() {
           </div>
         </BoxWrapper>
       </div>
-      <div className=''>
+      <div >
         <PayChart />
       </div>
     </div>

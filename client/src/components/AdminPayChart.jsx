@@ -40,13 +40,23 @@ export default function PayChart() {
 
   // Map the monthly user and job stats into the data format required for the chart
   const chartData = stats
-    ? stats.monthlyWorkStats.map((item) => ({
-        name: `${item._id.month}-${item._id.year}`, // Use month-year for the label
-        users: item.monthlyUsers, // The number of users for the month
-        jobs: item.totalJobs, // The number of jobs for the month
-        customers: item.monthlyUsers, // Assuming customers is equivalent to users in this case
-        totalPay: item.totalPay, // Total pay for the month
-      }))
+    ? stats.monthlyWorkStats
+        .map((item) => ({
+          name: `${item._id.month}-${item._id.year}`, // Use month-year for the label
+          users: item.monthlyUsers, // The number of users for the month
+          jobs: item.totalJobs, // The number of jobs for the month
+          customers: item.monthlyUsers, // Assuming customers is equivalent to users in this case
+          totalPay: item.totalPay, // Total pay for the month
+        }))
+        .sort((a, b) => {
+          // Extract year and month from the name field for sorting
+          const [monthA, yearA] = a.name.split('-').map(Number);
+          const [monthB, yearB] = b.name.split('-').map(Number);
+
+          return yearA !== yearB
+            ? yearA - yearB // Sort by year first
+            : monthA - monthB; // Then by month if years are the same
+        })
     : [];
 
   return (
