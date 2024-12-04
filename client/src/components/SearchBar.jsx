@@ -9,7 +9,7 @@ export const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="rounded-3xl bg-white p-4">
+    <div className="rounded-3xl p-4">
       <input
         type="text"
         placeholder="Search ..."

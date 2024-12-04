@@ -38,29 +38,32 @@ function DashboardStatsGrid() {
 
   return (
     <div className="flex w-full gap-4">
-      <BoxWrapper>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sky-500">
-          <IoBagHandle className="text-2xl text-white" />
+      <BoxWrapper bgColor="bg-sky-100">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-sky-500">
+          <IoBagHandle className="text-4xl text-white" />
         </div>
-        <div className="pl-4">
-          <span className="text-sm font-light text-gray-500">Total Sales</span>
+        <div className="pl-6">
+          <span className="text-lg font-light text-gray-500">Total Earnings</span>
           <div>
-            <strong>
-              {stats ? getUserStat('client', stats.userStats) : 'Loading...'}
+            <strong className="text-3xl">
+              ${' '}
+              {stats && stats.workStats && stats.workStats.length > 0
+                ? (stats.workStats[0].totalPay * 0.1).toFixed(2) // Calculate 10% and format to 2 decimal places
+                : 'Loading...'}
             </strong>
           </div>
         </div>
       </BoxWrapper>
-      <BoxWrapper>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500">
-          <HiOutlineUsers className="text-2xl text-white" />
+      <BoxWrapper bgColor="bg-orange-100">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-500">
+          <HiOutlineUsers className="text-4xl text-white" />
         </div>
-        <div className="pl-4">
-          <span className="text-sm font-light text-gray-500">
-            Total Customers
+        <div className="pl-6">
+          <span className="text-lg font-light text-gray-500">
+            Total Freelancers
           </span>
           <div>
-            <strong>
+            <strong className="text-3xl">
               {stats
                 ? getUserStat('freelancer', stats.userStats)
                 : 'Loading...'}
@@ -68,29 +71,29 @@ function DashboardStatsGrid() {
           </div>
         </div>
       </BoxWrapper>
-      <BoxWrapper>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500">
-          <FcBusinessman className="text-2xl text-white" />
+      <BoxWrapper bgColor="bg-green-100">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
+          <FcBusinessman className="text-4xl text-white" />
         </div>
-        <div className="pl-4">
-          <span className="text-sm font-light text-gray-500">
+        <div className="pl-6">
+          <span className="text-lg font-light text-gray-500">
             Total Clients
           </span>
           <div>
-            <strong>
+            <strong className="text-3xl">
               {stats ? getUserStat('client', stats.userStats) : 'Loading...'}
             </strong>
           </div>
         </div>
       </BoxWrapper>
-      <BoxWrapper>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-500">
-          <FcGraduationCap className="text-2xl text-white" />
+      <BoxWrapper bgColor="bg-purple-100">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-purple-500">
+          <FcGraduationCap className="text-4xl text-white" />
         </div>
-        <div className="pl-4">
-          <span className="text-sm font-light text-gray-500">Total Jobs</span>
+        <div className="pl-6">
+          <span className="text-lg font-light text-gray-500">Total Jobs</span>
           <div>
-            <strong>
+            <strong className="text-3xl">
               {stats && stats.workStats && stats.workStats.length > 0
                 ? stats.workStats[0].totalTasks
                 : 'Loading...'}
@@ -104,9 +107,11 @@ function DashboardStatsGrid() {
 
 export default DashboardStatsGrid;
 
-function BoxWrapper({ children }) {
+function BoxWrapper({ children, bgColor }) {
   return (
-    <div className="flex flex-1 items-center rounded-sm border border-gray-200 bg-white p-4">
+    <div
+      className={`flex h-40 w-80 flex-shrink-0 items-center rounded-xl border border-gray-200 ${bgColor} transform p-6 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl`}
+    >
       {children}
     </div>
   );
