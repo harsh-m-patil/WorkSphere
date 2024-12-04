@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+import SkillPill from './SkillPill';
 
 const UserInfoWork = () => {
-  // TODO: Use user
-
   const user = JSON.parse(localStorage.getItem('user'));
 
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ const UserInfoWork = () => {
       <div className="flex h-2/6 w-full flex-col justify-around rounded-xl bg-neutral-50 p-4 text-center">
         <div className="flex justify-center">
           <img
-            src="/vite.svg"
+            src="/svelte.svg"
             className="mb-3 h-20 rounded-lg border bg-white p-4"
           />
         </div>
@@ -48,14 +47,6 @@ const UserInfoWork = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-const SkillPill = ({ skill }) => {
-  return (
-    <li className="w-fit rounded-xl bg-sky-50 p-3 text-lg shadow-lg">
-      {skill}
-    </li>
   );
 };
 

@@ -1,3 +1,5 @@
+import SkillPill from './SkillPill';
+
 const WorkDescCard = ({ title, desc, isActive, type, onClick }) => {
   return (
     <div>
@@ -13,7 +15,20 @@ const WorkDescCard = ({ title, desc, isActive, type, onClick }) => {
 };
 
 const JobDesc = ({ desc }) => {
-  return <div className="my-5 rounded-3xl border p-5">{desc?.description}</div>;
+  return (
+    <div className="my-5 rounded-3xl border p-5">
+      <div className="p-4">{desc?.description}</div>
+      <hr />
+      <h2 className="text-xl">Skills Required</h2>
+      <ul className="flex flex-wrap place-items-center justify-center gap-3 p-4">
+        {desc?.skills_Required?.length === 0
+          ? 'No Skills Mentioned'
+          : desc.skills_Required?.map((skill, index) => (
+              <SkillPill skill={skill} key={index} />
+            ))}
+      </ul>
+    </div>
+  );
 };
 const ClientDesc = ({ desc }) => {
   return <div className="m-5 rounded-3xl border p-5">{desc?.email}</div>;
