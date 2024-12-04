@@ -2,11 +2,8 @@ import { useNavigate } from 'react-router-dom';
 
 const UserInfoWork = () => {
   // TODO: Use user
-  const user = {
-    userName: 'harshmpatil',
-    title: 'MERN Stack Developer',
-    skills: ['JavaScript', 'ReactJs', 'ExpressJs', 'Nodejs', 'MongoDB'],
-  };
+
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const navigate = useNavigate();
 
@@ -28,7 +25,9 @@ const UserInfoWork = () => {
           />
         </div>
         <p className="text-xl">@{user?.userName || 'Random Wanderer'}</p>
-        <p className="text-lg text-gray-700">{user?.title || 'Guest Here'}</p>
+        <p className="text-lg text-gray-700">
+          {user?.firstName || 'Guest Here'}
+        </p>
         <button
           onClick={handleClick}
           className="w-full rounded-xl bg-sky-100 p-3 transition-shadow hover:shadow-lg"

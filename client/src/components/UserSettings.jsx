@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_URL } from '../../utils/constants';
+import { API_URL } from '../utils/constants';https://github.com/harsh-m-patil/WorkSphere/pull/45/conflict?name=client%252Fsrc%252Fcomponents%252FUserSettings.jsx&ancestor_oid=9ed1ccd77f18d2d98ae79dd421b379db990a588d&base_oid=d0c3c5ce43728aa92a5364f66b88a1f1243909df&head_oid=870cf1d1ccedea596af23e5599d28daf59366418
 import { toast } from 'sonner';
 
 const UserSettings = () => {
@@ -174,13 +174,17 @@ const UserSettings = () => {
 
   return (
     <div className="w-full p-10">
-      <h1 className="mb-6 text-3xl font-bold text-gray-700">Settings</h1>
+      <div className="mb-6 w-96 transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-6 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+        <h2 className="mb-1 flex items-center text-3xl font-extrabold tracking-tight">
+          Settings
+        </h2>
+      </div>
       <form
         onSubmit={handleUpdate}
         className="grid grid-cols-1 gap-10 p-10 sm:grid-cols-2"
       >
         {/* Personal Info */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
           <div className="mb-3 flex items-center justify-between">
             <label className="p-2 text-xl text-gray-700">First Name</label>
             <input
@@ -204,7 +208,7 @@ const UserSettings = () => {
         </div>
 
         {/* Skills Section */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
           <label className="mb-3 text-xl text-gray-700">Skills</label>
           <div className="grid grid-cols-2">
             <div className="p-4">
@@ -217,7 +221,7 @@ const UserSettings = () => {
               />
               <button
                 type="button"
-                className="w-full rounded-xl bg-blue-500 p-2 px-4 text-lg text-white transition-colors hover:bg-blue-600"
+                className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                 onClick={addSkill}
               >
                 Add
@@ -234,7 +238,7 @@ const UserSettings = () => {
                     <button
                       type="button"
                       onClick={() => removeSkill(skill)}
-                      className="text-red-500 hover:text-red-700"
+                      className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                     >
                       Remove
                     </button>
@@ -246,7 +250,7 @@ const UserSettings = () => {
         </div>
 
         {/* Languages Section */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
           <label className="mb-3 text-xl text-gray-700">Languages</label>
           <div className="grid grid-cols-2">
             <div className="p-4">
@@ -260,7 +264,7 @@ const UserSettings = () => {
               <button
                 type="button"
                 onClick={addLanguage}
-                className="w-full rounded-xl bg-blue-500 p-2 px-4 text-lg text-white transition-colors hover:bg-blue-600"
+                className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
                 Add
               </button>
@@ -276,7 +280,7 @@ const UserSettings = () => {
                     <button
                       type="button"
                       onClick={() => removeLanguage(language)}
-                      className="text-red-500 hover:text-red-700"
+                      className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                     >
                       Remove
                     </button>
@@ -288,7 +292,7 @@ const UserSettings = () => {
         </div>
 
         {/* Certificates Section */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
           <label className="mb-3 text-xl text-gray-700">Certificates</label>
           <div className="grid grid-cols-2">
             <div className="p-4">
@@ -302,7 +306,7 @@ const UserSettings = () => {
               <button
                 type="button"
                 onClick={addCertificate}
-                className="w-full rounded-xl bg-blue-500 p-2 px-4 text-lg text-white transition-colors hover:bg-blue-600"
+                className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
                 Add
               </button>
@@ -318,7 +322,7 @@ const UserSettings = () => {
                     <button
                       type="button"
                       onClick={() => removeCertificate(certificate)}
-                      className="text-red-500 hover:text-red-700"
+                      className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                     >
                       Remove
                     </button>
@@ -330,17 +334,17 @@ const UserSettings = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between border bg-white p-4 shadow-sm">
+        <div className="flex justify-between rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
           <button
             type="submit"
-            className="rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+            className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
           >
             Update
           </button>
           <button
             type="button"
             onClick={handleDelete}
-            className="rounded-md bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600"
+            className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
           >
             Delete Account
           </button>

@@ -16,7 +16,6 @@ import MyWorks from './components/MyWorks';
 import SettingsPage from './components/UserSettings';
 import ProfilePage from './components/UserProfile';
 import { Toaster } from 'sonner';
-import Products from './components/AdminProducts';
 import Dashboard from './components/AdminDashboard';
 import Layout from './components/shared/Adminlayout';
 import './index.css';

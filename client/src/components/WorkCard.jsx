@@ -7,7 +7,7 @@ const WorkCard = ({ work, index }) => {
   };
 
   return (
-    <div className="min-h-72 rounded-3xl border p-2 pb-6 shadow-xl">
+    <div className="min-h-72 rounded-3xl border p-2 pb-6 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
       <div
         className={`h-5/6 w-full rounded-3xl px-4 py-5 ${getColor(index)} flex flex-col`}
       >

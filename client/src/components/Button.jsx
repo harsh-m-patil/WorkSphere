@@ -1,7 +1,7 @@
 const Button = ({ text, onClick }) => {
   return (
     <button
-      className="rounded-md bg-gray-800 px-4 py-2 text-white shadow-lg hover:bg-black"
+      className="transform rounded-xl bg-gradient-to-r from-green-300 via-green-400 to-green-500 p-3 px-8 text-black shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
       onClick={onClick}
     >
       {text}
