@@ -58,7 +58,31 @@ const OverviewSection = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Loading state
+    <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
+      <h1 className="p-5 text-4xl font-medium">Overview</h1>
+      <div className="grid animate-pulse grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
+        {/* Total Applications Card */}
+        <OverviewCard
+          {...data.applications}
+          data={0} // Pass total applications data
+        />
+        {/* Rejected Applications Card */}
+        <OverviewCard
+          {...data.pending}
+          data={0} // Pass rejected applications data (you can fetch this dynamically)
+        />
+        {/* Pending Applications Card */}
+        <OverviewCard
+          {...data.accepted}
+          data={0} // Pass pending applications data (you can fetch this dynamically)
+        />
+        {/* Earnings Card */}
+        <OverviewCard
+          {...data.earning}
+          data={0} // Pass balance data (earnings)
+        />
+      </div>
+    </div>;
   }
 
   if (error) {

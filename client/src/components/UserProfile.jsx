@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { User, Award, Globe, Briefcase, Mail, FileText } from 'lucide-react';
+import { User, Award, Briefcase, Mail } from 'lucide-react';
 
 const ProfileDashboard = () => {
   const [user, setUser] = useState({
@@ -49,7 +49,7 @@ const ProfileDashboard = () => {
   }
 
   const ProfileSection = ({ icon: Icon, title, children }) => (
-    <div className="rounded-lg bg-white p-6 shadow-md transition-all hover:shadow-lg">
+    <div className="rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-0 hover:shadow-2xl">
       <div className="mb-4 flex items-center space-x-3">
         <Icon className="text-blue-600" size={24} />
         <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
@@ -60,7 +60,12 @@ const ProfileDashboard = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-50 p-16">
-      <div className="container mx-auto grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="mb-4 w-96 transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-6 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+        <h2 className="mb-1 flex items-center text-3xl font-extrabold tracking-tight">
+          Profile
+        </h2>
+      </div>
+      <div className="container mx-auto grid grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Personal Info Section */}
         <ProfileSection icon={User} title="Personal Details">
           <div className="space-y-3">
