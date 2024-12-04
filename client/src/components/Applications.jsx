@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 import { ApplicationListElement } from './ApplicationListElement';
+import { API_URL } from '../utils/constants';
+import { toast } from 'sonner';
 
 const Applications = () => {
   const [applications, setApplications] = useState([]);
   const [filteredAppls, setFilteredAppls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('all'); // New state for status filter
   const id = localStorage.getItem('id'); // Retrieve token from localStorage
 
   useEffect(() => {
@@ -36,34 +39,54 @@ const Applications = () => {
 
     fetchApplications();
   }, []);
-
-  const cancelApplication = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('User not authenticated');
-
-      await axios.delete(
-        `http://localhost:3000/api/v1/users/applications/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      alert(`Application with ID ${id} has been canceled.`);
-      setApplications((prev) => prev.filter((appl) => appl._id !== id));
-      setFilteredAppls((prev) => prev.filter((appl) => appl._id !== id));
-    } catch (err) {
-      alert(`Failed to cancel application: ${err.message}`);
+  function getStatus(appl, userId) {
+    if (appl.freelancer_id === userId) {
+      return 'Accepted';
+    } else if (appl.freelancer_id) {
+      return 'Rejected';
+    } else {
+      return 'Pending';
     }
-  };
+  }
 
   const handleSearch = (query) => {
     const filtered = applications.filter((appl) =>
       appl.title.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredAppls(filtered);
+  };
+
+  const handleStatusChange = (e) => {
+    const newStatus = e.target.value; // Get the new status
+    setStatusFilter(newStatus);
+
+    const filtered = applications.filter((appl) => {
+      const matchesStatus =
+        newStatus === 'all' ||
+        getStatus(appl, id).toLowerCase() === newStatus.toLowerCase();
+
+      return matchesStatus;
+    });
+    setFilteredAppls(filtered);
+  };
+
+  const cancelApplication = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.delete(`${API_URL}/work/cancel/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      toast.success(response.data.message);
+      setApplications((prev) => prev.filter((appl) => appl._id !== id));
+      setFilteredAppls((prev) => prev.filter((appl) => appl._id !== id));
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, { position: 'top-center' });
+    }
   };
 
   if (loading) {
@@ -99,16 +122,41 @@ const Applications = () => {
           </span>
         </h2>
       </div>
-      <SearchBar onSearch={handleSearch} />
+      <div>
+        <SearchBar onSearch={handleSearch} />
+        <select
+          value={statusFilter}
+          onChange={handleStatusChange}
+          className="m-2 rounded-md border border-gray-300 px-4 py-2"
+        >
+          <option value="all">All Statuses</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Pending">Pending</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
       <div className="overflow-x-auto rounded-lg shadow">
         <table className="w-full border-collapse border border-gray-300 text-left">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-200 text-sm uppercase text-gray-700">
             <tr>
-              <th className="border border-gray-300 px-4 py-3">ID</th>
-              <th className="border border-gray-300 px-4 py-3">Title</th>
-              <th className="border border-gray-300 px-4 py-3">Pay</th>
-              <th className="border border-gray-300 px-4 py-3">Status</th>
-              <th className="border border-gray-300 px-4 py-3">Action</th>
+              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+                No
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+                ID
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+                Title
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+                Pay
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-center font-semibold">
+                Status
+              </th>
+              <th className="border border-gray-300 px-6 py-3 text-center font-semibold">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -122,8 +170,9 @@ const Applications = () => {
                 </td>
               </tr>
             ) : (
-              filteredAppls.map((appl) => (
+              filteredAppls.map((appl, index) => (
                 <ApplicationListElement
+                  index={index + 1}
                   appl={appl}
                   key={appl._id}
                   cancelApplication={cancelApplication}

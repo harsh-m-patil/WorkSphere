@@ -97,7 +97,8 @@ const generateDummyWorks = async () => {
   const clients = await User.find({ role: 'client' })
   const freelancers = await User.find({ role: 'freelancer' })
   const works = []
-  for (let i = 0; i < 20; i++) {
+
+  for (let i = 0; i < 10; i++) {
     const client = faker.helpers.arrayElement(clients)
     const freelancer = faker.helpers.arrayElement(freelancers)
     const title = faker.helpers.arrayElement(jobTitles)
@@ -119,31 +120,31 @@ const generateDummyWorks = async () => {
     })
   }
 
+  // Pending applications
+  for (let i = 0; i < 10; i++) {
+    const client = faker.helpers.arrayElement(clients)
+    const title = faker.helpers.arrayElement(jobTitles)
+    const description = faker.lorem.paragraph()
+    const pay = faker.number.int({ min: 100, max: 1000 })
+    const jobLevel = faker.helpers.arrayElement(['Easy', 'Medium', 'Hard'])
+    const skillsRequired = faker.helpers.arrayElements(skillsList, 3)
+    const applied_status = faker.helpers.arrayElements(freelancers, 10)
+
+    works.push({
+      title,
+      description,
+      pay,
+      joblevel: jobLevel,
+      skills_Required: skillsRequired,
+      client_id: client._id,
+      applied_status: applied_status, // Empty initially
+    })
+  }
   await Work.insertMany(works)
   console.log('Dummy works added.')
 }
 
 // Admin user creation function
-const createAdminUser = async () => {
-  try {
-    const password = await bcrypt.hash('Password123', 10) // Default password
-    const admin = await User.create({
-      firstName: 'Admin',
-      lastName: 'User',
-      userName: 'admin',
-      email: 'admin@worksphere.com',
-      password,
-      passwordConfirm: password,
-      role: 'admin',
-      active: true,
-      balance: 0,
-    })
-
-    console.log('Admin user created:', admin)
-  } catch (err) {
-    console.error('Error creating admin user:', err)
-  }
-}
 const updateUsers = async () => {
   const freelancers = await User.find({ role: 'freelancer' })
 
