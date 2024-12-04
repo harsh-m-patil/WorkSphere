@@ -9,8 +9,8 @@ import classNames from 'classnames';
 
 export default function Header() {
   return (
-    <div className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4">
-      <div className="relative">
+    <div className="flex h-16 items-center justify-end border-b border-gray-200 bg-white px-4">
+      {/* <div className="relative">
         <HiOutlineSearch
           fontSize={20}
           className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -20,7 +20,7 @@ export default function Header() {
           placeholder="search..."
           className="h-10 w-[24rem] rounded-sm border border-gray-300 px-5 pl-11 text-sm focus:outline-none active:outline-none"
         />
-      </div>
+      </div> */}
       <div className="mr-2 flex items-center gap-2">
         <Popover className="relative">
           {({ open }) => (

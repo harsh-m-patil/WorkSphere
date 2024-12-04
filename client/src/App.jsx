@@ -47,6 +47,13 @@ function App() {
             <Route path="settings" element={<SettingsPage />} />
             <Route path="profile" element={<ProfilePage />} />
           </Route>
+          <Route path="/admin" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="ManageClients" element={<ManageClients />} />
+            <Route path="ManageUsers" element={<ManageUsers />} />
+            <Route path="ManageJobs" element={<ManageJobs />} />
+            <Route path="Analytics" element={<Analytics />} />
+          </Route>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Dummy />} />
             <Route path="login" element={<Login />}></Route>

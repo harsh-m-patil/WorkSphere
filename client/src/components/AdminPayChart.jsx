@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-export default function TransactionChart() {
+export default function PayChart() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -44,34 +44,38 @@ export default function TransactionChart() {
         name: `${item._id.month}-${item._id.year}`, // Use month-year for the label
         users: item.monthlyUsers, // The number of users for the month
         jobs: item.totalJobs, // The number of jobs for the month
-        freelancers: item.monthlyUsers, // Assuming freelancers is equivalent to users in this case
+        customers: item.monthlyUsers, // Assuming customers is equivalent to users in this case
         totalPay: item.totalPay, // Total pay for the month
       }))
     : [];
 
   return (
-    <div
-      style={{ height: '600px', width: '100%' }}
-      className="rounded-sm border border-gray-200 bg-white p-8"
-    >
-      <strong className="font-medium text-gray-700 text-2xl">Freelancers vs Jobs</strong>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={chartData} // Use dynamically fetched data
-          margin={{ top: 20, right: 10, left: -10, bottom: 0 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="jobs" fill="#6C63FF" />        {/* Purple Blue for Jobs */}
-<Bar dataKey="freelancers" fill="#FFC75F" /> {/* Soft Yellow for Freelancers */}
-
-
-          {/* <Bar dataKey="totalPay" fill="#ff7300" /> */}
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <>
+      <div
+        style={{ height: '700px', width: '100%' }}
+        className="rounded-sm border border-gray-200 bg-white p-7"
+      >
+        <strong className="text-2xl font-normal text-gray-700">
+          Total pay given to freelancers each month in $
+        </strong>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={chartData} // Use dynamically fetched data
+            margin={{ top: 20, right: 10, left: -10, bottom: 0 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {/* Replace Bar with Line */}
+            <Line type="monotone" dataKey="totalPay" stroke="#ff7300" />
+            {/* You can add more Line components for other metrics like jobs, customers */}
+            {/* <Line type="monotone" dataKey="jobs" stroke="#0ea5e9" /> */}
+            {/* <Line type="monotone" dataKey="customers" stroke="#0ea580" /> */}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </>
   );
 }

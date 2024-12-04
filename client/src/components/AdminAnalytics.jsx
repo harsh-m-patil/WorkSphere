@@ -4,6 +4,7 @@ import { HiOutlineUsers } from 'react-icons/hi';
 import { FcBusinessman } from 'react-icons/fc';
 import { FcGraduationCap } from 'react-icons/fc';
 import axios from 'axios';
+import PayChart from './AdminPayChart';
 
 function Analytics() {
   const [stats, setStats] = useState(null);
@@ -38,48 +39,57 @@ function Analytics() {
   };
 
   return (
-    <div className="flex w-full gap-4 p-10">
-      <BoxWrapper>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500">
-          <HiOutlineUsers className="text-2xl text-white" />
-        </div>
-        <div className="pl-4">
-          <span className="text-sm font-light text-gray-500">
-            New Customers
-          </span>
-          <div>
-            <strong>
-              {' '}
-              {stats
-                ? getUserStat('freelancer', stats.newUserStats)
-                : 'Loading...'}
-            </strong>
+    <div className="grid grid-cols-2  p-10">
+      <div className="flex w-full flex-col gap-10 p-1">
+        <BoxWrapper bgColor="bg-orange-100">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-500">
+            <HiOutlineUsers className="text-4xl text-white" />
           </div>
-        </div>
-      </BoxWrapper>
-      <BoxWrapper>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500">
-          <FcBusinessman className="text-2xl text-white" />
-        </div>
-        <div className="pl-4">
-          <span className="text-sm font-light text-gray-500">New Clients</span>
-          <div>
-            <strong>
-              {' '}
-              {stats ? getUserStat('client', stats.newUserStats) : 'Loading...'}
-            </strong>
+          <div className="pl-6">
+            <span className="text-lg font-light text-gray-500">
+              New Customers
+            </span>
+            <div>
+              <strong className="text-3xl">
+                {stats
+                  ? getUserStat('freelancer', stats.newUserStats)
+                  : 'Loading...'}
+              </strong>
+            </div>
           </div>
-        </div>
-      </BoxWrapper>
+        </BoxWrapper>
+        <BoxWrapper bgColor="bg-green-100">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
+            <FcBusinessman className="text-4xl text-white" />
+          </div>
+          <div className="pl-6">
+            <span className="text-lg font-light text-gray-500">
+              New Clients
+            </span>
+            <div>
+              <strong className="text-3xl">
+                {stats
+                  ? getUserStat('client', stats.newUserStats)
+                  : 'Loading...'}
+              </strong>
+            </div>
+          </div>
+        </BoxWrapper>
+      </div>
+      <div className=''>
+        <PayChart />
+      </div>
     </div>
   );
 }
 
 export default Analytics;
 
-function BoxWrapper({ children }) {
+function BoxWrapper({ children, bgColor }) {
   return (
-    <div className="flex h-24 flex-1 items-center rounded-sm border border-gray-200 bg-white p-4">
+    <div
+      className={`flex h-80 w-80 flex-shrink-0 items-center rounded-xl border border-gray-200 ${bgColor} transform p-6 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl`}
+    >
       {children}
     </div>
   );

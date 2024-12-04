@@ -45,6 +45,17 @@ const jobTitles = [
   'Python Engineer',
 ]
 
+// Helper function to generate random dates within the last 12 months
+const getRandomMonthDate = () => {
+  const start = new Date()
+  start.setMonth(start.getMonth() - 12) // Start 12 months ago
+  const end = new Date() // End is the current date
+  const randomDate = new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
+  )
+  return randomDate
+}
+
 const generateDummyUsers = async () => {
   const users = []
   const password = await bcrypt.hash('Password123', 10) // Default password
@@ -63,6 +74,7 @@ const generateDummyUsers = async () => {
         ? faker.helpers.arrayElements(certificatesList, 2)
         : []
     const balance = faker.number.int({ min: 100, max: 1000 })
+    const createdAt = getRandomMonthDate() // Generate a random creation date
 
     users.push({
       firstName,
@@ -76,6 +88,7 @@ const generateDummyUsers = async () => {
       languages,
       certificates,
       balance,
+      createdAt, // Attach the random date
     })
   }
 
@@ -87,6 +100,7 @@ const generateDummyUsers = async () => {
     password,
     passwordConfirm: password,
     role: 'admin',
+    createdAt: new Date(), // Admin user creation date is the current date
   })
 
   await User.insertMany(users)
@@ -107,6 +121,7 @@ const generateDummyWorks = async () => {
     const jobLevel = faker.helpers.arrayElement(['Easy', 'Medium', 'Hard'])
     const skillsRequired = faker.helpers.arrayElements(skillsList, 3)
     const applied_status = faker.helpers.arrayElements(freelancers, 10)
+    const jobCreatedAt = getRandomMonthDate() // Generate a random job creation date
 
     works.push({
       title,
@@ -117,6 +132,7 @@ const generateDummyWorks = async () => {
       client_id: client._id,
       freelancer_id: freelancer._id,
       applied_status: applied_status, // Empty initially
+      createdAt: jobCreatedAt, // Attach the random date
     })
   }
 
@@ -129,6 +145,7 @@ const generateDummyWorks = async () => {
     const jobLevel = faker.helpers.arrayElement(['Easy', 'Medium', 'Hard'])
     const skillsRequired = faker.helpers.arrayElements(skillsList, 3)
     const applied_status = faker.helpers.arrayElements(freelancers, 10)
+    const jobCreatedAt = getRandomMonthDate() // Generate a random job creation date
 
     works.push({
       title,
@@ -138,6 +155,7 @@ const generateDummyWorks = async () => {
       skills_Required: skillsRequired,
       client_id: client._id,
       applied_status: applied_status, // Empty initially
+      jobCreatedAt, // Attach the random date
     })
   }
   await Work.insertMany(works)
@@ -165,7 +183,6 @@ const seedDatabase = async () => {
     // Generate new data
     await generateDummyUsers()
     await generateDummyWorks() // Get generated works
-    //await createAdminUser()
     await updateUsers()
 
     console.log('Database seeded successfully.')

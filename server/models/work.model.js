@@ -1,49 +1,55 @@
 import mongoose from 'mongoose'
 
-const workSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  pay: {
-    type: Number,
-    required: true,
-  },
-  joblevel: {
-    type: String,
-    enum: {
-      values: ['Easy', 'Medium', 'Hard'],
-      message: '{VALUE} is invalid',
+const workSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
     },
-    default: 'Medium',
-  },
-  skills_Required: {
-    type: [String],
-    required: true,
-  },
-  applied_status: [
-    {
+    description: {
+      type: String,
+      required: true,
+    },
+    pay: {
+      type: Number,
+      required: true,
+    },
+    joblevel: {
+      type: String,
+      enum: {
+        values: ['Easy', 'Medium', 'Hard'],
+        message: '{VALUE} is invalid',
+      },
+      default: 'Medium',
+    },
+    skills_Required: {
+      type: [String],
+      required: true,
+    },
+    applied_status: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    client_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-  ],
-  active: {
-    type: Boolean,
-    default: true,
+    freelancer_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
-  client_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+  {
+    timestamps: true,
+    virtuals: true,
   },
-  freelancer_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
-})
+)
 
 workSchema.pre(/^find/, function (next) {
   this.populate({

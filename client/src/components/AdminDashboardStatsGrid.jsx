@@ -1,41 +1,10 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { IoBagHandle } from 'react-icons/io5';
 import { HiOutlineUsers } from 'react-icons/hi';
 import { FcBusinessman } from 'react-icons/fc';
 import { FcGraduationCap } from 'react-icons/fc';
-import axios from 'axios';
 
 function DashboardStatsGrid() {
-  const [stats, setStats] = useState(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(
-          'http://localhost:3000/api/v1/app/info/users',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setStats(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  // Helper function to get stats by type (client, freelancer)
-  const getUserStat = (type, statArray) => {
-    const stat = statArray.find((item) => item._id === type);
-    return stat ? stat.totalUsers : 0;
-  };
-
   return (
     <div className="flex w-full gap-4">
       <BoxWrapper>
@@ -45,9 +14,7 @@ function DashboardStatsGrid() {
         <div className="pl-4">
           <span className="text-sm font-light text-gray-500">Total Sales</span>
           <div>
-            <strong>
-              {stats ? getUserStat('client', stats.userStats) : 'Loading...'}
-            </strong>
+            <strong>$3452</strong>
           </div>
         </div>
       </BoxWrapper>
@@ -60,11 +27,7 @@ function DashboardStatsGrid() {
             Total Customers
           </span>
           <div>
-            <strong>
-              {stats
-                ? getUserStat('freelancer', stats.userStats)
-                : 'Loading...'}
-            </strong>
+            <strong>$3452</strong>
           </div>
         </div>
       </BoxWrapper>
@@ -77,9 +40,7 @@ function DashboardStatsGrid() {
             Total Clients
           </span>
           <div>
-            <strong>
-              {stats ? getUserStat('client', stats.userStats) : 'Loading...'}
-            </strong>
+            <strong>$3452</strong>
           </div>
         </div>
       </BoxWrapper>
@@ -90,11 +51,7 @@ function DashboardStatsGrid() {
         <div className="pl-4">
           <span className="text-sm font-light text-gray-500">Total Jobs</span>
           <div>
-            <strong>
-              {stats && stats.workStats && stats.workStats.length > 0
-                ? stats.workStats[0].totalTasks
-                : 'Loading...'}
-            </strong>
+            <strong>$3452</strong>
           </div>
         </div>
       </BoxWrapper>
@@ -104,9 +61,11 @@ function DashboardStatsGrid() {
 
 export default DashboardStatsGrid;
 
-function BoxWrapper({ children }) {
+function BoxWrapper({ children, bgColor }) {
   return (
-    <div className="flex flex-1 items-center rounded-sm border border-gray-200 bg-white p-4">
+    <div
+      className={`flex h-40 w-80 flex-shrink-0 items-center rounded-xl border border-gray-200 ${bgColor} transform p-6 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl`}
+    >
       {children}
     </div>
   );
