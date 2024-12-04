@@ -1,20 +1,38 @@
-export const ApplicationListElement = ({ appl, cancelApplication, userId }) => {
+import axios from 'axios';
+import { API_URL } from '../utils/constants';
+import { toast } from 'sonner';
+
+export const ApplicationListElement = ({
+  appl,
+  index,
+  userId,
+  cancelApplication,
+}) => {
   return (
-    <tr className="hover:bg-gray-50">
-      <td className="border border-gray-300 px-4 py-3">{appl._id}</td>
-      <td className="border border-gray-300 px-4 py-3">{appl.title}</td>
-      <td className="border border-gray-300 px-4 py-3">₹{appl.pay}</td>
-      <td className="p-x-3 p-y-2 border border-gray-300 text-center">
+    <tr className="transition duration-300 hover:bg-gray-100">
+      <td className="border border-gray-300 px-6 py-4 text-lg text-gray-800">
+        {index}
+      </td>
+      <td className="border border-gray-300 px-6 py-4 text-lg text-gray-800">
+        {appl._id}
+      </td>
+      <td className="border border-gray-300 px-6 py-4 text-lg text-gray-800">
+        {appl.title}
+      </td>
+      <td className="border border-gray-300 px-6 py-4 text-lg font-medium text-gray-800">
+        ₹{appl.pay}
+      </td>
+      <td className="border border-gray-300 px-6 py-4 text-center">
         <span
-          className={`rounded-xl border border-dashed px-4 py-1 text-center ${getStatusClass(getStatus(appl, userId))}`}
+          className={`inline-block rounded-full border px-4 py-1 text-lg ${getStatusClass(getStatus(appl, userId))}`}
         >
           {getStatus(appl, userId)}
         </span>
       </td>
-      <td className="border border-gray-300 px-4 py-3 text-center">
-        {appl.status === 'Pending' && (
+      <td className="border border-gray-300 px-6 py-4 text-center">
+        {getStatus(appl, userId) === 'Pending' && (
           <button
-            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            className="rounded-full bg-red-500 px-5 py-2 text-lg font-semibold text-white shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
             onClick={() => cancelApplication(appl._id)}
           >
             Cancel
@@ -26,7 +44,6 @@ export const ApplicationListElement = ({ appl, cancelApplication, userId }) => {
 };
 
 function getStatus(appl, userId) {
-  console.log(appl, userId);
   if (appl.freelancer_id === userId) {
     return 'Accepted';
   } else if (appl.freelancer_id) {
@@ -36,16 +53,15 @@ function getStatus(appl, userId) {
   }
 }
 
-// Helper function for dynamic status colors
 const getStatusClass = (status) => {
   switch (status) {
     case 'Accepted':
-      return 'bg-green-50 text-green-600 border-green-600 font-semibold';
+      return 'bg-green-100 text-green-700 border-green-500 font-semibold';
     case 'Pending':
-      return 'bg-yellow-50 text-yellow-600 border-yellow-600 font-semibold';
+      return 'bg-yellow-100 text-yellow-700 border-yellow-500 font-semibold';
     case 'Rejected':
-      return 'bg-red-50 text-red-600 border-red-600 font-semibold';
+      return 'bg-red-100 text-red-700 border-red-500 font-semibold';
     default:
-      return '';
+      return 'bg-gray-100 text-gray-700 border-gray-500 font-semibold';
   }
 };

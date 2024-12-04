@@ -12,6 +12,12 @@ router.delete(
   workController.deleteWork,
 )
 
+router.delete(
+  '/cancel/:id',
+  authMiddleware.protect,
+  authMiddleware.restrictTo('freelancer'),
+  workController.cancelApplication,
+)
 // for client to post about a work / create the work
 router.post(
   '/',
