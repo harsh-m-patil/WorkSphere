@@ -58,6 +58,10 @@ const workController = {
       { new: true },
     )
 
+    await User.findByIdAndUpdate(req.body.freelancerId, {
+      $inc: { balance: work.pay },
+    })
+
     if (!work) {
       return next(new AppError(`No Work with that id found`, 404))
     }

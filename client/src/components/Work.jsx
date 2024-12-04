@@ -8,7 +8,7 @@ import Button from './Button';
 import UserInfoWork from './UserInfoWork';
 import WorkDescCard from './WorkDescCard';
 import axios from 'axios';
-import { API_URL } from '../redux/utils/constants';
+import { API_URL } from '../../utils/constants';
 import { toast } from 'sonner';
 
 const Work = () => {
@@ -52,7 +52,6 @@ const Work = () => {
     );
   }
 
-  // TODO: Apply now logic
   const handleClick = async () => {
     try {
       const token = localStorage.getItem('token');

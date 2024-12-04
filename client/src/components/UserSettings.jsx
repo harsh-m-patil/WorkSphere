@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_URL } from '../redux/utils/constants';
+import { API_URL } from '../../utils/constants';
+import { toast } from 'sonner';
 
 const UserSettings = () => {
   const [user, setUser] = useState(null);
-  console.log(user);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
@@ -15,6 +15,8 @@ const UserSettings = () => {
     lastName: '',
   });
 
+  console.log(user);
+
   const [newSkill, setNewSkill] = useState('');
   const [newLanguage, setNewLanguage] = useState('');
   const [newCertificate, setNewCertificate] = useState('');
@@ -22,7 +24,7 @@ const UserSettings = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token'); // Get the token from localStorage
+        const token = localStorage.getItem('token');
         const response = await axios.get(`${API_URL}/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,7 +42,7 @@ const UserSettings = () => {
           certificates: userData.certificates || [],
         });
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        toast.error(`Failed to load user data: ${error.message}`);
         setError('Failed to load user data.');
       } finally {
         setLoading(false);
@@ -48,7 +50,7 @@ const UserSettings = () => {
     };
 
     fetchUserData();
-  }, [setUser]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,33 +71,36 @@ const UserSettings = () => {
     };
 
     try {
-      const token = localStorage.getItem('token'); // Get the token from localStorage
+      const token = localStorage.getItem('token');
       await axios.patch(`${API_URL}/users/me`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert('User updated successfully!');
+      toast.success('Profile updated successfully');
     } catch (error) {
       console.error('Error updating user:', error);
-      setError('Failed to update user data.');
+      toast.error('Failed to update profile');
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete your account?')) {
+    if (
+      window.confirm(
+        'Are you absolutely sure you want to delete your account? This action cannot be undone.'
+      )
+    ) {
       try {
-        const token = localStorage.getItem('token'); // Get the token from localStorage
+        const token = localStorage.getItem('token');
         await axios.delete(`${API_URL}/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        alert('User deleted successfully!');
-        // Optionally redirect to a different page after deletion
+        toast.success('Account deleted successfully');
+        window.location.href = '/login';
       } catch (error) {
-        console.error('Error deleting user:', error);
-        setError('Failed to delete user.');
+        toast.error(`Failed to delete account: ${error.message}`);
       }
     }
   };
@@ -106,7 +111,7 @@ const UserSettings = () => {
         ...prevData,
         skills: [...prevData.skills, newSkill],
       }));
-      setNewSkill(''); // Clear input after adding
+      setNewSkill('');
     }
   };
 
@@ -123,7 +128,7 @@ const UserSettings = () => {
         ...prevData,
         languages: [...prevData.languages, newLanguage],
       }));
-      setNewLanguage(''); // Clear input after adding
+      setNewLanguage('');
     }
   };
 
@@ -142,7 +147,7 @@ const UserSettings = () => {
         ...prevData,
         certificates: [...prevData.certificates, newCertificate],
       }));
-      setNewCertificate(''); // Clear input after adding
+      setNewCertificate('');
     }
   };
 
@@ -155,69 +160,81 @@ const UserSettings = () => {
     }));
   };
 
-  if (loading) return <div className="text-center">Loading...</div>;
-  if (error) return <div className="text-center text-red-500">{error}</div>;
+  if (loading)
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-32 w-32 animate-spin rounded-full border-t-2 border-blue-500"></div>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="mt-10 text-center text-xl text-red-500">{error}</div>
+    );
 
   return (
-    <div className="flex min-h-screen w-full bg-gray-100">
-      <div className="mx-4 flex-1 p-8">
-        <div className="mx-auto max-w-xl rounded-lg bg-white p-6 shadow-md">
-          <h2 className="mb-4 text-2xl font-semibold">User Settings</h2>
-          <form onSubmit={handleUpdate} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
-              />
-            </div>
+    <div className="w-full p-10">
+      <h1 className="mb-6 text-3xl font-bold text-gray-700">Settings</h1>
+      <form
+        onSubmit={handleUpdate}
+        className="grid grid-cols-1 gap-10 p-10 sm:grid-cols-2"
+      >
+        {/* Personal Info */}
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <label className="p-2 text-xl text-gray-700">First Name</label>
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <label className="p-2 text-xl text-gray-700">Last Name</label>
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              className="rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
 
-            {/* Skills Section */}
+        {/* Skills Section */}
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+          <label className="mb-3 text-xl text-gray-700">Skills</label>
+          <div className="grid grid-cols-2">
+            <div className="p-4">
+              <input
+                type="text"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                placeholder="Add a new skill"
+                className="mb-2 w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                className="w-full rounded-xl bg-blue-500 p-2 px-4 text-lg text-white transition-colors hover:bg-blue-600"
+                onClick={addSkill}
+              >
+                Add
+              </button>
+            </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Skills
-              </label>
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={newSkill}
-                  onChange={(e) => setNewSkill(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
-                  placeholder="Add a new skill"
-                />
-                <button
-                  type="button"
-                  onClick={addSkill}
-                  className="mt-1 rounded-md bg-blue-600 p-2 text-white transition duration-200 hover:bg-blue-700"
-                >
-                  Add
-                </button>
-              </div>
-              <ul className="mt-2">
+              <ul className="max-h-48 overflow-y-auto">
                 {formData.skills.map((skill) => (
-                  <li key={skill} className="flex justify-between">
-                    <span className="text-gray-700">{skill}</span>
+                  <li
+                    key={skill}
+                    className="mb-2 flex justify-between rounded-md bg-gray-100 px-5 py-2"
+                  >
+                    <span className="text-gray-800">{skill}</span>
                     <button
                       type="button"
                       onClick={() => removeSkill(skill)}
-                      className="text-red-600 hover:underline"
+                      className="text-red-500 hover:text-red-700"
                     >
                       Remove
                     </button>
@@ -225,36 +242,41 @@ const UserSettings = () => {
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
 
-            {/* Languages Section */}
+        {/* Languages Section */}
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+          <label className="mb-3 text-xl text-gray-700">Languages</label>
+          <div className="grid grid-cols-2">
+            <div className="p-4">
+              <input
+                type="text"
+                value={newLanguage}
+                onChange={(e) => setNewLanguage(e.target.value)}
+                placeholder="Add a new language"
+                className="mb-2 w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                onClick={addLanguage}
+                className="w-full rounded-xl bg-blue-500 p-2 px-4 text-lg text-white transition-colors hover:bg-blue-600"
+              >
+                Add
+              </button>
+            </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Languages
-              </label>
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={newLanguage}
-                  onChange={(e) => setNewLanguage(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
-                  placeholder="Add a new language"
-                />
-                <button
-                  type="button"
-                  onClick={addLanguage}
-                  className="mt-1 rounded-md bg-blue-600 p-2 text-white transition duration-200 hover:bg-blue-700"
-                >
-                  Add
-                </button>
-              </div>
-              <ul className="mt-2">
+              <ul className="max-h-48 overflow-y-auto">
                 {formData.languages.map((language) => (
-                  <li key={language} className="flex justify-between">
-                    <span className="text-gray-700">{language}</span>
+                  <li
+                    key={language}
+                    className="mb-2 flex justify-between rounded-md bg-gray-100 px-5 py-2"
+                  >
+                    <span className="text-gray-800">{language}</span>
                     <button
                       type="button"
                       onClick={() => removeLanguage(language)}
-                      className="text-red-600 hover:underline"
+                      className="text-red-500 hover:text-red-700"
                     >
                       Remove
                     </button>
@@ -262,36 +284,41 @@ const UserSettings = () => {
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
 
-            {/* Certificates Section */}
+        {/* Certificates Section */}
+        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-sm">
+          <label className="mb-3 text-xl text-gray-700">Certificates</label>
+          <div className="grid grid-cols-2">
+            <div className="p-4">
+              <input
+                type="text"
+                value={newCertificate}
+                onChange={(e) => setNewCertificate(e.target.value)}
+                placeholder="Add a new certificate"
+                className="mb-2 w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                onClick={addCertificate}
+                className="w-full rounded-xl bg-blue-500 p-2 px-4 text-lg text-white transition-colors hover:bg-blue-600"
+              >
+                Add
+              </button>
+            </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Certificates
-              </label>
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={newCertificate}
-                  onChange={(e) => setNewCertificate(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300"
-                  placeholder="Add a new certificate"
-                />
-                <button
-                  type="button"
-                  onClick={addCertificate}
-                  className="mt-1 rounded-md bg-blue-600 p-2 text-white transition duration-200 hover:bg-blue-700"
-                >
-                  Add
-                </button>
-              </div>
-              <ul className="mt-2">
+              <ul className="max-h-48 overflow-y-auto">
                 {formData.certificates.map((certificate) => (
-                  <li key={certificate} className="flex justify-between">
-                    <span className="text-gray-700">{certificate}</span>
+                  <li
+                    key={certificate}
+                    className="mb-2 flex justify-between rounded-md bg-gray-100 px-5 py-2"
+                  >
+                    <span className="text-gray-800">{certificate}</span>
                     <button
                       type="button"
                       onClick={() => removeCertificate(certificate)}
-                      className="text-red-600 hover:underline"
+                      className="text-red-500 hover:text-red-700"
                     >
                       Remove
                     </button>
@@ -299,25 +326,26 @@ const UserSettings = () => {
                 ))}
               </ul>
             </div>
-
-            <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="rounded-md bg-green-600 px-4 py-2 text-white transition duration-200 hover:bg-green-700"
-              >
-                Update
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="rounded-md bg-red-600 px-4 py-2 text-white transition duration-200 hover:bg-red-700"
-              >
-                Delete Account
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
-      </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-between border bg-white p-4 shadow-sm">
+          <button
+            type="submit"
+            className="rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+          >
+            Update
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="rounded-md bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600"
+          >
+            Delete Account
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
