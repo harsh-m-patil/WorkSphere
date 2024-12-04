@@ -1,18 +1,6 @@
-import axios from 'axios';
-import { API_URL } from '../utils/constants';
-import { toast } from 'sonner';
-
-export const ApplicationListElement = ({
-  appl,
-  index,
-  userId,
-  cancelApplication,
-}) => {
+export const ApplicationListElement = ({ appl, cancelApplication, userId }) => {
   return (
     <tr className="transition duration-300 hover:bg-gray-100">
-      <td className="border border-gray-300 px-6 py-4 text-lg text-gray-800">
-        {index}
-      </td>
       <td className="border border-gray-300 px-6 py-4 text-lg text-gray-800">
         {appl._id}
       </td>
@@ -30,7 +18,7 @@ export const ApplicationListElement = ({
         </span>
       </td>
       <td className="border border-gray-300 px-6 py-4 text-center">
-        {getStatus(appl, userId) === 'Pending' && (
+        {appl.status === 'Pending' && (
           <button
             className="rounded-full bg-red-500 px-5 py-2 text-lg font-semibold text-white shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
             onClick={() => cancelApplication(appl._id)}
@@ -62,6 +50,6 @@ const getStatusClass = (status) => {
     case 'Rejected':
       return 'bg-red-100 text-red-700 border-red-500 font-semibold';
     default:
-      return 'bg-gray-100 text-gray-700 border-gray-500 font-semibold';
+      return 'bg-gray-100 text-gray-800 border-gray-500 font-semibold';
   }
 };
