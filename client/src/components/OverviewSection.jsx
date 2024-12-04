@@ -41,13 +41,13 @@ const OverviewSection = () => {
       title: 'Total Applications',
       type: 'total',
     },
-    rejected: {
-      title: 'Applications Rejected',
+    pending: {
+      title: 'Rejected Or Pending',
       data: 30, // Placeholder, update as needed
       type: 'rejected',
     },
-    pending: {
-      title: 'Pending Applications',
+    accepted: {
+      title: 'Accepted Applications',
       data: 20, // Placeholder, update as needed
       type: 'pending',
     },
@@ -76,13 +76,13 @@ const OverviewSection = () => {
         />
         {/* Rejected Applications Card */}
         <OverviewCard
-          {...data.rejected}
-          data={data.rejected.data} // Pass rejected applications data (you can fetch this dynamically)
+          {...data.pending}
+          data={user.noOfApplications - user.works?.length} // Pass rejected applications data (you can fetch this dynamically)
         />
         {/* Pending Applications Card */}
         <OverviewCard
-          {...data.pending}
-          data={data.pending.data} // Pass pending applications data (you can fetch this dynamically)
+          {...data.accepted}
+          data={user.works?.length} // Pass pending applications data (you can fetch this dynamically)
         />
         {/* Earnings Card */}
         <OverviewCard

@@ -1,4 +1,5 @@
 const Recent = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
   return (
     <div className="grid h-full gap-4 rounded-2xl bg-white p-5 shadow shadow-gray-300 sm:grid-cols-1 md:grid-cols-2">
       {/* Recent Applications Section */}
@@ -8,26 +9,14 @@ const Recent = () => {
           <thead className="bg-teal-50 text-xl font-medium">
             <tr>
               <td className="px-4 py-2">Application Name</td>
-              <td className="px-4 py-2">Date</td>
+              <td className="px-4 py-2">Pay</td>
               <td className="px-4 py-2">Status</td>
             </tr>
           </thead>
           <tbody className="text-lg">
-            <RecentElement
-              name="Portfolio Website"
-              date="2024-12-01"
-              status="Accepted"
-            />
-            <RecentElement
-              name="Blog Platform"
-              date="2024-11-28"
-              status="Rejected"
-            />
-            <RecentElement
-              name="E-commerce App"
-              date="2024-11-25"
-              status="Pending"
-            />
+            {user.works?.map((el) => (
+              <RecentElement el={el} key={el._id} />
+            ))}
           </tbody>
         </table>
       </div>
@@ -44,22 +33,34 @@ const Recent = () => {
   );
 };
 
-const RecentElement = ({ name, date, status }) => {
+const RecentElement = ({ el }) => {
+  const id = localStorage.getItem('id');
+  console.log('recen');
   return (
     <tr className="hover:bg-gray-50">
-      <td className="px-4 py-2">{name}</td>
+      <td className="px-4 py-2">{el.title}</td>
       {/* Increased padding for spacing */}
-      <td className="px-4 py-2">{date}</td>
+      <td className="px-4 py-2">$ {el.pay}</td>
       {/* Increased padding for spacing */}
       <td
-        className={`rounded-3xl border border-dashed px-2 py-2 ${getStatusColor(status)} ${getBorderColor(status)} text-center`}
+        className={`rounded-3xl border border-dashed px-2 py-2 ${getStatusColor(getStatus(el, id))} ${getBorderColor(getStatus(el, id))} text-center`}
       >
-        {status}
+        {getStatus(el, id)}
       </td>
     </tr>
   );
 };
 
+function getStatus(appl, userId) {
+  console.log(appl, userId);
+  if (appl.freelancer_id === userId) {
+    return 'Accepted';
+  } else if (appl.freelancer_id) {
+    return 'Rejected';
+  } else {
+    return 'Pending';
+  }
+}
 // Utility function to style status
 const getStatusColor = (status) => {
   switch (status) {
