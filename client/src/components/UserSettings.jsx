@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_URL } from '../utils/constants';https://github.com/harsh-m-patil/WorkSphere/pull/45/conflict?name=client%252Fsrc%252Fcomponents%252FUserSettings.jsx&ancestor_oid=9ed1ccd77f18d2d98ae79dd421b379db990a588d&base_oid=d0c3c5ce43728aa92a5364f66b88a1f1243909df&head_oid=870cf1d1ccedea596af23e5599d28daf59366418
+import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
 
 const UserSettings = () => {
