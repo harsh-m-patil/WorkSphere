@@ -25,6 +25,8 @@ import ManageClients from './components/AdminManageClients';
 import BusinessModelPage from './components/BusinessModelPage';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
+import Freelancersignup from './components/FreelancerSignup';
+import Clientsignup from './components/ClientSignup';
 
 function App() {
   return (
@@ -58,7 +60,9 @@ function App() {
           </Route>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
-            <Route path='/about' element={<AboutUs  />} />
+            <Route path="/freelancer/signup" element={<Freelancersignup />} />
+            <Route path="/client/signup" element={<Clientsignup />} />
+            <Route path="/about" element={<AboutUs />} />
             <Route path="business" element={<BusinessModelPage />}></Route>
             <Route path="login" element={<Login />}></Route>
             <Route path="works" element={<Works />}></Route>
