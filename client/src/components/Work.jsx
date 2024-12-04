@@ -52,7 +52,6 @@ const Work = () => {
     );
   }
 
-  // TODO: Apply now logic
   const handleClick = async () => {
     try {
       const token = localStorage.getItem('token');

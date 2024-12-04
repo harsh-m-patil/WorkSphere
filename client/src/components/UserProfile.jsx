@@ -40,7 +40,7 @@ const ProfileDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-100">
+      <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <div className="animate-pulse text-xl text-gray-600">
           Loading profile...
         </div>
