@@ -110,6 +110,41 @@ const workController = {
     })
   }),
 
+  cancelApplication: asyncHandler(async (req, res, next) => {
+    const workId = req.params.id
+    const userId = req.user.id
+
+    // Find the work and ensure it exists
+    const work = await Work.findById(workId)
+    if (!work) {
+      return next(new AppError(`No work with that ID found`, 404))
+    }
+
+    // Check if the user has not applied
+    if (!work.applied_status.includes(userId)) {
+      return next(new AppError(`User has not applied for this work`, 400))
+    }
+
+    // Update user's application count
+    await User.findByIdAndUpdate(userId, {
+      $inc: { noOfApplications: -1 },
+    })
+
+    // Remove user from applied_status and save work
+    work.applied_status = work.applied_status.filter(
+      (id) => id.toString() !== userId,
+    )
+    await work.save()
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Application Cancelled',
+      data: {
+        work,
+      },
+    })
+  }),
+
   /**
    * @description Gives all works created by specific client by taking client id
    */
