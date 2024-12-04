@@ -55,6 +55,12 @@ const Work = () => {
   const handleClick = async () => {
     try {
       const token = localStorage.getItem('token');
+
+      if (!token) {
+        toast.error('Please Login first', { position: 'top-center' });
+        return;
+      }
+
       const response = await axios.post(
         `${API_URL}/work/apply`,
         {
