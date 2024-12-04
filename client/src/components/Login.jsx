@@ -28,7 +28,7 @@ const Login = () => {
 
       // Redirect to dashboard or homepage
       if (user.role === 'admin') {
-        navigate('/admin/dashboard');
+        navigate('/admin');
       } else if (user.role === 'client') {
         navigate('/client/dashboard'); // Change '/dashboard' to the desired route
       } else {

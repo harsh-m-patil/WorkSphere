@@ -5,6 +5,13 @@ import workController from '../controllers/work.controller.js'
 const router = express.Router()
 
 router.get('/:id', workController.getWork)
+router.delete(
+  '/:id',
+  authMiddleware.protect,
+  authMiddleware.restrictTo('admin'),
+  workController.deleteWork,
+)
+
 // for client to post about a work / create the work
 router.post(
   '/',

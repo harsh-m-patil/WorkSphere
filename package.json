@@ -5,5 +5,8 @@
   "scripts": {
     "start": "concurrently \"npm --prefix client start\" \"npm --prefix server start\"",
     "dev": "concurrently \"npm --prefix client run dev\" \"npm --prefix server run dev\""
+  },
+  "dependencies": {
+    "prettier-plugin-tailwindcss": "^0.6.9"
   }
 }
