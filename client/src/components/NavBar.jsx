@@ -12,7 +12,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-10 flex h-16 items-center justify-between bg-white px-6 py-4 shadow-md">
+    <nav className="sticky top-0 z-20 flex h-16 items-center justify-between bg-white px-6 py-4 shadow-md">
       {/* Brand Name */}
       <div className="text-2xl font-bold">
         <Link to="/">

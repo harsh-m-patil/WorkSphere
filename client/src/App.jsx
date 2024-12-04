@@ -7,7 +7,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PageNotFound from './pages/404';
 import Applications from './components/Applications';
 import Works from './components/Works';
-import Dummy from './pages/Dummy';
 import Work from './components/Work';
 import Freelancers from './components/Freelancers';
 import Freelancer from './components/Freelancer';
@@ -24,6 +23,8 @@ import ManageJobs from './components/AdminManageJobs';
 import Analytics from './components/AdminAnalytics';
 import ManageClients from './components/AdminManageClients';
 import BusinessModelPage from './components/BusinessModelPage';
+import Home from './components/Home';
+import AboutUs from './components/AboutUs';
 
 function App() {
   return (
@@ -56,7 +57,8 @@ function App() {
             <Route path="Analytics" element={<Analytics />} />
           </Route>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Dummy />} />
+            <Route index element={<Home />} />
+            <Route path='/about' element={<AboutUs  />} />
             <Route path="business" element={<BusinessModelPage />}></Route>
             <Route path="login" element={<Login />}></Route>
             <Route path="works" element={<Works />}></Route>
