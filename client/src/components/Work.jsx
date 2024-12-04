@@ -36,7 +36,6 @@ const Work = () => {
   }, [id]);
 
   if (error) {
-    console.log('Inside error');
     return (
       <div className="grid h-96 items-center">
         <h1 className="text-center text-2xl text-red-800">{error.message}</h1>;

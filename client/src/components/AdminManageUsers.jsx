@@ -16,7 +16,6 @@ const Users = () => {
         'http://localhost:3000/api/v1/users/freelancers'
       );
       const data = await response.json();
-      console.log(data);
       setUsers(data.data.users);
       setFilteredUsers(data.data.users);
     };

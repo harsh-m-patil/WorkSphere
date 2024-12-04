@@ -16,7 +16,6 @@ const Jobs = () => {
         const response = await fetch('http://localhost:3000/api/v1/work');
         const data = await response.json();
 
-        console.log('Fetched Jobs:', data); // Add this to see the fetched jobs
         setJobs(data.data.works); // Update the jobs state with the fetched data
         setFilteredJobs(data.data.works);
         setLoading(false); // Stop loading once data is fetched

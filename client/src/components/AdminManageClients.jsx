@@ -21,7 +21,6 @@ const ManageUsers = () => {
         // console.log('Fetched clients data:', data); // Debugging
         setClients(data.data.users); // Adjust this path based on the actual API structure
         setFilteredClients(data.data.users);
-        // console.log(data)
       } catch (error) {
         console.error('Error fetching clients:', error);
       }
