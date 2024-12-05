@@ -1,12 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import SkillPill from './SkillPill';
 
 const UserInfoWork = () => {
-  // TODO: Use user
-  const user = {
-    userName: 'harshmpatil',
-    title: 'MERN Stack Developer',
-    skills: ['JavaScript', 'ReactJs', 'ExpressJs', 'Nodejs', 'MongoDB'],
-  };
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const navigate = useNavigate();
 
@@ -23,12 +19,14 @@ const UserInfoWork = () => {
       <div className="flex h-2/6 w-full flex-col justify-around rounded-xl bg-neutral-50 p-4 text-center">
         <div className="flex justify-center">
           <img
-            src="/vite.svg"
+            src="/svelte.svg"
             className="mb-3 h-20 rounded-lg border bg-white p-4"
           />
         </div>
         <p className="text-xl">@{user?.userName || 'Random Wanderer'}</p>
-        <p className="text-lg text-gray-700">{user?.title || 'Guest Here'}</p>
+        <p className="text-lg text-gray-700">
+          {user?.firstName || 'Guest Here'}
+        </p>
         <button
           onClick={handleClick}
           className="w-full rounded-xl bg-sky-100 p-3 transition-shadow hover:shadow-lg"
@@ -49,14 +47,6 @@ const UserInfoWork = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-const SkillPill = ({ skill }) => {
-  return (
-    <li className="w-fit rounded-xl bg-sky-50 p-3 text-lg shadow-lg">
-      {skill}
-    </li>
   );
 };
 

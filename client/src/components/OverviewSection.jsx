@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import OverviewCard from './OverviewCard';
 import axios from 'axios';
+import UserDashboardHeader from './UserDashboardHeader';
 
 const OverviewSection = () => {
   const [user, setUser] = useState({});
@@ -41,13 +42,13 @@ const OverviewSection = () => {
       title: 'Total Applications',
       type: 'total',
     },
-    rejected: {
-      title: 'Applications Rejected',
+    pending: {
+      title: 'Rejected Or Pending',
       data: 30, // Placeholder, update as needed
       type: 'rejected',
     },
-    pending: {
-      title: 'Pending Applications',
+    accepted: {
+      title: 'Accepted Applications',
       data: 20, // Placeholder, update as needed
       type: 'pending',
     },
@@ -58,7 +59,31 @@ const OverviewSection = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Loading state
+    <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
+      <h1 className="p-5 text-4xl font-medium">Overview</h1>
+      <div className="grid animate-pulse grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
+        {/* Total Applications Card */}
+        <OverviewCard
+          {...data.applications}
+          data={0} // Pass total applications data
+        />
+        {/* Rejected Applications Card */}
+        <OverviewCard
+          {...data.pending}
+          data={0} // Pass rejected applications data (you can fetch this dynamically)
+        />
+        {/* Pending Applications Card */}
+        <OverviewCard
+          {...data.accepted}
+          data={0} // Pass pending applications data (you can fetch this dynamically)
+        />
+        {/* Earnings Card */}
+        <OverviewCard
+          {...data.earning}
+          data={0} // Pass balance data (earnings)
+        />
+      </div>
+    </div>;
   }
 
   if (error) {
@@ -67,7 +92,7 @@ const OverviewSection = () => {
 
   return (
     <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
-      <h1 className="p-5 text-4xl font-medium">Overview</h1>
+      <UserDashboardHeader title="My Profile" />
       <div className="grid grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
         {/* Total Applications Card */}
         <OverviewCard
@@ -76,18 +101,18 @@ const OverviewSection = () => {
         />
         {/* Rejected Applications Card */}
         <OverviewCard
-          {...data.rejected}
-          data={data.rejected.data} // Pass rejected applications data (you can fetch this dynamically)
+          {...data.pending}
+          data={user.noOfApplications - user.works?.length} // Pass rejected applications data (you can fetch this dynamically)
         />
         {/* Pending Applications Card */}
         <OverviewCard
-          {...data.pending}
-          data={data.pending.data} // Pass pending applications data (you can fetch this dynamically)
+          {...data.accepted}
+          data={user.works?.length} // Pass pending applications data (you can fetch this dynamically)
         />
         {/* Earnings Card */}
         <OverviewCard
           {...data.earning}
-          data={user.balance} // Pass balance data (earnings)
+          data={`$ ${user.balance}`} // Pass balance data (earnings)
         />
       </div>
     </div>

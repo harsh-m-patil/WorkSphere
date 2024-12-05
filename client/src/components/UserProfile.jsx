@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import axios from 'axios';
-import { User, Award, Globe, Briefcase, Mail, FileText } from 'lucide-react';
+import { User, Award, Briefcase, Mail } from 'lucide-react';
+import UserDashboardHeader from './UserDashboardHeader';
 
 const ProfileDashboard = () => {
   const [user, setUser] = useState({
@@ -40,7 +42,7 @@ const ProfileDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-100">
+      <div className="flex h-screen w-full items-center justify-center bg-gray-100">
         <div className="animate-pulse text-xl text-gray-600">
           Loading profile...
         </div>
@@ -49,18 +51,23 @@ const ProfileDashboard = () => {
   }
 
   const ProfileSection = ({ icon: Icon, title, children }) => (
-    <div className="rounded-lg bg-white p-6 shadow-md transition-all hover:shadow-lg">
+    <motion.div
+      className="rounded-lg bg-white p-6 shadow-md"
+      initial={{ scale: 0.7 }}
+      animate={{ scale: 1.0 }}
+    >
       <div className="mb-4 flex items-center space-x-3">
         <Icon className="text-blue-600" size={24} />
         <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
       </div>
       {children}
-    </div>
+    </motion.div>
   );
 
   return (
     <div className="min-h-screen w-full bg-gray-50 p-16">
-      <div className="container mx-auto grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <UserDashboardHeader title="My Profile" />
+      <div className="container mx-auto grid grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Personal Info Section */}
         <ProfileSection icon={User} title="Personal Details">
           <div className="space-y-3">

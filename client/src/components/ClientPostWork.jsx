@@ -1,8 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const ClientPostWork = () => {
+    const navigate = useNavigate();
     const [jobdata, setJobdata] = useState({
         title: "",
         description: "",
@@ -43,6 +46,8 @@ const ClientPostWork = () => {
             );
             console.log(response.data.data);
             e.target.reset();
+            toast.success('Work Added Successfully',{position:'top-center'})
+            navigate("/client/dashboard");
         } catch (err) {
             console.error("Error posting work:", err);
         }

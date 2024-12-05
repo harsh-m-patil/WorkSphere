@@ -10,6 +10,7 @@ const workController = {
    */
   createWork: factory.createOne(Work),
   getWork: factory.getOne(Work),
+  deleteWork: factory.deleteOne(Work),
   /**
    * @description Gives Client Id in Req_Body
    */
@@ -57,6 +58,10 @@ const workController = {
       { new: true },
     )
 
+    await User.findByIdAndUpdate(req.body.freelancerId, {
+      $inc: { balance: work.pay },
+    })
+
     if (!work) {
       return next(new AppError(`No Work with that id found`, 404))
     }
@@ -99,6 +104,41 @@ const workController = {
     res.status(200).json({
       status: 'success',
       message: 'Application Accepted',
+      data: {
+        work,
+      },
+    })
+  }),
+
+  cancelApplication: asyncHandler(async (req, res, next) => {
+    const workId = req.params.id
+    const userId = req.user.id
+
+    // Find the work and ensure it exists
+    const work = await Work.findById(workId)
+    if (!work) {
+      return next(new AppError(`No work with that ID found`, 404))
+    }
+
+    // Check if the user has not applied
+    if (!work.applied_status.includes(userId)) {
+      return next(new AppError(`User has not applied for this work`, 400))
+    }
+
+    // Update user's application count
+    await User.findByIdAndUpdate(userId, {
+      $inc: { noOfApplications: -1 },
+    })
+
+    // Remove user from applied_status and save work
+    work.applied_status = work.applied_status.filter(
+      (id) => id.toString() !== userId,
+    )
+    await work.save()
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Application Cancelled',
       data: {
         work,
       },

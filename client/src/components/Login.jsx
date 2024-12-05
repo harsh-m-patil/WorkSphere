@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { login } from '../redux/authSlice';
 import axios from 'axios';
@@ -28,7 +29,7 @@ const Login = () => {
 
       // Redirect to dashboard or homepage
       if (user.role === 'admin') {
-        navigate('/admin/dashboard');
+        navigate('/admin');
       } else if (user.role === 'client') {
         navigate('/client/dashboard'); // Change '/dashboard' to the desired route
       } else {
@@ -86,12 +87,14 @@ const Login = () => {
         </div>
 
         {/* Submit Button */}
-        <button
+        <motion.button
           type="submit"
-          className="w-full rounded-md bg-[#40c9a2] px-4 py-2 text-white hover:bg-[#36b08d] focus:outline-none focus:ring-2 focus:ring-[#40c9a2]"
+          className="w-full rounded-md bg-[#40c9a2] px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#40c9a2]"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           Login
-        </button>
+        </motion.button>
       </form>
     </div>
   );

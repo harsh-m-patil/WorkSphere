@@ -12,7 +12,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-10 flex h-16 items-center justify-between bg-white px-6 py-4 shadow-md">
+    <nav className="sticky top-0 z-20 flex h-16 items-center justify-between bg-white px-6 py-4 shadow-md">
       {/* Brand Name */}
       <div className="text-2xl font-bold">
         <Link to="/">
@@ -24,7 +24,7 @@ const NavBar = () => {
       {/* Navigation Links */}
       <div className="hidden items-center gap-6 md:flex">
         <NavLink
-          to="/client/signup"
+          to="/business"
           className={({ isActive }) =>
             isActive ? 'font-semibold text-[#40c9a2]' : 'hover:text-[#40c9a2]'
           }
