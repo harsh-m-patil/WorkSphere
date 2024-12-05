@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { login } from '../redux/authSlice';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -23,9 +24,11 @@ const Login = () => {
       );
       const { data, token } = response.data;
       const { user } = data;
+      console.log(response);
 
       // Dispatch login action
       dispatch(login({ user, token }));
+      toast.success('Login Successful', { position: 'top-center' });
 
       // Redirect to dashboard or homepage
       if (user.role === 'admin') {
@@ -36,7 +39,8 @@ const Login = () => {
         navigate('/user/dashboard'); // Change '/dashboard' to the desired route
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      toast.error('Incorrect Email or Password', { position: 'top-center' });
+      console.log(error.message);
     }
   };
 

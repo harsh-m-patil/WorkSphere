@@ -102,7 +102,7 @@ const OverviewSection = () => {
         {/* Rejected Applications Card */}
         <OverviewCard
           {...data.pending}
-          data={user.noOfApplications - user.works?.length} // Pass rejected applications data (you can fetch this dynamically)
+          data={`${user.noOfApplications - user.works?.length}`} // Pass rejected applications data (you can fetch this dynamically)
         />
         {/* Pending Applications Card */}
         <OverviewCard

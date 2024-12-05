@@ -7,10 +7,21 @@ import {
   UserIcon,
 } from '@heroicons/react/outline'; // Importing icons
 
+import { useNavigate } from 'react-router-dom';
+
 const UserSidebar = () => {
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate('/');
+  }
+
   return (
     <div className="sticky top-0 hidden h-screen w-80 bg-gray-900 px-5 py-16 text-xl text-gray-200 md:block">
-      <p className="mb-10 rounded-[40px] border border-teal-400 bg-teal-900 py-2 text-center text-3xl font-medium">
+      <p
+        className="mb-10 cursor-pointer rounded-[40px] border border-teal-400 bg-teal-900 py-2 text-center text-3xl font-medium"
+        onClick={handleClick}
+      >
         <span className="font-semibold text-teal-300">WorkSphere</span>.
       </p>
       <ul>

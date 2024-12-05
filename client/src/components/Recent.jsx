@@ -1,7 +1,9 @@
 import { motion } from 'motion/react';
 
 const Recent = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
   return (
     <motion.div
       className="grid h-full gap-4 rounded-2xl bg-white p-5 shadow shadow-gray-300 sm:grid-cols-1 md:grid-cols-2"
@@ -14,16 +16,26 @@ const Recent = () => {
         <table className="w-full border-separate border-spacing-y-3 text-left">
           <thead className="bg-teal-50 text-xl font-medium">
             <tr>
-              <td className="px-4 py-2">Application Name</td>
-              <td className="px-4 py-2">Pay</td>
-              <td className="px-4 py-2">Status</td>
+              <th className="px-4 py-2">Application Name</th>
+              <th className="px-4 py-2">Pay</th>
+              <th className="px-4 py-2">Status</th>
             </tr>
           </thead>
-          <tbody className="text-lg">
-            {user.works?.map((el) => (
-              <RecentElement el={el} key={el._id} />
-            ))}
-          </tbody>
+          {user && user.works?.length > 0 ? (
+            <tbody className="text-lg">
+              {user.works.map((el) => (
+                <RecentElement el={el} key={el._id || el.title} />
+              ))}
+            </tbody>
+          ) : (
+            <tbody>
+              <tr>
+                <td colSpan="3" className="px-4 py-2 text-center text-gray-500">
+                  No Works Found
+                </td>
+              </tr>
+            </tbody>
+          )}
         </table>
       </div>
 
@@ -40,17 +52,18 @@ const Recent = () => {
 };
 
 const RecentElement = ({ el }) => {
-  const id = localStorage.getItem('id');
+  const userId = localStorage.getItem('id') || '';
+
   return (
     <tr className="hover:bg-gray-50">
       <td className="px-4 py-2">{el.title}</td>
-      {/* Increased padding for spacing */}
       <td className="px-4 py-2">$ {el.pay}</td>
-      {/* Increased padding for spacing */}
       <td
-        className={`rounded-3xl border px-2 py-2 ${getStatusClass(getStatus(el, id))} text-center`}
+        className={`rounded-3xl border px-2 py-2 ${getStatusClass(
+          getStatus(el, userId)
+        )} text-center`}
       >
-        {getStatus(el, id)}
+        {getStatus(el, userId)}
       </td>
     </tr>
   );
@@ -65,6 +78,7 @@ function getStatus(appl, userId) {
     return 'Pending';
   }
 }
+
 const getStatusClass = (status) => {
   switch (status) {
     case 'Accepted':
