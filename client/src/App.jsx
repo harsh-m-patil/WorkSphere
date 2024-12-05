@@ -16,6 +16,10 @@ import MyWorks from './components/MyWorks';
 import SettingsPage from './components/UserSettings';
 import ProfilePage from './components/UserProfile';
 import { Toaster } from 'sonner';
+import ClientDashboard from './components/ClientDashboard';
+import ClientWorksPosted from './components/ClientWorksPosted';
+import ClientFilterWork from './components/ClientFilterWork';
+import ClientPostWork from './components/ClientPostWork';
 
 function App() {
   return (
@@ -41,6 +45,11 @@ function App() {
             <Route path="freelancers" element={<Freelancers />}></Route>
             <Route path="freelancers/:id" element={<Freelancer />}></Route>
           </Route>
+          <Route path="/client/dashboard" element={<ClientDashboard/>}></Route>
+          <Route path="/client/dashboard/works" element={<ClientWorksPosted/>}></Route>
+          <Route path="/client/dashboard/works/single" element={<ClientFilterWork/>}></Route>
+          <Route path="/client/dashboard/postwork" element={<ClientPostWork/>}></Route>
+          
           {/* Catch-all route for 404 page */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
