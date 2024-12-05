@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useAuth } from '../context/AuthContext';
+
 
 const Clientsignup = () => {
   const navigate = useNavigate();
-  // const { isAuthenticated } = useAuth();
-  const token = localStorage.getItem('token')
-  
+  const token = localStorage.getItem('token');
+
   if (token) {
     navigate('/');
   }
@@ -95,6 +94,9 @@ const Clientsignup = () => {
 
   return (
     <div className="mx-auto max-w-md rounded-lg bg-white p-8 shadow-md">
+      <div className="absolute bottom-[-120px] left-[-400px] flex h-[350px] w-[950px] rotate-[-45] skew-x-6 scale-110 transform items-center justify-center rounded-full bg-[rgba(30,160,170,0.1)] blur-lg"></div>
+      {/* Applied larger shadow */}
+      <div className="absolute left-[-400px] top-[-120px] flex h-[350px] w-[950px] rotate-12 skew-x-6 scale-110 transform items-center justify-center rounded-full bg-[rgba(30,160,170,0.1)] blur-lg"></div>
       <h1 className="mb-6 text-center text-2xl font-semibold text-gray-800">
         Client Signup
       </h1>

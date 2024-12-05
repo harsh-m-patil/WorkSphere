@@ -1,6 +1,6 @@
 // src/components/Jobs.jsx
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
 import { toast } from 'sonner';
 
@@ -82,6 +82,7 @@ const Jobs = () => {
               <th className="px-6 py-3 text-left font-semibold">Title</th>
               <th className="px-6 py-3 text-left font-semibold">Client</th>
               <th className="px-6 py-3 text-left font-semibold">Pay</th>
+              <th className="px-6 py-3 text-left font-semibold">Assigned</th>
               <th className="px-6 py-3 text-left font-semibold">CreatedAt</th>
               <th className="px-6 py-3 text-left font-semibold">Actions</th>
             </tr>
@@ -96,6 +97,11 @@ const Jobs = () => {
                   {job.client_id ? job.client_id?.userName : 'Deleted User'}
                 </td>
                 <td className="px-4 py-2 text-gray-700">{job.pay}</td>
+                <td className="px-4 py-2 text-gray-700">
+                  {job.freelancer_id
+                    ? job.freelancer_id
+                    : 'UnAssigned'}
+                </td>
                 <td className="px-4 py-2 text-gray-700">{job.createdAt}</td>
                 <td className="px-4 py-2 text-gray-700">
                   <button

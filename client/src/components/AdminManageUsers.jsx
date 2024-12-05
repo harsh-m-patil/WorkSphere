@@ -52,9 +52,13 @@ const Users = () => {
   };
 
   const handleSearch = (query) => {
-    const filtered = users.filter((cl) =>
-      cl.firstName.toLowerCase().includes(query.toLowerCase())
-    );
+    const filtered = users.filter((cl) => {
+      const matchesUserName = cl.firstName
+        .toLowerCase()
+        .includes(query.toLowerCase());
+      const matchesId = cl._id === query.toLowerCase();
+      return matchesUserName || matchesId;
+    });
     setFilteredUsers(filtered);
   };
 

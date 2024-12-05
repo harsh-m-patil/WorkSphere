@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from './NavBar';
+// import NavBar from './NavBar';
 import { useInView } from 'react-intersection-observer';
 
 // Updated people array with an additional team member
@@ -55,7 +55,7 @@ export default function AboutUs() {
   });
 
   return (
-    <div className="font-poppins">
+    <div className="overflow-hidden">
       {/* Navbar */}
       {/* <NavBar /> */}
 

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import NavBar from './NavBar';
-import Button from './Button';
+// import NavBar from './NavBar';
+// import Button from './Button';
 import talentImage from '../assets/talent.png';
 import unlockImage from '../assets/unlock.png';
 import logo1image from '../assets/logo-1.png';
@@ -37,7 +37,7 @@ const Home = () => {
   }
 
   function handleMoreClick() {
-    navigate('/business')
+    navigate('/about')
   }
 
   return (
