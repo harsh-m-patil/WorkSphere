@@ -46,17 +46,28 @@
 
 ![Home Page](./assets/home.gif)
 
+### Find Works Page
+
+![find works](./assets/works.png)
+![find works](./assets/workDetail.png)
+
 ### Freelancer Dashboard
 
-![Freelancer Dashboard](./assets/userDashboard.gif)
+![Freelancer Dashboard](./assets/freelancerDashboard.png)
+![Freelancer ](./assets/freelancerApplications.png)
 
 ### Admin Dashboard
 
-![Admin Dashboard](./assets/adminDashboard.gif)
+![Admin Dashboard](./assets/adminDashboard.png)
+
+### Admin Dashboard Analytics
+
+![Admin Analytics](./assets/adminAnalytics.png)
+![Admin Analytics](./assets/adminManageClients.png)
 
 ### Client Dashboard
 
-![Client Dashboard](./assets/clientDashboard.gif)
+![Client Dashboard](./assets/clientDashboard.png)
 
 ### Business Page
 
