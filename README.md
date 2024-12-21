@@ -40,6 +40,78 @@
   <img width="12" />
 </div>
 
+## Instructions
+
+### Frontend
+
+1. Go to client directory
+
+```bash
+# WorkSphere >
+cd client
+```
+
+2. Install dependencies
+
+```bash
+# WorkSphere/client >
+npm install
+```
+
+3. Run the development server
+
+```bash
+# WorkSphere/client >
+npm run dev
+```
+
+### Backend
+
+> [!NOTE]
+> Make sure you have mongodb installed
+
+1. Go the server directory
+
+```bash
+# WorkSphere >
+cd server
+```
+
+2. Install dependencies
+
+```bash
+# WorkSphere/server >
+npm i
+```
+
+3. Generate Dummy Data
+
+```bash
+# WorkSphere/server >
+node data/generateData.js
+```
+
+4. Create .env
+
+```bash
+# WorkSphere/server >
+touch .env
+
+# and paste the following
+PORT=3000
+DB_URI=mongodb://localhost:27017/WorkSphere
+NODE_ENV=development
+JWT_SECRET=<ANY_JWT_SECRET_KEY>
+JWT_EXPIRES_IN=90d
+JWT_COOKIE_EXPIRES_IN=90
+```
+
+5. Run the server
+
+```bash
+npm run dev
+```
+
 ## Demo
 
 ### Home Page
