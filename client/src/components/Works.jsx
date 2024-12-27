@@ -2,16 +2,29 @@ import WorksSideBar from './WorksSideBar';
 import WorkCard from './WorkCard';
 import { SearchBar } from './SearchBar';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import NoWorkFound from './NoWorkFound';
+import { API_URL } from '../utils/constants';
 
 const Works = () => {
-  const works = useSelector((state) => state.work);
+  const [works, setWorks] = useState([]);
   const [filteredWorks, setFilteredWorks] = useState([]);
 
   useEffect(() => {
     setFilteredWorks(works);
   }, [works]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/work`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setWorks(data.data.works);
+      })
+      .catch((error) => {
+        console.error('Error fetching works:', error);
+      });
+  }, []);
 
   const [filters, setFilters] = useState({
     joblevel: '',
@@ -61,7 +74,7 @@ const Works = () => {
           <SearchBar onSearch={handleSearch} />
         </div>
         {/* Works section */}
-        <div className="flex w-full flex-wrap items-center justify-center gap-x-10 gap-y-10 px-4">
+        <div className="grid w-full grid-cols-1 items-center gap-y-10 px-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {filteredWorks.length === 0 ? (
             <NoWorkFound />
           ) : (

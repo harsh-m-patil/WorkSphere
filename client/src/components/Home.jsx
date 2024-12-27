@@ -114,7 +114,7 @@ const Home = () => {
       </div>
 
       <div className="md:py-15 relative flex flex-col items-center justify-between bg-white md:flex-row md:px-10">
-        <div className="absolute left-1/2 top-1/2 flex translate-x-[40%] translate-y-[-85%] rotate-[-35deg] skew-x-6 scale-110 transform items-center justify-center gap-10 overflow-hidden rounded-full bg-[rgba(30,160,170,0.1)] blur-lg sm:h-[450px] sm:w-[850px]"></div>
+        <div className="absolute right-1/2 top-1/2 flex translate-x-[-40%] translate-y-[-45%] rotate-[-35deg] skew-x-6 scale-110 transform items-center justify-center gap-10 overflow-hidden rounded-full bg-[rgba(30,160,170,0.1)] blur-lg sm:h-[450px] sm:w-[850px]"></div>
 
         <div
           className="mx-auto flex max-w-xl flex-col items-start p-10"

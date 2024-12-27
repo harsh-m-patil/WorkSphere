@@ -9,7 +9,7 @@ const WorkCard = ({ work, index }) => {
 
   return (
     <motion.div
-      className="h-[26rem] w-96 rounded-3xl border p-2 pb-6 shadow-xl sm:w-80 lg:h-[26rem] lg:w-80"
+      className="h-[24rem] w-96 rounded-3xl border p-2 pb-6 shadow-xl sm:w-80 lg:h-[26rem] lg:w-80"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1.0 }}
       whileHover={{ scale: 1.05, shadow: 1.1 }}

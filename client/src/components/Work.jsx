@@ -1,18 +1,14 @@
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import NoWorkFound from './NoWorkFound';
-import { SideWorks } from './SideWorks';
 import WorkStat from './WorkStat';
 import Button from './Button';
-import UserInfoWork from './UserInfoWork';
 import WorkDescCard from './WorkDescCard';
 import axios from 'axios';
 import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
 
 const Work = () => {
-  const works = useSelector((state) => state.work);
   const { id } = useParams();
   const [error, setError] = useState(null);
   const [fetchedWork, setFetchedWork] = useState(null);
