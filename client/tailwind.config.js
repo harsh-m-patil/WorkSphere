@@ -4,6 +4,11 @@ export default {
   content: ['./src/**/*.{html,js,jsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['Poppins', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
+      },
+
       keyframes: {
         slideInLeft: {
           '0%': { transform: 'translateX(-100%)', opacity: 0 },

@@ -1,15 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-// import NavBar from './NavBar';
-// import Button from './Button';
 import talentImage from '../assets/talent.png';
 import unlockImage from '../assets/unlock.png';
-import logo1image from '../assets/logo-1.png';
-import logo2image from '../assets/logo-2.png';
-import logo3image from '../assets/logo-3.png';
-import logo4image from '../assets/logo-4.png';
-// import broImage from '../assets/bro.png';
 import 'aos/dist/aos.css'; // Don't forget to import AOS styles
 import { useNavigate } from 'react-router-dom';
 
@@ -37,7 +30,7 @@ const Home = () => {
   }
 
   function handleMoreClick() {
-    navigate('/about')
+    navigate('/about');
   }
 
   return (
@@ -51,26 +44,29 @@ const Home = () => {
 
         {/* Text and Buttons */}
         <div
-          className="relative z-10 mt-[-80px] text-center"
+          className="font-display relative z-10 mt-[-40px] text-center sm:mt-[-80px]"
           data-aos="fade-up"
         >
-          <h1 className="font-poppins-black mb-4 text-6xl text-gray-800">
+          <h1 className="mb-4 text-4xl font-medium text-gray-800 sm:text-6xl">
             Empower Your Freelance Journey
           </h1>
-          <h2 className="font-poppins-black mb-4 text-3xl text-gray-800">
+          <h2 className="font-display mb-4 text-2xl text-gray-800 sm:text-3xl">
             All in One Sphere
           </h2>
-          <p className="font-poppins-black mb-8 text-xl text-gray-900">
+          <p className="font-display mb-8 text-lg text-gray-900 sm:text-xl">
             We bring talent and opportunity together
           </p>
           <div className="mb-10 flex justify-center gap-6">
             <button
-              className="rounded-lg bg-[#40c9a2] px-6 py-3 text-white transition hover:bg-[#36a889]"
+              className="rounded-lg border border-gray-500 bg-[#40c9a2] bg-opacity-20 px-6 py-3 text-gray-900 transition hover:bg-opacity-40"
               onClick={handleStartedClick}
             >
               Get Started
             </button>
-            <button className="rounded-lg border border-gray-300 bg-gray-200 px-6 py-3 text-gray-800 transition hover:bg-gray-300 hover:text-gray-800" onClick={handleWorksClick}>
+            <button
+              className="rounded-lg border border-gray-300 bg-gray-50 px-6 py-3 text-gray-800 transition hover:bg-gray-100 hover:text-gray-800"
+              onClick={handleWorksClick}
+            >
               Browse
             </button>
           </div>
@@ -78,37 +74,37 @@ const Home = () => {
       </div>
 
       {/* Find Top Talent Section */}
-      <div className="py-15 relative flex items-center justify-between bg-white px-10">
-        <div className="absolute left-1/2 top-1/2 flex h-[450px] w-[850px] translate-x-[40%] translate-y-[-85%] rotate-[-35deg] skew-x-6 scale-110 transform items-center justify-center gap-10 overflow-hidden rounded-full bg-[rgba(30,160,170,0.1)] blur-lg"></div>
+      <div className="md:py-15 relative flex flex-col items-center justify-between bg-white md:flex-row md:px-10">
+        <div className="absolute left-1/2 top-1/2 flex translate-x-[40%] translate-y-[-85%] rotate-[-35deg] skew-x-6 scale-110 transform items-center justify-center gap-10 overflow-hidden rounded-full bg-[rgba(30,160,170,0.1)] blur-lg sm:h-[450px] sm:w-[850px]"></div>
 
         <img
           src={talentImage}
           alt="Talent"
-          className="mr-10 h-auto w-[50%] object-cover"
+          className="w-96 object-cover sm:mr-10 sm:w-4/12"
           data-aos="slide-right"
         />
 
         <div
-          className="flex max-w-xl flex-col items-start"
+          className="mx-auto flex max-w-xl flex-col items-start p-10"
           data-aos="fade-left"
         >
-          <h2 className="font-poppins-black mb-6 text-6xl text-gray-800">
+          <h2 className="font-display text-4xl text-gray-800 sm:mb-6 lg:text-6xl">
             Find Top Talent
           </h2>
-          <p className="font-poppins-black mb-8 text-xl leading-relaxed text-gray-600">
+          <p className="font-display mb-8 text-lg leading-relaxed text-gray-600 md:text-xl">
             Discover highly skilled freelancers with the expertise to bring your
             innovative ideas to life. Let’s turn your vision into a reality with
             unmatched professionalism and creativity.
           </p>
           <div className="mb-10 flex justify-center gap-6">
             <button
-              className="rounded-lg bg-[#40c9a2] px-6 py-3 text-white transition hover:bg-[#36a889]"
+              className="rounded-lg border border-gray-500 bg-[#40c9a2] bg-opacity-20 px-6 py-3 text-gray-900 transition hover:bg-opacity-40"
               onClick={handleBizClick}
             >
               Get Started
             </button>
             <button
-              className="rounded-lg border border-gray-300 bg-gray-200 px-6 py-3 text-gray-800 transition hover:bg-gray-300 hover:text-gray-800"
+              className="rounded-lg border border-gray-300 bg-gray-50 px-6 py-3 text-gray-800 transition hover:bg-gray-100 hover:text-gray-800"
               onClick={handleWorksClick}
             >
               Browse
@@ -117,62 +113,56 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Unlock New Opportunities */}
-      <div
-        className="py-15 relative flex items-center justify-between bg-white px-10"
-        data-aos="fade-up"
-        data-aos-once="true"
-        data-aos-duration="1000"
-      >
-        <div className="absolute left-1/2 top-1/2 flex h-[450px] w-[850px] translate-x-[-150%] translate-y-[-25%] rotate-[135deg] skew-x-6 scale-110 transform items-center justify-center gap-10 overflow-hidden rounded-full bg-[rgba(30,160,170,0.1)] blur-lg"></div>
+      <div className="md:py-15 relative flex flex-col items-center justify-between bg-white md:flex-row md:px-10">
+        <div className="absolute left-1/2 top-1/2 flex translate-x-[40%] translate-y-[-85%] rotate-[-35deg] skew-x-6 scale-110 transform items-center justify-center gap-10 overflow-hidden rounded-full bg-[rgba(30,160,170,0.1)] blur-lg sm:h-[450px] sm:w-[850px]"></div>
 
-        {/* Content */}
-        <div className="ml-10 flex flex-col items-start" data-aos="fade-right">
-          <h2 className="font-poppins-black mb-6 text-left text-6xl text-gray-800">
+        <div
+          className="mx-auto flex max-w-xl flex-col items-start p-10"
+          data-aos="fade-right"
+        >
+          <h2 className="font-display text-4xl text-gray-800 sm:mb-6 lg:text-6xl">
             Unlock New Opportunities
           </h2>
-          <p className="font-poppins-black mb-8 text-left text-xl leading-relaxed text-gray-600">
+          <p className="font-display mb-8 text-lg leading-relaxed text-gray-600 md:text-xl">
             Open doors to amazing projects and meaningful collaborations that
             can redefine your career path. Explore new opportunities and achieve
             your professional goals with confidence and creativity.
           </p>
-          <div className="flex gap-6">
+          <div className="mb-10 flex justify-center gap-6">
             <button
-              className="rounded-lg bg-[#40c9a2] px-6 py-3 text-white transition hover:bg-[#36a889]"
-              onClick={handleStartedClick}
+              className="rounded-lg border border-gray-500 bg-[#40c9a2] bg-opacity-20 px-6 py-3 text-gray-900 transition hover:bg-opacity-40"
+              onClick={handleBizClick}
             >
-              Create Profile
+              Get Started
             </button>
             <button
-              className="rounded-lg border border-gray-300 bg-gray-200 px-6 py-3 text-gray-800 transition hover:bg-gray-300 hover:text-gray-800"
+              className="rounded-lg border border-gray-300 bg-gray-50 px-6 py-3 text-gray-800 transition hover:bg-gray-100 hover:text-gray-800"
               onClick={handleWorksClick}
             >
-              Explore Project
+              Browse
             </button>
           </div>
         </div>
-
-        {/* Image */}
         <img
           src={unlockImage}
-          alt="Unlock New Opportunities"
-          className="mr-1 h-auto w-[50%] object-cover"
+          alt="Talent"
+          className="w-96 object-cover sm:mr-10 sm:w-5/12"
           data-aos="slide-left"
         />
       </div>
 
       {/* Reviews Section */}
-      <div className="bg-white px-10 py-20">
-        <div className="flex justify-center gap-8">
+      <div className="bg-white px-5 py-10 sm:px-10 sm:py-20">
+        <div className="flex flex-col items-center justify-center gap-8 md:flex-row">
           {/* Review Box 1 */}
           <div
-            className="flex h-[450px] w-1/3 flex-col justify-between rounded-lg border border-[#40c9a2] bg-gray-100 p-6 shadow-lg"
+            className="flex h-fit w-96 flex-col justify-between rounded-lg border border-[#40c9a2] p-6 shadow-lg"
             data-aos="fade-up"
             data-aos-delay="10"
           >
             <div className="mb-4 flex items-center">
               <img
-                src="https://via.placeholder.com/50"
+                src="https://picsum.photos/200?grayscale"
                 alt="John Doe"
                 className="mr-4 h-12 w-12 rounded-full"
               />
@@ -237,13 +227,13 @@ const Home = () => {
 
           {/* Review Box 2 */}
           <div
-            className="flex h-[450px] w-1/3 flex-col justify-between rounded-lg border border-[#40c9a2] bg-gray-100 p-6 shadow-lg"
+            className="flex h-fit w-96 flex-col justify-between rounded-lg border border-[#40c9a2] p-6 shadow-lg"
             data-aos="fade-up"
             data-aos-delay="20"
           >
             <div className="mb-4 flex items-center">
               <img
-                src="https://via.placeholder.com/50"
+                src="https://picsum.photos/seed/picsum/200/200"
                 alt="Jane Smith"
                 className="mr-4 h-12 w-12 rounded-full"
               />
@@ -308,13 +298,13 @@ const Home = () => {
 
           {/* Review Box 3 */}
           <div
-            className="flex h-[450px] w-1/3 flex-col justify-between rounded-lg border border-[#40c9a2] bg-gray-100 p-6 shadow-lg"
+            className="flex h-fit w-96 flex-col justify-between rounded-lg border border-[#40c9a2] p-6 shadow-lg"
             data-aos="fade-up"
             data-aos-delay="30"
           >
             <div className="mb-4 flex items-center">
               <img
-                src="https://via.placeholder.com/50"
+                src="https://picsum.photos/200"
                 alt="Mark Lee"
                 className="mr-4 h-12 w-12 rounded-full"
               />
@@ -382,7 +372,7 @@ const Home = () => {
       {/* Background Shape */}
 
       {/* Sign Up Content */}
-      <div className="bg-white px-10 py-32">
+      <div className="px-15 bg-white py-32">
         <div
           className="relative z-10 px-4 text-center"
           data-aos="zoom-in" // Apply the animation when scrolled into view
@@ -391,18 +381,21 @@ const Home = () => {
         >
           {/* Background shape with clearer appearance, reduced opacity and height */}
           <div className="absolute left-1/2 top-1/2 z-0 h-[300px] w-[950px] translate-x-[-50%] translate-y-[-50%] scale-110 transform rounded-full bg-[rgba(30,160,170,0.2)]"></div>
-          <h2 className="font-poppins-black relative z-10 mb-6 text-3xl text-gray-800">
-            Join our community and start discovering incredible opportunities.
-          </h2>
-          <h2 className="font-poppins-black relative z-10 mb-6 text-xl text-gray-800">
+          <h2 className="font-display relative z-10 mb-6 text-3xl font-medium text-gray-800 sm:text-5xl">
             Sign Up Today
           </h2>
 
           <div className="relative z-10 flex justify-center gap-6">
-            <button className="rounded-lg bg-[#36a889] px-8 py-4 text-white transition hover:bg-[#2f9c74]" onClick={handleStartedClick}>
+            <button
+              className="rounded-lg border border-gray-500 bg-[#40c9a2] bg-opacity-20 px-6 py-3 text-gray-900 transition hover:bg-opacity-40"
+              onClick={handleStartedClick}
+            >
               Join Now
             </button>
-            <button className="rounded-lg border border-[#c0c0c0] bg-[#e0e0e0] px-8 py-4 text-teal-500 transition hover:bg-[#b0b0b0] hover:text-teal-600" onClick={handleMoreClick}>
+            <button
+              className="rounded-lg border border-gray-300 bg-gray-50 px-6 py-3 text-gray-800 transition hover:bg-gray-100 hover:text-gray-800"
+              onClick={handleMoreClick}
+            >
               Learn More
             </button>
           </div>
@@ -415,32 +408,32 @@ const Home = () => {
         data-aos="slide-up"
         data-aos-duration="9000"
       >
-        <h2 className="font-poppins-black mb-10 text-center text-4xl text-gray-800">
+        <h2 className="font-display mb-10 text-center text-2xl text-gray-800 sm:text-4xl">
           Trusted by Leading Companies
         </h2>
         <div className="flex flex-wrap justify-center gap-12">
           <img
-            src={logo1image}
+            src="/bun.svg"
             alt="Talent"
-            className="h-32 w-32 object-contain"
+            className="size-20 object-contain sm:size-24"
           />
 
           <img
-            src={logo2image}
+            src="/astro.svg"
             alt="Talent"
-            className="h-32 w-32 object-contain"
+            className="size-20 object-contain sm:size-24"
           />
 
           <img
-            src={logo3image}
+            src="/deno.svg"
             alt="Talent"
-            className="h-32 w-32 object-contain"
+            className="size-20 object-contain sm:size-24"
           />
 
           <img
-            src={logo4image}
+            src="/next.svg"
             alt="Talent"
-            className="h-32 w-32 object-contain"
+            className="size-20 object-contain sm:size-24"
           />
         </div>
       </div>
