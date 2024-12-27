@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import validator from 'validator'; // Ensure you have this installed
+import { API_URL } from '../../utils/constants';
 // import signupImage from '../assets/SignUp.png'; // Import the image
 
 const Freelancersignup = () => {
@@ -54,16 +55,13 @@ const Freelancersignup = () => {
 
     // Sending POST request to the server
     try {
-      const response = await fetch(
-        'http://localhost:3000/api/v1/users/signup',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_URL}/users/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 

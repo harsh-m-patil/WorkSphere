@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
 import { toast } from 'sonner';
+import { API_URL } from '../utils/constants';
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -13,7 +14,7 @@ const Jobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/v1/work');
+        const response = await fetch(`${API_URL}/work`);
         const data = await response.json();
 
         setJobs(data.data.works); // Update the jobs state with the fetched data
@@ -32,14 +33,11 @@ const Jobs = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(
-        `http://localhost:3000/api/v1/work/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${API_URL}/work/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       // Update the jobs list after deletion
       setJobs(jobs.filter((job) => job._id !== id));
@@ -98,9 +96,7 @@ const Jobs = () => {
                 </td>
                 <td className="px-4 py-2 text-gray-700">{job.pay}</td>
                 <td className="px-4 py-2 text-gray-700">
-                  {job.freelancer_id
-                    ? job.freelancer_id
-                    : 'UnAssigned'}
+                  {job.freelancer_id ? job.freelancer_id : 'UnAssigned'}
                 </td>
                 <td className="px-4 py-2 text-gray-700">{job.createdAt}</td>
                 <td className="px-4 py-2 text-gray-700">

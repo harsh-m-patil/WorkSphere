@@ -7,7 +7,7 @@ import app from './app.js'
 dotenv.config()
 
 // CONNECT TO DB
-connectDB()
+await connectDB()
 
 const server = http.createServer(app)
 

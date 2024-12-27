@@ -4,6 +4,7 @@ import NoWorkFound from './NoWorkFound';
 import FreelancerStat from './FreelancerStat';
 import FreelancerDescCard from './FreelancerDescCard';
 import SideFreelancers from './SideFreelancers';
+import { API_URL } from '../utils/constants';
 
 const Freelancer = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const Freelancer = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/v1/users/freelancers')
+    fetch(`${API_URL}/users/freelancers`)
       .then((res) => {
         return res.json();
       })
@@ -27,7 +28,7 @@ const Freelancer = () => {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await fetch(`http://localhost:3000/api/v1/users/${id}`);
+        const res = await fetch(`${API_URL}/users/${id}`);
         const json = await res.json();
         if (res.status === 200) {
           setfetchedUser(json.data.user);

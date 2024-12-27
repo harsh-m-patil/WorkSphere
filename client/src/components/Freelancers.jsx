@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FreelancersSideBar from './FreelancersSideBar';
 import NoWorkFound from './NoWorkFound';
 import UserCard from './UserCard';
 import { SearchBar } from './SearchBar';
+import { API_URL } from '../utils/constants';
 
 const Freelancers = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/v1/users/freelancers')
+    fetch(`${API_URL}/users/freelancers`)
       .then((res) => {
         return res.json();
       })

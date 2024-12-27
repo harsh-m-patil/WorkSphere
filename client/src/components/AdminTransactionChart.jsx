@@ -10,6 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { API_URL } from '../utils/constants';
 
 export default function TransactionChart() {
   const [stats, setStats] = useState(null);
@@ -19,14 +20,11 @@ export default function TransactionChart() {
       try {
         const token = localStorage.getItem('token');
 
-        const response = await axios.get(
-          'http://localhost:3000/api/v1/app/info/users',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/app/info/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setStats(response.data.data);
       } catch (error) {

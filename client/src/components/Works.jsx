@@ -53,7 +53,7 @@ const Works = () => {
         {/* Header section */}
         <div className="py-3">
           <h1 className="py-3 text-3xl font-medium">
-            Recommended Jobs{' '}
+            Recommended Jobs
             <span className="m-2 rounded-2xl border bg-gray-50 p-2 text-xl">
               {filteredWorks.length}
             </span>
@@ -61,7 +61,7 @@ const Works = () => {
           <SearchBar onSearch={handleSearch} />
         </div>
         {/* Works section */}
-        <div className="mx-auto grid w-full grid-cols-1 gap-10 px-10 sm:grid-cols-2 md:grid-cols-4">
+        <div className="flex w-full flex-wrap items-center justify-center gap-x-10 gap-y-10 px-4">
           {filteredWorks.length === 0 ? (
             <NoWorkFound />
           ) : (

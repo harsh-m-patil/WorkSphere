@@ -19,14 +19,11 @@ const Applications = () => {
         const token = localStorage.getItem('token'); // Retrieve token from localStorage
         if (!token) throw new Error('User not authenticated');
 
-        const response = await axios.get(
-          'http://localhost:3000/api/v1/users/applications',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Add token to Authorization header
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/users/applications`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add token to Authorization header
+          },
+        });
 
         setApplications(response.data.data.works || []); // Update applications from API
         setFilteredAppls(response.data.data.works || []);

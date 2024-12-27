@@ -15,7 +15,6 @@ const factory = {
    */
   deleteOne: (Model) =>
     asyncHandler(async (req, res, next) => {
-      console.log('object')
       const doc = await Model.findByIdAndDelete(req.params.id)
 
       const modelName = Model.modelName.toLowerCase()

@@ -14,7 +14,7 @@ export const SideWorks = ({ works }) => {
   };
 
   return (
-    <div className="hidden h-full w-fit overflow-y-auto border-r px-10 pb-10 scrollbar-hide md:block">
+    <div className="col-span-4 hidden h-full overflow-y-auto border-r px-10 pb-10 scrollbar-hide lg:block 2xl:col-span-3">
       <div className="sticky top-0 mb-3 bg-white pt-10">
         <h1 className="text-center text-2xl">Recommended Works</h1>
         <SearchBar onSearch={handleSearch} />

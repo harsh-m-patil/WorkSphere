@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 import { toast } from 'sonner';
+import { API_URL } from '../utils/constants';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -12,9 +13,7 @@ const Users = () => {
   // Fetch users from the API
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await fetch(
-        'http://localhost:3000/api/v1/users/freelancers'
-      );
+      const response = await fetch(`${API_URL}/users/freelancers`);
       const data = await response.json();
       setUsers(data.data.users);
       setFilteredUsers(data.data.users);
@@ -27,14 +26,11 @@ const Users = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(
-        `http://localhost:3000/api/v1/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${API_URL}/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       // Remove the user from the state if deletion is successful
       setUsers(users.filter((user) => user.id !== id));

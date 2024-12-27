@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import OverviewCard from './OverviewCard';
 import axios from 'axios';
 import UserDashboardHeader from './UserDashboardHeader';
+import { API_URL } from '../../utils/constants';
 
 const OverviewSection = () => {
   const [user, setUser] = useState({});
@@ -15,14 +16,11 @@ const OverviewSection = () => {
         const token = localStorage.getItem('token'); // Get the token from localStorage
         if (!token) throw new Error('User not authenticated');
 
-        const response = await axios.get(
-          'http://localhost:3000/api/v1/users/me',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setUser(response.data.data.user); // Set the fetched user data
         setLoading(false);

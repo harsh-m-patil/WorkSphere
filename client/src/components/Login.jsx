@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { login } from '../redux/authSlice';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { API_URL } from '../utils/constants';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,13 +16,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/v1/users/login',
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_URL}/users/login`, {
+        email,
+        password,
+      });
       const { data, token } = response.data;
       const { user } = data;
       console.log(response);

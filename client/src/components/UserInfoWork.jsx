@@ -15,7 +15,7 @@ const UserInfoWork = () => {
   }
 
   return (
-    <div className="mt-6 h-5/6 w-2/12 rounded-3xl p-2">
+    <div className="mt-6 hidden h-5/6 w-2/12 rounded-3xl p-2 2xl:block">
       <div className="flex h-2/6 w-full flex-col justify-around rounded-xl bg-neutral-50 p-4 text-center">
         <div className="flex justify-center">
           <img

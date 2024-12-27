@@ -36,7 +36,6 @@ const sendErrorDev = (err, res) => {
   if (res.headersSent) {
     return
   }
-  console.log(err)
   res.status(err.statusCode).json({
     status: err.status,
     error: err,
@@ -75,7 +74,6 @@ const sendErrorProd = (err, res) => {
  *  app.use(errorHandler)
  */
 const errorHandler = (err, req, res, next) => {
-  console.log(err)
   // console.log(err.name)
   err.statusCode = err.statusCode || 500
   err.status = err.status || 'error'

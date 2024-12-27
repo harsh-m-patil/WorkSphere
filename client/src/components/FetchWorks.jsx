@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addWorks } from '../redux/workSlice';
+import { API_URL } from '../../utils/constants';
 
 const FetchWorks = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     // Fetching data from a mock API
-    fetch('http://localhost:3000/api/v1/work')
+    fetch(`${API_URL}/work`)
       .then((response) => response.json())
       .then((data) => {
         const fetchedWorks = data.data.works;

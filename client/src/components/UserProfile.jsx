@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import axios from 'axios';
 import { User, Award, Briefcase, Mail } from 'lucide-react';
 import UserDashboardHeader from './UserDashboardHeader';
+import { API_URL } from '../utils/constants';
 
 const ProfileDashboard = () => {
   const [user, setUser] = useState({
@@ -21,14 +22,11 @@ const ProfileDashboard = () => {
     async function fetchUserData() {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(
-          'http://localhost:3000/api/v1/users/me',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUser(response.data.data.user);
         setLoading(false);
       } catch (err) {

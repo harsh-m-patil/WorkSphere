@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 import { toast } from 'sonner';
+import { API_URL } from '../../utils/constants';
 
 const ManageUsers = () => {
   const [clients, setClients] = useState([]);
@@ -11,9 +12,7 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch(
-          'http://localhost:3000/api/v1/users/clients'
-        );
+        const response = await fetch(`${API_URL}/users/clients`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -33,14 +32,11 @@ const ManageUsers = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(
-        `http://localhost:3000/api/v1/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${API_URL}/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       // Remove the user from the state if deletion is successful
       setClients(clients.filter((user) => user._id !== id));

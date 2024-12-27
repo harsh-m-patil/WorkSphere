@@ -1,29 +1,28 @@
 // import profileImage from "../assets/profile.jpg"; // Placeholder profile image
-import { useEffect, useState } from "react";
-import OverviewCard from "./OverviewCard";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import OverviewCard from './OverviewCard';
+import axios from 'axios';
+import { API_URL } from '../utils/constants';
 
 const ClientProfileSection = ({ client }) => {
+  const [myworks, setmyWorks] = useState([]);
 
-    const [myworks, setmyWorks] = useState([]);
+  useEffect(() => {
+    async function fetchMyWorks() {
+      const response = await axios.post(`${API_URL}/work/myworks`, {
+        clientId: client._id,
+      });
+      console.log(response.data.data.works);
+      setmyWorks(response.data.data.works);
+    }
 
-    useEffect(()=>{
-        async function fetchMyWorks(){
-            const response = await axios.post('http://localhost:3000/api/v1/work/myworks',{
-                clientId : client._id,
-            })
-            console.log(response.data.data.works);
-            setmyWorks(response.data.data.works);
-        }
+    fetchMyWorks();
+  }, [client._id]);
 
-        fetchMyWorks();
-    },[])
-   
-    
   return (
     <div className="w-full rounded-md bg-white p-6 shadow-md lg:flex lg:space-x-6">
       {/* Profile Section */}
-      <div className="lg:w-1/2 p-4">
+      <div className="p-4 lg:w-1/2">
         <div className="flex items-center space-x-4">
           {/* Profile Photo */}
           <img
@@ -45,7 +44,7 @@ const ClientProfileSection = ({ client }) => {
         <div className="mt-4">
           <h3 className="text-md font-semibold text-gray-700">About</h3>
           <p className="text-sm text-gray-600">
-            {client.description || "No description provided"}
+            {client.description || 'No description provided'}
           </p>
         </div>
 
@@ -68,16 +67,12 @@ const ClientProfileSection = ({ client }) => {
           <p className="text-sm text-gray-600">Role: {client.role}</p>
         </div>
       </div>
-      <div className="lg:w-1/2 p-5 bg-gray-50 rounded-md shadow-inner">
+      <div className="rounded-md bg-gray-50 p-5 shadow-inner lg:w-1/2">
+        <OverviewCard title="Balance" data={client.balance} type="earning" />
         <OverviewCard
-            title = "Balance"
-            data = {client.balance}
-            type = "earning"
-        />
-        <OverviewCard
-            title = "No.of Jobs Posted"
-            data = {myworks.length}
-            type = "total"
+          title="No.of Jobs Posted"
+          data={myworks.length}
+          type="total"
         />
       </div>
     </div>

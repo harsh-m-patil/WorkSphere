@@ -21,7 +21,7 @@ const Work = () => {
   useEffect(() => {
     async function fetchWork() {
       try {
-        const res = await fetch(`http://localhost:3000/api/v1/work/${id}`);
+        const res = await fetch(`${API_URL}/work/${id}`);
         const json = await res.json();
         if (res.status === 200) {
           setFetchedWork(json.data.work);
@@ -83,11 +83,10 @@ const Work = () => {
   };
 
   return (
-    <div className="flex h-screen flex-col md:flex-row">
-      <SideWorks works={works} />
-      <div className="sticky top-0 w-7/12 p-10">
-        <div className="h-5/6 w-full rounded-xl bg-neutral-50 p-8 shadow-xl">
-          <div className="flex justify-between">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-50 via-orange-50 to-transparent">
+      <div className="max-w-7xl rounded-2xl border-2 bg-[#2F9C95] bg-opacity-15 p-10 shadow-2xl">
+        <div className="w-full rounded-xl bg-neutral-50 p-8 shadow-xl">
+          <div className="flex flex-wrap items-center justify-between">
             <div className="flex place-items-center">
               <img src={'/deno.svg'} className="h-24" />
               <div className="p-4">
@@ -126,7 +125,7 @@ const Work = () => {
               styles="bg-purple-100"
             />
           </div>
-          <div className="m-1 grid grid-cols-2 rounded-xl text-center">
+          <div className="m-1 grid grid-cols-1 rounded-xl text-center lg:grid-cols-2">
             <WorkDescCard
               title="Description"
               type="job"
@@ -145,7 +144,6 @@ const Work = () => {
         </div>
       </div>
       {/*User info section*/}
-      <UserInfoWork />
     </div>
   );
 };
