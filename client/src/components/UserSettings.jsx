@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
+import UserDashboardHeader from './UserDashboardHeader';
 
 const UserSettings = () => {
   const [user, setUser] = useState(null);
@@ -171,19 +172,15 @@ const UserSettings = () => {
     );
 
   return (
-    <div className="w-full p-10">
-      <div className="mb-6 w-96 transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-6 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-        <h2 className="mb-1 flex items-center text-3xl font-extrabold tracking-tight">
-          Settings
-        </h2>
-      </div>
+    <div className="mt-12 w-full p-3 sm:m-0 sm:p-10">
+      <UserDashboardHeader title="Settings" />
       <form
         onSubmit={handleUpdate}
-        className="grid grid-cols-1 gap-10 p-10 sm:grid-cols-2"
+        className="grid grid-cols-1 gap-6 p-10 sm:grid-cols-2 lg:gap-10"
       >
         {/* Personal Info */}
         <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-3 flex flex-col items-center justify-between sm:flex-row">
             <label className="p-2 text-xl text-gray-700">First Name</label>
             <input
               type="text"
@@ -193,7 +190,7 @@ const UserSettings = () => {
               className="rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="mb-3 flex flex-col items-center justify-between sm:flex-row">
             <label className="p-2 text-xl text-gray-700">Last Name</label>
             <input
               type="text"
@@ -207,36 +204,40 @@ const UserSettings = () => {
 
         {/* Skills Section */}
         <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <label className="mb-3 text-xl text-gray-700">Skills</label>
-          <div className="grid grid-cols-2">
-            <div className="p-4">
+          <label className="mb-3 text-center text-lg text-gray-700 md:text-xl">
+            Skills
+          </label>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="w-full space-y-2 p-2 sm:w-1/2">
               <input
                 type="text"
                 value={newSkill}
                 onChange={(e) => setNewSkill(e.target.value)}
                 placeholder="Add a new skill"
-                className="mb-2 w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="button"
-                className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:px-10"
                 onClick={addSkill}
               >
                 Add
               </button>
             </div>
-            <div>
-              <ul className="max-h-48 overflow-y-auto">
+            <div className="w-full sm:w-1/2">
+              <ul className="max-h-48 space-y-2 overflow-y-auto">
                 {formData.skills.map((skill) => (
                   <li
                     key={skill}
-                    className="mb-2 flex justify-between rounded-md bg-gray-100 px-5 py-2"
+                    className="flex flex-col items-center justify-between gap-2 rounded-md bg-gray-100 p-2 sm:flex-row"
                   >
-                    <span className="text-gray-800">{skill}</span>
+                    <span className="text-center text-gray-800 sm:text-left">
+                      {skill}
+                    </span>
                     <button
                       type="button"
                       onClick={() => removeSkill(skill)}
-                      className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                      className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
                     >
                       Remove
                     </button>
@@ -249,36 +250,40 @@ const UserSettings = () => {
 
         {/* Languages Section */}
         <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <label className="mb-3 text-xl text-gray-700">Languages</label>
-          <div className="grid grid-cols-2">
-            <div className="p-4">
+          <label className="mb-3 text-center text-lg text-gray-700 md:text-xl">
+            Languages
+          </label>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="w-full space-y-2 p-2 sm:w-1/2">
               <input
                 type="text"
                 value={newLanguage}
                 onChange={(e) => setNewLanguage(e.target.value)}
                 placeholder="Add a new language"
-                className="mb-2 w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={addLanguage}
-                className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:px-10"
               >
                 Add
               </button>
             </div>
-            <div>
-              <ul className="max-h-48 overflow-y-auto">
+            <div className="w-full sm:w-1/2">
+              <ul className="max-h-48 space-y-2 overflow-y-auto">
                 {formData.languages.map((language) => (
                   <li
                     key={language}
-                    className="mb-2 flex justify-between rounded-md bg-gray-100 px-5 py-2"
+                    className="flex flex-col items-center justify-between gap-2 rounded-md bg-gray-100 p-2 sm:flex-row"
                   >
-                    <span className="text-gray-800">{language}</span>
+                    <span className="text-center text-gray-800 sm:text-left">
+                      {language}
+                    </span>
                     <button
                       type="button"
                       onClick={() => removeLanguage(language)}
-                      className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                      className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
                     >
                       Remove
                     </button>
@@ -291,36 +296,40 @@ const UserSettings = () => {
 
         {/* Certificates Section */}
         <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <label className="mb-3 text-xl text-gray-700">Certificates</label>
-          <div className="grid grid-cols-2">
-            <div className="p-4">
+          <label className="mb-3 text-center text-lg text-gray-700 md:text-xl">
+            Certificates
+          </label>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="w-full space-y-2 p-2 sm:w-1/2">
               <input
                 type="text"
                 value={newCertificate}
                 onChange={(e) => setNewCertificate(e.target.value)}
                 placeholder="Add a new certificate"
-                className="mb-2 w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={addCertificate}
-                className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:px-10"
               >
                 Add
               </button>
             </div>
-            <div>
-              <ul className="max-h-48 overflow-y-auto">
+            <div className="w-full sm:w-1/2">
+              <ul className="max-h-48 space-y-2 overflow-y-auto">
                 {formData.certificates.map((certificate) => (
                   <li
                     key={certificate}
-                    className="mb-2 flex justify-between rounded-md bg-gray-100 px-5 py-2"
+                    className="flex flex-col items-center justify-between gap-2 rounded-md bg-gray-100 p-2 sm:flex-row"
                   >
-                    <span className="text-gray-800">{certificate}</span>
+                    <span className="text-center text-gray-800 sm:text-left">
+                      {certificate}
+                    </span>
                     <button
                       type="button"
                       onClick={() => removeCertificate(certificate)}
-                      className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                      className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
                     >
                       Remove
                     </button>
@@ -332,17 +341,17 @@ const UserSettings = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+        <div className="flex flex-col justify-between gap-4 rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:flex-row">
           <button
             type="submit"
-            className="transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
           >
             Update
           </button>
           <button
             type="button"
             onClick={handleDelete}
-            className="transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-10 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
           >
             Delete Account
           </button>

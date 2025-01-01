@@ -10,22 +10,22 @@ const Applications = () => {
   const [filteredAppls, setFilteredAppls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [statusFilter, setStatusFilter] = useState('all'); // New state for status filter
-  const id = localStorage.getItem('id'); // Retrieve token from localStorage
+  const [statusFilter, setStatusFilter] = useState('all');
+  const id = localStorage.getItem('id');
 
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const token = localStorage.getItem('token'); // Retrieve token from localStorage
+        const token = localStorage.getItem('token');
         if (!token) throw new Error('User not authenticated');
 
         const response = await axios.get(`${API_URL}/users/applications`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Add token to Authorization header
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        setApplications(response.data.data.works || []); // Update applications from API
+        setApplications(response.data.data.works || []);
         setFilteredAppls(response.data.data.works || []);
         setLoading(false);
       } catch (err) {
@@ -36,6 +36,7 @@ const Applications = () => {
 
     fetchApplications();
   }, []);
+
   function getStatus(appl, userId) {
     if (appl.freelancer_id === userId) {
       return 'Accepted';
@@ -54,7 +55,7 @@ const Applications = () => {
   };
 
   const handleStatusChange = (e) => {
-    const newStatus = e.target.value; // Get the new status
+    const newStatus = e.target.value;
     setStatusFilter(newStatus);
 
     const filtered = applications.filter((appl) => {
@@ -70,7 +71,6 @@ const Applications = () => {
   const cancelApplication = async (id) => {
     try {
       const token = localStorage.getItem('token');
-
       const response = await axios.delete(`${API_URL}/work/cancel/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,46 +85,97 @@ const Applications = () => {
       toast.error(error.message, { position: 'top-center' });
     }
   };
+  const MobileApplicationCard = ({
+    appl,
+    index,
+    userId,
+    cancelApplication,
+  }) => {
+    const status = getStatus(appl, userId);
+
+    return (
+      <div className="mb-4 rounded-lg border border-gray-300 bg-white p-4 shadow">
+        <div className="mb-2 flex justify-between">
+          <span className="font-semibold">No:</span>
+          <span>{index}</span>
+        </div>
+        <div className="mb-2 flex justify-between">
+          <span className="font-semibold">Title:</span>
+          <span className="text-right">{appl.title}</span>
+        </div>
+        <div className="mb-2 flex justify-between">
+          <span className="font-semibold">Pay:</span>
+          <span>₹{appl.pay}</span>
+        </div>
+        <div className="mb-4 flex justify-between">
+          <span className="font-semibold">Status:</span>
+          <span
+            className={`rounded-full px-3 py-1 text-sm font-semibold ${
+              status === 'Accepted'
+                ? 'bg-green-100 text-green-800'
+                : status === 'Rejected'
+                  ? 'bg-red-100 text-red-800'
+                  : 'bg-yellow-100 text-yellow-800'
+            }`}
+          >
+            {status}
+          </span>
+        </div>
+        {status === 'Pending' && (
+          <button
+            onClick={() => cancelApplication(appl._id)}
+            className="w-full rounded-lg bg-red-500 px-4 py-2 text-white transition-all hover:bg-red-600"
+          >
+            Cancel Application
+          </button>
+        )}
+      </div>
+    );
+  };
 
   if (loading) {
     return (
-      <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-50 p-10 shadow">
-        <div className="mb-6 w-96 transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-6 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <h2 className="mb-1 flex animate-pulse items-center text-3xl font-extrabold tracking-tight">
+      <div className="mt-4 flex w-full flex-col gap-4 rounded-lg bg-gray-50 p-4 shadow sm:mt-8 md:mt-12">
+        <div className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 text-white shadow-xl md:w-96">
+          <h2 className="flex items-center text-lg font-extrabold tracking-tight sm:text-xl md:text-3xl">
             My Applications
-            <span className="ml-4 rounded-full bg-white px-5 py-2 text-lg font-bold text-purple-700 shadow-lg transition-all duration-300 hover:scale-110 hover:bg-gray-200 hover:shadow-xl">
+            <span className="ml-2 rounded-full bg-white px-2 py-1 text-sm font-bold text-purple-700 md:ml-4 md:px-5 md:py-2 md:text-lg">
               {filteredAppls?.length}
             </span>
           </h2>
         </div>
-        <SearchBar onSearch={handleSearch} />
-        <div className="flex w-full place-items-center justify-center overflow-x-auto rounded-lg shadow">
-          <h1 className="3xl text-center">Loading Data</h1>
+        <div className="flex justify-center p-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
         </div>
       </div>
     );
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <div className="p-4 text-center text-red-600">Error: {error}</div>;
   }
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-50 p-10 shadow">
-      <div className="mb-6 w-96 transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-6 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-        <h2 className="mb-1 flex items-center text-3xl font-extrabold tracking-tight">
+    <div className="mt-12 flex w-full flex-col gap-4 rounded-lg bg-gray-50 p-4 shadow sm:mt-8 md:mt-12">
+      {/* Header */}
+      <div className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 text-white shadow-xl md:w-96">
+        <h2 className="flex items-center text-lg font-extrabold tracking-tight sm:text-xl md:text-3xl">
           My Applications
-          <span className="ml-4 rounded-full bg-white px-5 py-2 text-lg font-bold text-purple-700 shadow-lg transition-all duration-300 hover:scale-110 hover:bg-gray-200 hover:shadow-xl">
+          <span className="ml-2 rounded-full bg-white px-2 py-1 text-sm font-bold text-purple-700 md:ml-4 md:px-5 md:py-2 md:text-lg">
             {filteredAppls?.length}
           </span>
         </h2>
       </div>
-      <div>
-        <SearchBar onSearch={handleSearch} />
+
+      {/* Search and Filter */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex-1">
+          <SearchBar onSearch={handleSearch} />
+        </div>
         <select
           value={statusFilter}
           onChange={handleStatusChange}
-          className="m-2 rounded-md border border-gray-300 px-4 py-2"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm sm:w-auto"
         >
           <option value="all">All Statuses</option>
           <option value="Accepted">Accepted</option>
@@ -132,26 +183,28 @@ const Applications = () => {
           <option value="Rejected">Rejected</option>
         </select>
       </div>
-      <div className="overflow-x-auto rounded-lg shadow">
+
+      {/* Desktop View - Table */}
+      <div className="hidden overflow-x-auto rounded-lg shadow md:block">
         <table className="w-full border-collapse border border-gray-300 text-left">
           <thead className="bg-gray-200 text-sm uppercase text-gray-700">
             <tr>
-              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-2 text-left font-semibold">
                 No
               </th>
-              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-2 text-left font-semibold">
                 ID
               </th>
-              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-2 text-left font-semibold">
                 Title
               </th>
-              <th className="border border-gray-300 px-6 py-3 text-left font-semibold">
+              <th className="border border-gray-300 px-4 py-2 text-left font-semibold">
                 Pay
               </th>
-              <th className="border border-gray-300 px-6 py-3 text-center font-semibold">
+              <th className="border border-gray-300 px-4 py-2 text-center font-semibold">
                 Status
               </th>
-              <th className="border border-gray-300 px-6 py-3 text-center font-semibold">
+              <th className="border border-gray-300 px-4 py-2 text-center font-semibold">
                 Action
               </th>
             </tr>
@@ -160,8 +213,8 @@ const Applications = () => {
             {filteredAppls.length === 0 ? (
               <tr>
                 <td
-                  colSpan="5"
-                  className="border border-gray-300 px-4 py-3 text-center"
+                  colSpan="6"
+                  className="border border-gray-300 px-4 py-2 text-center"
                 >
                   No Applications Found
                 </td>
@@ -169,9 +222,9 @@ const Applications = () => {
             ) : (
               filteredAppls.map((appl, index) => (
                 <ApplicationListElement
+                  key={appl._id}
                   index={index + 1}
                   appl={appl}
-                  key={appl._id}
                   cancelApplication={cancelApplication}
                   userId={id}
                 />
@@ -179,6 +232,25 @@ const Applications = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile View - Cards */}
+      <div className="md:hidden">
+        {filteredAppls.length === 0 ? (
+          <div className="rounded-lg border border-gray-300 bg-white py-4 text-center">
+            No Applications Found
+          </div>
+        ) : (
+          filteredAppls.map((appl, index) => (
+            <MobileApplicationCard
+              key={appl._id}
+              appl={appl}
+              index={index + 1}
+              userId={id}
+              cancelApplication={cancelApplication}
+            />
+          ))
+        )}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import UserSidebar from '../components/UserSideBar';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
+import MobileNavbar from '../components/DashBoardNavBar';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex">
+      <MobileNavbar />
       <UserSidebar />
       <Outlet />
     </div>

@@ -17,7 +17,7 @@ const UserSidebar = () => {
   }
 
   return (
-    <div className="sticky top-0 col-span-12 hidden h-screen bg-gray-900 px-5 py-16 text-xl text-gray-200 md:block lg:col-span-3">
+    <div className="sticky top-0 col-span-12 hidden h-screen bg-gray-900 px-5 py-16 text-xl text-gray-200 lg:col-span-3 lg:block">
       <p
         className="mb-10 cursor-pointer rounded-[40px] border border-teal-400 bg-teal-900 py-2 text-center text-3xl font-medium"
         onClick={handleClick}

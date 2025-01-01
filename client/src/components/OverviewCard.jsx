@@ -6,9 +6,9 @@ const OverviewCard = ({ title, data, type }) => {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1.0 }}
       whileHover={{ scale: 1.1 }}
-      className={`m-3 h-fit max-h-36 rounded-lg border p-5 shadow-lg ${type}`}
+      className={`m-3 h-fit max-h-36 rounded-lg border p-2 shadow-lg sm:p-5 ${type}`}
     >
-      <p className="text-2xl font-semibold text-gray-800">
+      <p className="text-xl font-semibold text-gray-800 sm:text-2xl">
         {title || 'Default'}
       </p>
       <p className="pt-4 text-xl text-gray-600">{data}</p>

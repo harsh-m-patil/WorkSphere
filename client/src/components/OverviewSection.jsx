@@ -58,7 +58,7 @@ const OverviewSection = () => {
 
   if (loading) {
     <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
-      <h1 className="p-5 text-4xl font-medium">Overview</h1>
+      <h1 className="p-2 text-4xl font-medium sm:p-5">Overview</h1>
       <div className="grid animate-pulse grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
         {/* Total Applications Card */}
         <OverviewCard
