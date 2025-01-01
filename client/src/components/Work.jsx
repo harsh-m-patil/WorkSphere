@@ -80,9 +80,9 @@ const Work = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-50 via-orange-50 to-transparent">
-      <div className="max-w-7xl rounded-2xl border-2 bg-[#2F9C95] bg-opacity-15 p-10 shadow-2xl">
+      <div className="max-w-7xl rounded-2xl border-2 bg-[#2F9C95] bg-opacity-15 shadow-2xl sm:p-10">
         <div className="w-full rounded-xl bg-neutral-50 p-8 shadow-xl">
-          <div className="flex flex-wrap items-center justify-between">
+          <div className="flex flex-wrap items-center justify-center sm:justify-between">
             <div className="flex place-items-center">
               <img src={'/deno.svg'} className="h-24" />
               <div className="p-4">
@@ -99,7 +99,7 @@ const Work = () => {
               <Button text="Apply Now" onClick={handleClick} />
             </div>
           </div>
-          <div className="m-3 grid min-h-32 grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
+          <div className="m-3 grid min-h-32 grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10 md:grid-cols-4">
             <WorkStat
               statName="Pay"
               statValue={fetchedWork.pay}
