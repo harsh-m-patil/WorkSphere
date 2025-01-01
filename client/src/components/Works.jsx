@@ -62,10 +62,10 @@ const Works = () => {
   return (
     <div className="flex">
       <WorksSideBar filters={filters} setFilters={handleFilterChange} />
-      <div className="w-full p-10">
+      <div className="w-full p-4 sm:p-10">
         {/* Header section */}
         <div className="py-3">
-          <h1 className="py-3 text-3xl font-medium">
+          <h1 className="py-3 text-2xl font-medium sm:text-3xl">
             Recommended Jobs
             <span className="m-2 rounded-2xl border bg-gray-50 p-2 text-xl">
               {filteredWorks.length}
@@ -74,7 +74,7 @@ const Works = () => {
           <SearchBar onSearch={handleSearch} />
         </div>
         {/* Works section */}
-        <div className="grid w-full grid-cols-1 items-center gap-y-10 px-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid w-full grid-cols-1 place-items-center items-center gap-x-2 gap-y-10 px-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {filteredWorks.length === 0 ? (
             <NoWorkFound />
           ) : (

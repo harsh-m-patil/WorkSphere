@@ -9,7 +9,7 @@ const WorkCard = ({ work, index }) => {
 
   return (
     <motion.div
-      className="h-[24rem] w-96 rounded-3xl border p-2 pb-6 shadow-xl sm:w-80 lg:h-[26rem] lg:w-80"
+      className="h-[24rem] max-w-80 rounded-3xl border p-2 pb-6 shadow-xl lg:h-[26rem]"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1.0 }}
       whileHover={{ scale: 1.05, shadow: 1.1 }}
@@ -19,7 +19,9 @@ const WorkCard = ({ work, index }) => {
       >
         {/* Date Section */}
         <div>
-          <span className="rounded-2xl bg-white px-3 py-2">20 May, 2023</span>
+          <span className="rounded-2xl bg-white px-3 py-1 text-sm sm:py-2 sm:text-lg">
+            20 May, 2023
+          </span>
         </div>
         {/* More Info */}
         <div className="flex h-5/6 flex-col justify-between gap-10 px-3 pt-6">
@@ -30,13 +32,13 @@ const WorkCard = ({ work, index }) => {
               </p>
               {/* Add multi-line truncation for the title */}
               <p
-                className="line-clamp-2 max-w-36 overflow-hidden text-2xl font-medium"
+                className="line-clamp-2 max-w-36 overflow-hidden text-xl font-medium sm:text-2xl"
                 title={work.title} // Tooltip for full title
               >
                 {work.title}
               </p>
             </div>
-            <img src={getSvg(index)} alt="icon" className="size-12" />
+            <img src={getSvg(index)} alt="icon" className="size-9 sm:size-12" />
           </div>
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
@@ -54,7 +56,7 @@ const WorkCard = ({ work, index }) => {
         <div>
           <button
             onClick={handleClick}
-            className="rounded-3xl bg-black px-5 py-2 text-white"
+            className="rounded-3xl bg-black px-3 py-2 text-white sm:px-5"
           >
             Details
           </button>
@@ -94,7 +96,7 @@ export default WorkCard;
 
 const Pill = ({ skill }) => {
   return (
-    <span className="rounded-2xl border border-gray-400 px-2 py-1">
+    <span className="rounded-2xl border border-gray-400 px-2 py-1 text-sm sm:text-lg">
       {skill}
     </span>
   );
