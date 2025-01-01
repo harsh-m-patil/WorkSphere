@@ -1,55 +1,74 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
 import UserDashboardHeader from './UserDashboardHeader';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { fetchLoggedInUser } from '../query/fetchLoggedInUser';
 
 const UserSettings = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({
-    skills: [],
-    languages: [],
-    certificates: [],
-    firstName: '',
-    lastName: '',
-  });
-
   const [newSkill, setNewSkill] = useState('');
+  const queryClient = useQueryClient();
   const [newLanguage, setNewLanguage] = useState('');
   const [newCertificate, setNewCertificate] = useState('');
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const {
+    data: user,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['me'],
+    queryFn: fetchLoggedInUser,
+    staleTime: 60 * 1000,
+  });
 
-        const userData = response.data?.data?.user;
+  const [formData, setFormData] = useState({
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    skills: user?.skills || [],
+    languages: user?.languages || [],
+    certificates: user?.certificates || [],
+  });
 
-        setUser(userData);
-        setFormData({
-          firstName: userData.firstName || '',
-          lastName: userData.lastName || '',
-          skills: userData.skills || [],
-          languages: userData.languages || [],
-          certificates: userData.certificates || [],
-        });
-      } catch (error) {
-        toast.error(`Failed to load user data: ${error.message}`);
-        setError('Failed to load user data.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Update user mutation
+  const updateUserMutation = useMutation({
+    mutationFn: async (updatedData) => {
+      const token = localStorage.getItem('token');
+      return axios.patch(`${API_URL}/users/me`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success('Profile updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+    },
+    onError: (error) => {
+      toast.error(`Failed to update profile: ${error.message}`);
+    },
+  });
 
-    fetchUserData();
-  }, []);
+  // Delete user mutation
+  const deleteUserMutation = useMutation({
+    mutationFn: async () => {
+      const token = localStorage.getItem('token');
+      return axios.delete(`${API_URL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success('Account deleted successfully');
+      window.location.href = '/login';
+    },
+    onError: (error) => {
+      toast.error(`Failed to delete account: ${error.message}`);
+    },
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,26 +80,13 @@ const UserSettings = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const updatedData = {
+    updateUserMutation.mutate({
       firstName: formData.firstName,
       lastName: formData.lastName,
       skills: formData.skills,
       languages: formData.languages,
       certificates: formData.certificates,
-    };
-
-    try {
-      const token = localStorage.getItem('token');
-      await axios.patch(`${API_URL}/users/me`, updatedData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success('Profile updated successfully');
-    } catch (error) {
-      console.error('Error updating user:', error);
-      toast.error('Failed to update profile');
-    }
+    });
   };
 
   const handleDelete = async () => {
@@ -89,21 +95,11 @@ const UserSettings = () => {
         'Are you absolutely sure you want to delete your account? This action cannot be undone.'
       )
     ) {
-      try {
-        const token = localStorage.getItem('token');
-        await axios.delete(`${API_URL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        toast.success('Account deleted successfully');
-        window.location.href = '/login';
-      } catch (error) {
-        toast.error(`Failed to delete account: ${error.message}`);
-      }
+      deleteUserMutation.mutate();
     }
   };
 
+  // List management functions
   const addSkill = () => {
     if (newSkill.trim()) {
       setFormData((prevData) => ({
@@ -159,16 +155,31 @@ const UserSettings = () => {
     }));
   };
 
-  if (loading)
+  // Update formData when user data is fetched
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        skills: user.skills || [],
+        languages: user.languages || [],
+        certificates: user.certificates || [],
+      });
+    }
+  }, [user]);
+
+  if (isLoading)
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <div className="h-32 w-32 animate-spin rounded-full border-t-2 border-blue-500"></div>
       </div>
     );
 
-  if (error)
+  if (isError)
     return (
-      <div className="mt-10 text-center text-xl text-red-500">{error}</div>
+      <div className="mt-10 text-center text-xl text-red-500">
+        {error.message}
+      </div>
     );
 
   return (

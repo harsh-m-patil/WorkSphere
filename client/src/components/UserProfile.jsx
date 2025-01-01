@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import axios from 'axios';
 import {
   User,
   Award,
@@ -11,43 +9,17 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import UserDashboardHeader from './UserDashboardHeader';
-import { API_URL } from '../utils/constants';
+import { fetchLoggedInUser } from '../query/fetchLoggedInUser';
+import { useQuery } from '@tanstack/react-query';
 
 const ProfileDashboard = () => {
-  const [user, setUser] = useState({
-    firstName: '',
-    lastName: '',
-    userName: '',
-    email: '',
-    description: '',
-    skills: [],
-    languages: [],
-    certificates: [],
-    lastUpdated: new Date().toISOString(), // Add last updated timestamp
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ['me'],
+    queryFn: fetchLoggedInUser,
+    staleTime: 60 * 1000,
   });
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchUserData() {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUser(response.data.data.user);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching user data', err);
-        setLoading(false);
-      }
-    }
-
-    fetchUserData();
-  }, []);
-
-  if (loading) {
+  if (isPending) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center space-y-4">
@@ -58,6 +30,10 @@ const ProfileDashboard = () => {
         </div>
       </div>
     );
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>; // Error state
   }
 
   const ProfileSection = ({ icon: Icon, title, children, onEdit }) => (
@@ -122,12 +98,12 @@ const ProfileDashboard = () => {
             <div className="space-y-4">
               <InfoField
                 label="Full Name"
-                value={`${user.firstName} ${user.lastName}`}
+                value={`${data.firstName} ${data.lastName}`}
               />
-              <InfoField label="Username" value={user.userName} />
+              <InfoField label="Username" value={data.userName} />
               <div className="mt-4 flex items-center text-sm text-gray-500">
                 <Clock className="mr-2 h-4 w-4" />
-                Last updated: {new Date(user.lastUpdated).toLocaleDateString()}
+                Last updated: {new Date(data.lastUpdated).toLocaleDateString()}
               </div>
             </div>
           </ProfileSection>
@@ -135,11 +111,11 @@ const ProfileDashboard = () => {
           {/* Contact Section */}
           <ProfileSection icon={Mail} title="Contact Details" onEdit={() => {}}>
             <div className="space-y-4">
-              <InfoField label="Email Address" value={user.email} />
+              <InfoField label="Email Address" value={data.email} />
               <div className="rounded-lg bg-gray-50 p-4">
                 <p className="text-sm font-medium text-gray-500">About</p>
                 <p className="mt-2 whitespace-pre-line text-gray-700">
-                  {user.description || 'No description provided'}
+                  {data.description || 'No description provided'}
                 </p>
               </div>
             </div>
@@ -157,8 +133,8 @@ const ProfileDashboard = () => {
                   Technical Skills
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {user.skills.length > 0 ? (
-                    user.skills.map((skill, index) => (
+                  {data.skills.length > 0 ? (
+                    data.skills.map((skill, index) => (
                       <Badge key={index} color="blue">
                         {skill}
                       </Badge>
@@ -174,8 +150,8 @@ const ProfileDashboard = () => {
                   Languages
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {user.languages.length > 0 ? (
-                    user.languages.map((lang, index) => (
+                  {data.languages.length > 0 ? (
+                    data.languages.map((lang, index) => (
                       <Badge key={index} color="green">
                         {lang}
                       </Badge>
@@ -194,9 +170,9 @@ const ProfileDashboard = () => {
             title="Certifications & Achievements"
             onEdit={() => {}}
           >
-            {user.certificates.length > 0 ? (
+            {data.certificates.length > 0 ? (
               <div className="space-y-3">
-                {user.certificates.map((cert, index) => (
+                {data.certificates.map((cert, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"

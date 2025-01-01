@@ -1,41 +1,52 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { SearchBar } from './SearchBar';
 import { ApplicationListElement } from './ApplicationListElement';
 import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
+import { fetchApplications } from '../query/fetchApplications';
+
+// Separate API functions
+const cancelApplicationRequest = async (id) => {
+  const token = localStorage.getItem('token');
+  const response = await axios.delete(`${API_URL}/work/cancel/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
 
 const Applications = () => {
-  const [applications, setApplications] = useState([]);
-  const [filteredAppls, setFilteredAppls] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const id = localStorage.getItem('id');
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error('User not authenticated');
+  // Query for fetching applications
+  const {
+    data: applications = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['applications'],
+    queryFn: fetchApplications,
+    staleTime: 60 * 1000,
+  });
 
-        const response = await axios.get(`${API_URL}/users/applications`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setApplications(response.data.data.works || []);
-        setFilteredAppls(response.data.data.works || []);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || 'Failed to fetch applications');
-        setLoading(false);
-      }
-    };
-
-    fetchApplications();
-  }, []);
+  // Mutation for canceling applications
+  const cancelMutation = useMutation({
+    mutationFn: cancelApplicationRequest,
+    onSuccess: (data, variables) => {
+      toast.success(data.message);
+      // Invalidate and refetch applications after successful cancellation
+      queryClient.invalidateQueries(['applications']);
+    },
+    onError: (error) => {
+      toast.error(error.message, { position: 'top-center' });
+    },
+  });
 
   function getStatus(appl, userId) {
     if (appl.freelancer_id === userId) {
@@ -48,49 +59,26 @@ const Applications = () => {
   }
 
   const handleSearch = (query) => {
-    const filtered = applications.filter((appl) =>
-      appl.title.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredAppls(filtered);
+    setSearchQuery(query);
   };
 
   const handleStatusChange = (e) => {
-    const newStatus = e.target.value;
-    setStatusFilter(newStatus);
-
-    const filtered = applications.filter((appl) => {
-      const matchesStatus =
-        newStatus === 'all' ||
-        getStatus(appl, id).toLowerCase() === newStatus.toLowerCase();
-
-      return matchesStatus;
-    });
-    setFilteredAppls(filtered);
+    setStatusFilter(e.target.value);
   };
 
-  const cancelApplication = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.delete(`${API_URL}/work/cancel/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // Filter applications based on search query and status
+  const filteredAppls = applications.filter((appl) => {
+    const matchesSearch = appl.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      statusFilter === 'all' ||
+      getStatus(appl, id).toLowerCase() === statusFilter.toLowerCase();
 
-      toast.success(response.data.message);
-      setApplications((prev) => prev.filter((appl) => appl._id !== id));
-      setFilteredAppls((prev) => prev.filter((appl) => appl._id !== id));
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message, { position: 'top-center' });
-    }
-  };
-  const MobileApplicationCard = ({
-    appl,
-    index,
-    userId,
-    cancelApplication,
-  }) => {
+    return matchesSearch && matchesStatus;
+  });
+
+  const MobileApplicationCard = ({ appl, index, userId }) => {
     const status = getStatus(appl, userId);
 
     return (
@@ -123,24 +111,25 @@ const Applications = () => {
         </div>
         {status === 'Pending' && (
           <button
-            onClick={() => cancelApplication(appl._id)}
-            className="w-full rounded-lg bg-red-500 px-4 py-2 text-white transition-all hover:bg-red-600"
+            onClick={() => cancelMutation.mutate(appl._id)}
+            disabled={cancelMutation.isPending}
+            className="w-full rounded-lg bg-red-500 px-4 py-2 text-white transition-all hover:bg-red-600 disabled:bg-red-300"
           >
-            Cancel Application
+            {cancelMutation.isPending ? 'Canceling...' : 'Cancel Application'}
           </button>
         )}
       </div>
     );
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="mt-4 flex w-full flex-col gap-4 rounded-lg bg-gray-50 p-4 shadow sm:mt-8 md:mt-12">
         <div className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 text-white shadow-xl md:w-96">
           <h2 className="flex items-center text-lg font-extrabold tracking-tight sm:text-xl md:text-3xl">
             My Applications
             <span className="ml-2 rounded-full bg-white px-2 py-1 text-sm font-bold text-purple-700 md:ml-4 md:px-5 md:py-2 md:text-lg">
-              {filteredAppls?.length}
+              0
             </span>
           </h2>
         </div>
@@ -152,7 +141,9 @@ const Applications = () => {
   }
 
   if (error) {
-    return <div className="p-4 text-center text-red-600">Error: {error}</div>;
+    return (
+      <div className="p-4 text-center text-red-600">Error: {error.message}</div>
+    );
   }
 
   return (
@@ -162,7 +153,7 @@ const Applications = () => {
         <h2 className="flex items-center text-lg font-extrabold tracking-tight sm:text-xl md:text-3xl">
           My Applications
           <span className="ml-2 rounded-full bg-white px-2 py-1 text-sm font-bold text-purple-700 md:ml-4 md:px-5 md:py-2 md:text-lg">
-            {filteredAppls?.length}
+            {filteredAppls.length}
           </span>
         </h2>
       </div>
@@ -225,8 +216,9 @@ const Applications = () => {
                   key={appl._id}
                   index={index + 1}
                   appl={appl}
-                  cancelApplication={cancelApplication}
+                  cancelApplication={(id) => cancelMutation.mutate(id)}
                   userId={id}
+                  isCanceling={cancelMutation.isPending}
                 />
               ))
             )}
@@ -247,7 +239,6 @@ const Applications = () => {
               appl={appl}
               index={index + 1}
               userId={id}
-              cancelApplication={cancelApplication}
             />
           ))
         )}

@@ -1,41 +1,17 @@
-import { useState, useEffect } from 'react';
 import OverviewCard from './OverviewCard';
-import axios from 'axios';
 import UserDashboardHeader from './UserDashboardHeader';
-import { API_URL } from '../../utils/constants';
+import { useQuery } from '@tanstack/react-query';
+import { fetchLoggedInUser } from '../query/fetchLoggedInUser';
 
 const OverviewSection = () => {
-  const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Fetch user data on component mount
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const token = localStorage.getItem('token'); // Get the token from localStorage
-        if (!token) throw new Error('User not authenticated');
-
-        const response = await axios.get(`${API_URL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUser(response.data.data.user); // Set the fetched user data
-        setLoading(false);
-      } catch (err) {
-        console.err(err);
-        setError('Failed to fetch user data');
-        setLoading(false);
-      }
-    }
-
-    fetchUser();
-  }, []);
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ['me'],
+    queryFn: fetchLoggedInUser,
+    staleTime: 60 * 1000,
+  });
 
   // Data for the OverviewCard components
-  const data = {
+  const placeHolderData = {
     applications: {
       title: 'Total Applications',
       type: 'total',
@@ -56,36 +32,38 @@ const OverviewSection = () => {
     },
   };
 
-  if (loading) {
-    <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
-      <h1 className="p-2 text-4xl font-medium sm:p-5">Overview</h1>
-      <div className="grid animate-pulse grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
-        {/* Total Applications Card */}
-        <OverviewCard
-          {...data.applications}
-          data={0} // Pass total applications data
-        />
-        {/* Rejected Applications Card */}
-        <OverviewCard
-          {...data.pending}
-          data={0} // Pass rejected applications data (you can fetch this dynamically)
-        />
-        {/* Pending Applications Card */}
-        <OverviewCard
-          {...data.accepted}
-          data={0} // Pass pending applications data (you can fetch this dynamically)
-        />
-        {/* Earnings Card */}
-        <OverviewCard
-          {...data.earning}
-          data={0} // Pass balance data (earnings)
-        />
+  if (isPending) {
+    return (
+      <div className="rounded-2xl bg-white p-5 shadow shadow-gray-300">
+        <h1 className="p-2 text-4xl font-medium sm:p-5">Overview</h1>
+        <div className="grid animate-pulse grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
+          {/* Total Applications Card */}
+          <OverviewCard
+            {...placeHolderData.applications}
+            data={0} // Pass total applications data
+          />
+          {/* Rejected Applications Card */}
+          <OverviewCard
+            {...placeHolderData.pending}
+            data={0} // Pass rejected applications data (you can fetch this dynamically)
+          />
+          {/* Pending Applications Card */}
+          <OverviewCard
+            {...placeHolderData.accepted}
+            data={0} // Pass pending applications data (you can fetch this dynamically)
+          />
+          {/* Earnings Card */}
+          <OverviewCard
+            {...placeHolderData.earning}
+            data={0} // Pass balance data (earnings)
+          />
+        </div>
       </div>
-    </div>;
+    );
   }
 
-  if (error) {
-    return <div>Error: {error}</div>; // Error state
+  if (isError) {
+    return <div>Error: {error.message}</div>; // Error state
   }
 
   return (
@@ -94,23 +72,23 @@ const OverviewSection = () => {
       <div className="grid grid-cols-1 justify-start sm:grid-cols-2 md:grid-cols-4">
         {/* Total Applications Card */}
         <OverviewCard
-          {...data.applications}
-          data={user.noOfApplications} // Pass total applications data
+          {...placeHolderData.applications}
+          data={data.noOfApplications} // Pass total applications data
         />
         {/* Rejected Applications Card */}
         <OverviewCard
-          {...data.pending}
-          data={`${user.noOfApplications - user.works?.length}`} // Pass rejected applications data (you can fetch this dynamically)
+          {...placeHolderData.pending}
+          data={`${data.noOfApplications - data.works?.length}`} // Pass rejected applications data (you can fetch this dynamically)
         />
         {/* Pending Applications Card */}
         <OverviewCard
-          {...data.accepted}
-          data={user.works?.length} // Pass pending applications data (you can fetch this dynamically)
+          {...placeHolderData.accepted}
+          data={data.works?.length} // Pass pending applications data (you can fetch this dynamically)
         />
         {/* Earnings Card */}
         <OverviewCard
-          {...data.earning}
-          data={`$ ${user.balance}`} // Pass balance data (earnings)
+          {...placeHolderData.earning}
+          data={`$ ${data.balance}`} // Pass balance data (earnings)
         />
       </div>
     </div>
