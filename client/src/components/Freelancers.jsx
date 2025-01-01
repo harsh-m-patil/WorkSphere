@@ -3,32 +3,26 @@ import FreelancersSideBar from './FreelancersSideBar';
 import NoWorkFound from './NoWorkFound';
 import UserCard from './UserCard';
 import { SearchBar } from './SearchBar';
-import { API_URL } from '../utils/constants';
+import { fetchFreelancers } from '../query/fetchFreelancers';
+import { useQuery } from '@tanstack/react-query';
 
 const Freelancers = () => {
-  const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['freelancers'],
+    queryFn: fetchFreelancers,
+    staleTime: 60 * 1000,
+  });
 
   useEffect(() => {
-    fetch(`${API_URL}/users/freelancers`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setUsers(data.data.users);
-      })
-      .catch((error) => {
-        console.error('Error fetching freelancers:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    setUsers(users);
-    setFilteredUsers(users);
-  }, [users]);
+    if (data) {
+      setFilteredUsers(data);
+    }
+  }, [data]);
 
   const applyFilters = (query = '') => {
-    const filtered = users.filter((user) => {
+    if (!data) return;
+    const filtered = data.filter((user) => {
       const mathcesSearch = user.userName
         .toLowerCase()
         .includes(query.toLowerCase());
@@ -49,15 +43,22 @@ const Freelancers = () => {
         {/* Header section */}
         <div className="py-3">
           <h1 className="py-3 text-3xl font-medium">
-            Recommended Users{' '}
+            Recommended Users
             <span className="m-2 rounded-2xl border bg-gray-50 p-2 text-xl">
-              {filteredUsers.length}
+              {filteredUsers?.length}
             </span>
           </h1>
           <SearchBar onSearch={handleSearch} />
         </div>
-        <div className="mx-auto grid w-full grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
-          {filteredUsers.length === 0 ? (
+        {/* Works section */}
+        <div className="grid w-full grid-cols-1 place-items-center items-center gap-x-2 gap-y-10 px-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          {isLoading ? (
+            <h1 className="pt-20 text-center text-4xl">Loading</h1>
+          ) : isError ? (
+            <h1 className="pt-20 text-center text-4xl text-red-500">
+              Error: {error?.message || 'Something went wrong'}
+            </h1>
+          ) : filteredUsers?.length === 0 ? (
             <NoWorkFound />
           ) : (
             filteredUsers.map((user, index) => (

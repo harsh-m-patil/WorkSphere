@@ -3,28 +3,23 @@ import WorkCard from './WorkCard';
 import { SearchBar } from './SearchBar';
 import { useState, useEffect } from 'react';
 import NoWorkFound from './NoWorkFound';
-import { API_URL } from '../utils/constants';
+import { useQuery } from '@tanstack/react-query';
+import { fetchWorks } from '../query/fetchWorks';
 
 const Works = () => {
-  const [works, setWorks] = useState([]);
   const [filteredWorks, setFilteredWorks] = useState([]);
 
-  useEffect(() => {
-    setFilteredWorks(works);
-  }, [works]);
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['works'],
+    queryFn: fetchWorks,
+    staleTime: 60 * 1000,
+  });
 
   useEffect(() => {
-    fetch(`${API_URL}/work`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setWorks(data.data.works);
-      })
-      .catch((error) => {
-        console.error('Error fetching works:', error);
-      });
-  }, []);
+    if (data) {
+      setFilteredWorks(data);
+    }
+  }, [data]);
 
   const [filters, setFilters] = useState({
     joblevel: '',
@@ -34,7 +29,9 @@ const Works = () => {
   });
 
   const applyFilters = (query = '') => {
-    const filtered = works.filter((work) => {
+    if (!data) return;
+
+    const filtered = data.filter((work) => {
       const matchesSearch = work.title
         .toLowerCase()
         .includes(query.toLowerCase());
@@ -68,14 +65,20 @@ const Works = () => {
           <h1 className="py-3 text-2xl font-medium sm:text-3xl">
             Recommended Jobs
             <span className="m-2 rounded-2xl border bg-gray-50 p-2 text-xl">
-              {filteredWorks.length}
+              {filteredWorks?.length}
             </span>
           </h1>
           <SearchBar onSearch={handleSearch} />
         </div>
         {/* Works section */}
         <div className="grid w-full grid-cols-1 place-items-center items-center gap-x-2 gap-y-10 px-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {filteredWorks.length === 0 ? (
+          {isLoading ? (
+            <h1 className="pt-20 text-center text-4xl">Loading</h1>
+          ) : isError ? (
+            <h1 className="pt-20 text-center text-4xl text-red-500">
+              Error: {error?.message || 'Something went wrong'}
+            </h1>
+          ) : filteredWorks.length === 0 ? (
             <NoWorkFound />
           ) : (
             filteredWorks.map((work, index) => (

@@ -1,37 +1,26 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import NoWorkFound from './NoWorkFound';
 import WorkStat from './WorkStat';
 import Button from './Button';
 import WorkDescCard from './WorkDescCard';
 import axios from 'axios';
-import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
+import { useQuery } from '@tanstack/react-query';
+import { fetchWorkById } from '../query/fetchWorkById';
+import { API_URL } from '../utils/constants';
 
 const Work = () => {
   const { id } = useParams();
-  const [error, setError] = useState(null);
-  const [fetchedWork, setFetchedWork] = useState(null);
   const [isActive, setIsActive] = useState(true);
 
-  useEffect(() => {
-    async function fetchWork() {
-      try {
-        const res = await fetch(`${API_URL}/work/${id}`);
-        const json = await res.json();
-        if (res.status === 200) {
-          setFetchedWork(json.data.work);
-        } else {
-          setError(json.message);
-        }
-      } catch (err) {
-        setError(err);
-      }
-    }
-    fetchWork();
-  }, [id]);
+  const { data, isError, isLoading, error } = useQuery({
+    queryKey: [id],
+    queryFn: () => fetchWorkById(id),
+    staleTime: 60 * 1000,
+  });
 
-  if (error) {
+  if (isError) {
     return (
       <div className="grid h-96 items-center">
         <h1 className="text-center text-2xl text-red-800">{error.message}</h1>;
@@ -39,7 +28,15 @@ const Work = () => {
     );
   }
 
-  if (!fetchedWork) {
+  if (isLoading) {
+    return (
+      <div className="grid h-96 items-center">
+        <h1 className="text-center text-2xl text-blue-800">Loading</h1>;
+      </div>
+    );
+  }
+
+  if (!data) {
     return (
       <>
         <NoWorkFound />
@@ -87,11 +84,11 @@ const Work = () => {
               <img src={'/deno.svg'} className="h-24" />
               <div className="p-4">
                 <p className="text-2xl font-medium">
-                  {fetchedWork.client_id?.userName}
+                  {data.client_id?.userName}
                 </p>
-                <p className="text-lg">{fetchedWork.title}</p>
+                <p className="text-lg">{data.title}</p>
                 <p className="text-lg text-gray-500">
-                  {fetchedWork.location || 'remote'}
+                  {data.location || 'remote'}
                 </p>
               </div>
             </div>
@@ -102,22 +99,22 @@ const Work = () => {
           <div className="m-3 grid min-h-32 grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10 md:grid-cols-4">
             <WorkStat
               statName="Pay"
-              statValue={fetchedWork.pay}
+              statValue={data.pay}
               styles="bg-green-100"
             />
             <WorkStat
               statName="Job Type"
-              statValue={fetchedWork.joblevel}
+              statValue={data.joblevel}
               styles="bg-blue-100"
             />
             <WorkStat
               statName="Number of Applicants"
-              statValue={fetchedWork.applied_status.length}
+              statValue={data.applied_status.length}
               styles="bg-orange-100"
             />
             <WorkStat
               statName="Status"
-              statValue={fetchedWork.active ? 'Active' : 'InActive'}
+              statValue={data.active ? 'Active' : 'InActive'}
               styles="bg-purple-100"
             />
           </div>
@@ -125,14 +122,14 @@ const Work = () => {
             <WorkDescCard
               title="Description"
               type="job"
-              desc={fetchedWork}
+              desc={data}
               isActive={isActive}
               onClick={handleToggleClick}
             />
             <WorkDescCard
               title="Company"
               type="client"
-              desc={fetchedWork.client_id}
+              desc={data.client_id}
               isActive={!isActive}
               onClick={handleToggleClick}
             />

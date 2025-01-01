@@ -1,103 +1,90 @@
-import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NoWorkFound from './NoWorkFound';
 import FreelancerStat from './FreelancerStat';
 import FreelancerDescCard from './FreelancerDescCard';
-import SideFreelancers from './SideFreelancers';
-import { API_URL } from '../utils/constants';
+import { useQuery } from '@tanstack/react-query';
+import { fetchUserById } from '../query/fetchUserById';
 
 const Freelancer = () => {
   const { id } = useParams();
-  const [error, setError] = useState(null);
-  const [fetchedUser, setfetchedUser] = useState(null);
-  const [users, setUsers] = useState([]);
+  const { data, isError, isLoading, error } = useQuery({
+    queryKey: [id],
+    queryFn: () => fetchUserById(id),
+    staleTime: 60 * 1000,
+  });
 
-  useEffect(() => {
-    fetch(`${API_URL}/users/freelancers`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setUsers(data.data.users);
-      })
-      .catch((error) => {
-        console.error('Error fetching freelancers:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await fetch(`${API_URL}/users/${id}`);
-        const json = await res.json();
-        if (res.status === 200) {
-          setfetchedUser(json.data.user);
-        } else {
-          setError(json.message);
-        }
-      } catch (err) {
-        setError(err);
-      }
-    }
-    fetchUser();
-  }, [id]);
-
-  if (error) {
+  // Loading and error states are now centered properly on all screen sizes
+  if (isError) {
     return (
-      <div className="grid h-96 items-center">
-        <h1 className="text-center text-2xl text-red-800">{error}</h1>;
+      <div className="grid min-h-screen place-items-center p-4">
+        <h1 className="text-center text-xl text-red-800 md:text-2xl">
+          {error.message}
+        </h1>
       </div>
     );
   }
 
-  if (!fetchedUser) {
+  if (isLoading) {
     return (
-      <>
-        <NoWorkFound />
-      </>
+      <div className="grid min-h-screen place-items-center p-4">
+        <h1 className="text-center text-xl text-blue-800 md:text-2xl">
+          Loading
+        </h1>
+      </div>
     );
   }
 
+  if (!data) {
+    return <NoWorkFound />;
+  }
+
   return (
-    <div className="flex h-screen flex-col md:flex-row">
-      <SideFreelancers users={users} />
-      <div className="sticky top-0 w-7/12 p-10">
-        <div className="h-5/6 w-full rounded-xl bg-neutral-50 p-8 shadow-lg">
-          <div className="flex justify-between">
-            <div className="flex place-items-center">
-              <img src="/vite.svg" className="h-24" />
-              <div className="p-4">
-                <p className="text-2xl font-medium">{fetchedUser.userName}</p>
-                <p className="text-lg">{` 🌟 Average Rating : ${fetchedUser.ratingsAverage}`}</p>
+    <div className="flex min-h-screen flex-col p-4 sm:items-center sm:justify-center lg:flex-row">
+      {/* Main container now takes full width on mobile */}
+      <div className="w-full p-4 md:p-6 lg:sticky lg:top-0 lg:w-7/12 lg:p-10">
+        <div className="w-full rounded-xl bg-neutral-50 p-4 shadow-lg md:p-6 lg:p-8">
+          {/* Profile header is now stack on mobile */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
+            <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+              <img src="/vite.svg" className="h-16 md:h-24" alt="Profile" />
+              <div className="text-center sm:text-left">
+                <p className="text-xl font-medium md:text-2xl">
+                  {data.userName}
+                </p>
+                <p className="text-base md:text-lg">{`🌟 Average Rating: ${data.ratingsAverage}`}</p>
               </div>
             </div>
           </div>
-          <div className="m-3 grid min-h-32 grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
+
+          {/* Stats grid now adapts to screen size */}
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
             <FreelancerStat
               statName="Skills"
-              statValue={fetchedUser.skills}
+              statValue={data.skills}
               styles="bg-green-100"
             />
             <FreelancerStat
               statName="Languages"
-              statValue={fetchedUser.languages}
+              statValue={data.languages}
               styles="bg-blue-100"
             />
             <FreelancerStat
               statName="Certifications"
-              statValue={fetchedUser.certifications}
+              statValue={data.certifications}
               styles="bg-orange-100"
             />
           </div>
-          <div className="m-3 grid grid-cols-2 flex-wrap gap-4 rounded-xl text-center">
+
+          {/* Description cards stack on mobile */}
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
             <FreelancerDescCard
               name="Description"
-              val={fetchedUser.description}
+              val={data.description}
               styles="bg-purple-100"
             />
             <FreelancerDescCard
               name="Email"
-              val={fetchedUser.email}
+              val={data.email}
               styles="bg-pink-200"
             />
           </div>
