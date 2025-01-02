@@ -112,6 +112,10 @@ JWT_COOKIE_EXPIRES_IN=90
 npm run dev
 ```
 
+## Docs 
+
+API Docs available at `localhost:3000/docs` or  [Here](https://worksphere-dq95.onrender.com/docs)
+
 ## Demo
 
 ### Home Page
