@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import React from 'react';
 import { FcBullish } from 'react-icons/fc';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/authSlice';
@@ -46,7 +45,7 @@ export default function Sidebar() {
 
         {/* Logout button */}
         <div
-          className="flex cursor-pointer items-center gap-4 px-6 py-4 text-red-500 text-xl"
+          className="flex cursor-pointer items-center gap-4 px-6 py-4 text-xl text-red-500"
           onClick={handleClick}
         >
           <span className="text-3xl">

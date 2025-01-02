@@ -1,10 +1,6 @@
-import React, { Fragment } from 'react';
-import {
-  HiOutlineChatAlt,
-  HiOutlineSearch,
-  HiOutlineBell,
-} from 'react-icons/hi';
-import { Popover, Transition, Menu } from '@headlessui/react';
+import { Fragment } from 'react';
+import { HiOutlineChatAlt, HiOutlineBell } from 'react-icons/hi';
+import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 
 export default function Header() {

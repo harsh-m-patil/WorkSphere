@@ -8,7 +8,6 @@ import { API_URL } from '../utils/constants';
 const ClientDashboard = () => {
   const [client, setClient] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [setError] = useState(null);
 
   useEffect(() => {
     async function fetchUser() {
@@ -25,7 +24,6 @@ const ClientDashboard = () => {
         setLoading(false);
       } catch (err) {
         console.err(err);
-        setError('Failed to fetch the client data');
         setLoading(false);
       }
     }

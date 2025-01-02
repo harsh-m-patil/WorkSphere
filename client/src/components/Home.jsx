@@ -44,16 +44,16 @@ const Home = () => {
 
         {/* Text and Buttons */}
         <div
-          className="font-display relative z-10 mt-[-40px] text-center sm:mt-[-80px]"
+          className="relative z-10 mt-[-40px] text-center font-display sm:mt-[-80px]"
           data-aos="fade-up"
         >
           <h1 className="mb-4 text-4xl font-medium text-gray-800 sm:text-6xl">
             Empower Your Freelance Journey
           </h1>
-          <h2 className="font-display mb-4 text-2xl text-gray-800 sm:text-3xl">
+          <h2 className="mb-4 font-display text-2xl text-gray-800 sm:text-3xl">
             All in One Sphere
           </h2>
-          <p className="font-display mb-8 text-lg text-gray-900 sm:text-xl">
+          <p className="mb-8 font-display text-lg text-gray-900 sm:text-xl">
             We bring talent and opportunity together
           </p>
           <div className="mb-10 flex justify-center gap-6">
@@ -91,7 +91,7 @@ const Home = () => {
           <h2 className="font-display text-4xl text-gray-800 sm:mb-6 lg:text-6xl">
             Find Top Talent
           </h2>
-          <p className="font-display mb-8 text-lg leading-relaxed text-gray-600 md:text-xl">
+          <p className="mb-8 font-display text-lg leading-relaxed text-gray-600 md:text-xl">
             Discover highly skilled freelancers with the expertise to bring your
             innovative ideas to life. Let’s turn your vision into a reality with
             unmatched professionalism and creativity.
@@ -123,7 +123,7 @@ const Home = () => {
           <h2 className="font-display text-4xl text-gray-800 sm:mb-6 lg:text-6xl">
             Unlock New Opportunities
           </h2>
-          <p className="font-display mb-8 text-lg leading-relaxed text-gray-600 md:text-xl">
+          <p className="mb-8 font-display text-lg leading-relaxed text-gray-600 md:text-xl">
             Open doors to amazing projects and meaningful collaborations that
             can redefine your career path. Explore new opportunities and achieve
             your professional goals with confidence and creativity.
@@ -381,7 +381,7 @@ const Home = () => {
         >
           {/* Background shape with clearer appearance, reduced opacity and height */}
           <div className="absolute left-1/2 top-1/2 z-0 h-[300px] w-[950px] translate-x-[-50%] translate-y-[-50%] scale-110 transform rounded-full bg-[rgba(30,160,170,0.2)]"></div>
-          <h2 className="font-display relative z-10 mb-6 text-3xl font-medium text-gray-800 sm:text-5xl">
+          <h2 className="relative z-10 mb-6 font-display text-3xl font-medium text-gray-800 sm:text-5xl">
             Sign Up Today
           </h2>
 
@@ -408,7 +408,7 @@ const Home = () => {
         data-aos="slide-up"
         data-aos-duration="9000"
       >
-        <h2 className="font-display mb-10 text-center text-2xl text-gray-800 sm:text-4xl">
+        <h2 className="mb-10 text-center font-display text-2xl text-gray-800 sm:text-4xl">
           Trusted by Leading Companies
         </h2>
         <div className="flex flex-wrap justify-center gap-12">

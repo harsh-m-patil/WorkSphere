@@ -38,7 +38,7 @@ const Applications = () => {
   // Mutation for canceling applications
   const cancelMutation = useMutation({
     mutationFn: cancelApplicationRequest,
-    onSuccess: (data, variables) => {
+    onSuccess: (data) => {
       toast.success(data.message);
       // Invalidate and refetch applications after successful cancellation
       queryClient.invalidateQueries(['applications']);

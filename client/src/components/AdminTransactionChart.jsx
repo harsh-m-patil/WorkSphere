@@ -64,10 +64,7 @@ export default function TransactionChart() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar
-            dataKey="jobs"
-            fill="#6C63FF"
-          /> {/* Purple Blue for Jobs */}
+          <Bar dataKey="jobs" fill="#6C63FF" /> {/* Purple Blue for Jobs */}
           <Bar dataKey="freelancers" fill="#FFC75F" />{' '}
           {/* Soft Yellow for Freelancers */}
           {/* <Bar dataKey="totalPay" fill="#ff7300" /> */}

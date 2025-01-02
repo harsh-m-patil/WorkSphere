@@ -27,8 +27,8 @@ beforeAll(async () => {
   const adminLoginResponse = await requestWithSupertest
     .post('/api/v1/users/login')
     .send({
-      email: 'admin@example.com',
-      password: '12345678', // Replace with actual admin credentials
+      email: 'admin@work.com',
+      password: 'Password123', // Replace with actual admin credentials
     })
     .expect(200)
 

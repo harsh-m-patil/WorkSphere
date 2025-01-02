@@ -1,4 +1,3 @@
-import React from 'react';
 import DashboardStatsGrid from './AdminDashboardStatsGrid';
 import TransactionChart from './AdminTransactionChart';
 

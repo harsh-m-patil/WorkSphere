@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { IoBagHandle } from 'react-icons/io5';
 import { HiOutlineUsers } from 'react-icons/hi';
 import { FcBusinessman } from 'react-icons/fc';
-import { FcGraduationCap } from 'react-icons/fc';
 import axios from 'axios';
 import PayChart from './AdminPayChart';
 import { API_URL } from '../../utils/constants';

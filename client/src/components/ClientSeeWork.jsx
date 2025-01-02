@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const ClientSeeWork = ({ client }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/client/dashboard/works", {
+    navigate('/client/dashboard/works', {
       state: { client },
     });
   };
