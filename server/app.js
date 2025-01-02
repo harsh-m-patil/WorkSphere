@@ -14,6 +14,7 @@ import workRouter from './routes/work.routes.js'
 import AppError from './utils/appError.js'
 import logger from './utils/logger.js'
 import compression from 'compression'
+import swaggerDocs from './utils/swagger.js'
 
 const app = express()
 
@@ -62,6 +63,8 @@ app.get('/', (req, res, next) => {
     message: 'Hello World',
   })
 })
+
+swaggerDocs(app, process.env.PORT)
 
 app.all('*', (req, res, next) => {
   logger.error(`Can't find ${req.originalUrl}`)
