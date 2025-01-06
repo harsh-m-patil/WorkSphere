@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       validate: [validator.isEmail, 'Invalid Email'],
     },
-    photo: {
+    profileImage: {
       type: String,
       default: './photo.jpg',
     },

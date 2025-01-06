@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { API_URL } from '../utils/constants';
+import { API_URL, IMAGE_URL } from '../utils/constants';
 import { toast } from 'sonner';
 import UserDashboardHeader from './UserDashboardHeader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -12,6 +12,8 @@ const UserSettings = () => {
   const queryClient = useQueryClient();
   const [newLanguage, setNewLanguage] = useState('');
   const [newCertificate, setNewCertificate] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const {
     data: user,
@@ -30,6 +32,31 @@ const UserSettings = () => {
     skills: user?.skills || [],
     languages: user?.languages || [],
     certificates: user?.certificates || [],
+    profileImage: user?.profileImage || null,
+  });
+
+  // Update profile image mutation
+  const updateProfileImageMutation = useMutation({
+    mutationFn: async (file) => {
+      const token = localStorage.getItem('token');
+      const formData = new FormData();
+      formData.append('profileImage', file);
+
+      return axios.patch(`${API_URL}/users/me/profile-image`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success('Profile image updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      setSelectedImage(null);
+    },
+    onError: (error) => {
+      toast.error(`Failed to update profile image: ${error.message}`);
+    },
   });
 
   // Update user mutation
@@ -69,6 +96,24 @@ const UserSettings = () => {
       toast.error(`Failed to delete account: ${error.message}`);
     },
   });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUpdate = async () => {
+    if (selectedImage) {
+      updateProfileImageMutation.mutate(selectedImage);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -164,7 +209,9 @@ const UserSettings = () => {
         skills: user.skills || [],
         languages: user.languages || [],
         certificates: user.certificates || [],
+        profileImage: user.profileImage || null,
       });
+      setImagePreview(user.profileImage || null);
     }
   }, [user]);
 
@@ -189,6 +236,42 @@ const UserSettings = () => {
         onSubmit={handleUpdate}
         className="grid grid-cols-1 gap-6 p-10 sm:grid-cols-2 lg:gap-10"
       >
+        {/* Profile Image Section */}
+        <div className="flex flex-col items-center justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+          <div className="relative mb-4">
+            {imagePreview ? (
+              <img
+                src={`${IMAGE_URL}${imagePreview.split('/')[3]}`}
+                alt="Profile"
+                className="h-32 w-32 rounded-full object-cover"
+              />
+            ) : (
+              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gray-200"></div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+              id="profile-image-input"
+            />
+            <label
+              htmlFor="profile-image-input"
+              className="mt-4 cursor-pointer rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            >
+              {imagePreview ? 'Change Photo' : 'Add Photo'}
+            </label>
+          </div>
+          {selectedImage && (
+            <button
+              type="button"
+              onClick={handleImageUpdate}
+              className="mt-2 transform rounded-xl bg-gradient-to-r from-green-400 to-green-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            >
+              Upload New Photo
+            </button>
+          )}
+        </div>
         {/* Personal Info */}
         <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
           <div className="mb-3 flex flex-col items-center justify-between sm:flex-row">
@@ -352,7 +435,7 @@ const UserSettings = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col justify-between gap-4 rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:flex-row">
+        <div className="flex max-h-24 flex-col justify-between gap-4 rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:flex-row">
           <button
             type="submit"
             className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"

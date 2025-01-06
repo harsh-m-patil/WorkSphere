@@ -3,6 +3,7 @@ import Work from '../models/work.model.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import factory from './factory.controller.js'
+import { deleteFile } from '../utils/fileHelpers.js'
 
 const userController = {
   /**
@@ -126,6 +127,40 @@ const userController = {
     } catch (error) {
       next(error) // Pass error to global error handler
     }
+  }),
+
+  updateProfileImage: asyncHandler(async (req, res, next) => {
+    if (!req.file) {
+      return next(new AppError('No image file provided', 400))
+    }
+
+    const user = await User.findById(req.user.id)
+    if (!user) {
+      await deleteFile(`/uploads/profile-images/${req.file.filename}`)
+      return next(new AppError('User not found', 404))
+    }
+
+    // Generate the URL for the uploaded file
+    const imageUrl = `/uploads/profile-images/${req.file.filename}`
+
+    // Delete old image file if it exists
+    if (user.profileImage) {
+      await deleteFile(user.profileImage)
+    }
+
+    // Update user profile image URL in database using findByIdAndUpdate
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { profileImage: imageUrl },
+      { new: true, runValidators: true },
+    )
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        profileImage: updatedUser.profileImage,
+      },
+    })
   }),
 }
 

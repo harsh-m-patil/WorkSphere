@@ -4,6 +4,7 @@ import userController from '../controllers/user.controller.js'
 import authController from '../controllers/auth.controller.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
 import reviewRouter from './review.routes.js'
+import { upload } from '../middlewares/upload.js'
 import { getAppInfo } from '../controllers/app.controller.js'
 
 const router = express.Router()
@@ -79,6 +80,13 @@ router
     userController.getMe,
     userController.deleteUser,
   )
+
+router.patch(
+  '/me/profile-image',
+  authMiddleware.protect,
+  upload.single('profileImage'),
+  userController.updateProfileImage,
+)
 
 /**
  * @openapi
