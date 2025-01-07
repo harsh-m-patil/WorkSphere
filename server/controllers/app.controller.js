@@ -1,4 +1,5 @@
 import User from '../models/user.model.js'
+import mongoose from 'mongoose'
 import Work from '../models/work.model.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
@@ -120,4 +121,31 @@ export const getAppInfo = asyncHandler(async (req, res, next) => {
       monthlyWorkStats: mergedMonthlyStats, // Send merged data
     },
   })
+})
+
+// Utility function to format model name
+const formatModelName = (str) => {
+  if (!str) return ''
+  let formatted = str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+  if (formatted.endsWith('s')) {
+    formatted = formatted.slice(0, -1) // Remove the last 's'
+  }
+  return formatted
+}
+
+export const downloadData = asyncHandler(async (req, res) => {
+  const modelName = formatModelName(req.query.q) // Process model name
+  const Model = mongoose.models[modelName] // Retrieve the Mongoose model
+
+  if (!Model) {
+    return res.status(400).json({ error: 'Invalid model name' })
+  }
+
+  const docs = await Model.find().lean() // Fetch data from the database
+
+  const fileName = `${modelName.toLowerCase()}s.json` // Set file name
+
+  res.header('Content-Type', 'application/json')
+  res.header('Content-Disposition', `attachment; filename=${fileName}`)
+  res.status(200).json(docs)
 })

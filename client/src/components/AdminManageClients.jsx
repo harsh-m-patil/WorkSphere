@@ -28,6 +28,38 @@ const ManageUsers = () => {
     fetchClients();
   }, []);
 
+  const handleDownload = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Fetch the data with proper headers
+      const response = await axios.get(`${API_URL}/app/download?q=users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', // Important: ensures the response is treated as a file
+      });
+
+      // Create a Blob URL for the downloaded file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+
+      // Set the file name for the downloaded file
+      link.setAttribute('download', 'users.json');
+      document.body.appendChild(link);
+      link.click();
+      link.remove(); // Clean up the link element
+
+      toast.success('Jobs downloaded successfully!', {
+        position: 'top-center',
+      });
+    } catch (error) {
+      console.error('Error downloading jobs:', error);
+      toast.error('Failed to download jobs.', { position: 'top-center' });
+    }
+  };
+
   // Handle delete client
   const handleDelete = async (id) => {
     try {
@@ -68,7 +100,12 @@ const ManageUsers = () => {
       </div>
 
       <SearchBar onSearch={handleSearch} />
-
+      <button
+        onClick={handleDownload}
+        className="mb-6 transform rounded-lg bg-gradient-to-r from-blue-500 to-green-500 px-6 py-3 font-bold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:from-blue-600 hover:to-green-600 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300 active:scale-95"
+      >
+        Download Users as JSON
+      </button>
       <table className="w-full table-auto border-collapse rounded-md border border-gray-200 shadow-md">
         <thead className="bg-gray-200 text-gray-900 shadow-md">
           <tr className="border-b">
