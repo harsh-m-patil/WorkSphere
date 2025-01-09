@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import ChartDemo from './FreelancerGraph';
 
 const Recent = () => {
   const storedUser = localStorage.getItem('user');
@@ -47,11 +48,7 @@ const Recent = () => {
       {/* Graph Section */}
       <div className="rounded-lg p-3 md:p-4">
         <h1 className="mb-4 text-lg font-semibold md:text-2xl">Graph</h1>
-        <div className="flex h-48 items-center justify-center rounded-lg bg-gray-100 md:h-64">
-          <p className="text-sm text-gray-500 md:text-base">
-            Graph Visualization Placeholder
-          </p>
-        </div>
+        <ChartDemo />
       </div>
     </motion.div>
   );
