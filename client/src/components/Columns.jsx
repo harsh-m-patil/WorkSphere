@@ -10,39 +10,41 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
 
-export const columns = [
+//NOTE: Should be an array but to use react hooks made a function that returns a array
+export const columns = (cancelApplicationHandler, viewApplicationDetails) => [
   {
     accessorKey: 'title',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Title
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Title
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const title = row.getValue('title');
+      return <p className="text-base font-medium">{title}</p>;
     },
   },
   {
     accessorKey: 'noOfAppl',
-    header: ({ column }) => {
-      return (
+    header: ({ column }) => (
+      <div className="flex w-full justify-center">
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className="mx-auto"
         >
           No Of Applications
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const noOfAppl = row.getValue('noOfAppl');
-
-      return <p>{noOfAppl}</p>;
-    },
+      </div>
+    ),
+    cell: ({ row }) => (
+      <p className="text-center">{row.getValue('noOfAppl')}</p>
+    ),
   },
   {
     accessorKey: 'postedBy',
@@ -50,22 +52,22 @@ export const columns = [
   },
   {
     accessorKey: 'status',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Status
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const status = row.getValue('status');
       return (
         <div
-          className={`inline-block whitespace-nowrap rounded-full border px-2 py-1 text-xs md:px-4 md:text-base ${getStatusClass(status)}`}
+          className={`inline-block whitespace-nowrap rounded-full border px-2 py-1 text-xs md:px-4 md:text-base ${getStatusClass(
+            status
+          )}`}
         >
           {status}
         </div>
@@ -74,17 +76,15 @@ export const columns = [
   },
   {
     accessorKey: 'pay',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Pay
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Pay
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue('pay'));
       const formatted = new Intl.NumberFormat('en-US', {
@@ -122,7 +122,18 @@ export const columns = [
               Copy Application ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View Application details</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => viewApplicationDetails(application._id)}
+            >
+              View Application
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => cancelApplicationHandler(application._id)}
+              className="border border-red-400 bg-red-100 hover:bg-red-200"
+            >
+              Cancel Application
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

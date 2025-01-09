@@ -1,4 +1,3 @@
-import WorksSideBar from './WorksSideBar';
 import { SearchBar } from './SearchBar';
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -19,13 +18,6 @@ const Works = () => {
       setFilteredWorks(data);
     }
   }, [data]);
-
-  const [filters, setFilters] = useState({
-    joblevel: '',
-    pay: '',
-    active: '',
-    skills: '',
-  });
 
   const applyFilters = (query = '') => {
     if (!data) return;
@@ -50,14 +42,8 @@ const Works = () => {
     applyFilters(query);
   };
 
-  const handleFilterChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-    applyFilters();
-  };
-
   return (
     <div className="flex">
-      <WorksSideBar filters={filters} setFilters={handleFilterChange} />
       <div className="w-full p-4 sm:p-10">
         {/* Header section */}
         <div className="py-3">

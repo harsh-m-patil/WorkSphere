@@ -4,6 +4,10 @@ import { columns } from './Columns';
 import { DataTable } from './DataTable';
 import { useQuery } from '@tanstack/react-query';
 import { fetchApplications } from '../query/fetchApplications';
+import { toast } from 'sonner';
+import { cancelApplication } from '@/mutation/cancelApplication';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 export default function ApplicationsTable() {
   const {
@@ -16,6 +20,27 @@ export default function ApplicationsTable() {
     queryFn: fetchApplications,
     staleTime: 60 * 1000,
   });
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const cancelMutation = useMutation({
+    mutationFn: cancelApplication,
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries(['applications']);
+    },
+    onError: (error) => {
+      toast.error(error.message, { position: 'top-center' });
+    },
+  });
+
+  const viewApplicationDetails = (applicationId) => {
+    navigate(`/works/${applicationId}`);
+  };
+  const cancelApplicationHandler = (applicationId) => {
+    cancelMutation.mutate(applicationId);
+  };
 
   const userId = localStorage.getItem('id');
 
@@ -60,7 +85,10 @@ export default function ApplicationsTable() {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={applicationsWithStatus} />
+      <DataTable
+        columns={columns(cancelApplicationHandler, viewApplicationDetails)}
+        data={applicationsWithStatus}
+      />
     </div>
   );
 }
