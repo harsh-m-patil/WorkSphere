@@ -20,18 +20,18 @@ export async function initServer() {
   const app = express()
   // MIDDLEWARES
   if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'))
+  app.use(express.static('uploads/profile-images'))
   app.use(express.json())
   app.use(helmet()) // Apply secure headers to all routes
 
   app.use(cookieParser())
 
   const corsOptions = {
-    origin: '*',
+    origin: ['http://localhost:5173', 'https://worksphere35.vercel.app'], // Add allowed origins
     credentials: true,
   }
 
   app.use(cors(corsOptions))
-  app.use(express.static('uploads/profile-images'))
   // Route Handlers
   const limiter = rateLimit({
     max: 100, // Maximum number of requests allowed per IP within the window
@@ -40,8 +40,6 @@ export async function initServer() {
     standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers (deprecated)
   })
-
-  app.use('/api', limiter) // Apply rate limiting to all `/api` routes
 
   app.use(
     express.json({
@@ -53,6 +51,7 @@ export async function initServer() {
   app.use(mongoSanitize()) // Sanitize data to prevent NoSQL injection
   app.use(compression())
 
+  app.use('/api', limiter) // Apply rate limiting to all `/api` routes
   app.use('/api/v1/users', userRouter)
   app.use('/api/v1/reviews', reviewRouter)
   app.use('/api/v1/work', workRouter)

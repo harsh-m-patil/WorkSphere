@@ -14,22 +14,25 @@ const DashboardLayout = () => {
   // Use useEffect to handle navigation after component mounts
   useEffect(() => {
     if (!token) {
-      navigate('/login');
+      toast.warning(
+        'you do not have permission to come here,please login first',
+        {
+          position: 'top-center',
+        }
+      );
+      navigate('/');
+      return;
+    }
+
+    if (user && user.role === 'admin') {
+      navigate('/admin');
+      return;
+    } else if (user.role === 'client') {
+      navigate('/client/dashboard');
     }
 
     // console.log(user);
-    if (!user || user.role !== 'freelancer') {
-      toast.warning('You Do not have permission to come here', {
-        position: 'top-center',
-      });
-      navigate('/');
-    }
   }, [navigate, token, user]); // Dependency on navigate and token
-
-  // If token is missing, navigate will handle the redirect
-  if (!token || user.role !== 'freelancer') {
-    return null; // Return null to prevent rendering the layout before redirection
-  }
 
   return (
     <div className="flex">

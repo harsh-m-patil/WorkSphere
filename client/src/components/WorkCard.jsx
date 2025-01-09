@@ -1,5 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { Badge } from './ui/badge';
+import { Avatar, AvatarImage } from './ui/avatar';
+import { AvatarFallback } from '@radix-ui/react-avatar';
+import { getDate } from '@/utils/convertDate';
+import { Button } from './ui/button';
 
 const WorkCard = ({ work, index }) => {
   const navigate = useNavigate();
@@ -9,7 +14,7 @@ const WorkCard = ({ work, index }) => {
 
   return (
     <motion.div
-      className="h-[24rem] max-w-80 rounded-3xl border p-2 pb-6 shadow-xl lg:h-[26rem]"
+      className="group flex h-[24rem] w-72 flex-col justify-around rounded-3xl border p-2 pb-6 shadow-xl md:w-80 lg:h-[23rem]"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1.0 }}
       whileHover={{ scale: 1.05, shadow: 1.1 }}
@@ -19,9 +24,9 @@ const WorkCard = ({ work, index }) => {
       >
         {/* Date Section */}
         <div>
-          <span className="rounded-2xl bg-white px-3 py-1 text-sm sm:py-2 sm:text-lg">
-            20 May, 2023
-          </span>
+          <Badge variant="secondary" className="bg-white px-2 py-1 text-sm">
+            {getDate(work.createdAt)}
+          </Badge>
         </div>
         {/* More Info */}
         <div className="flex h-5/6 flex-col justify-between gap-10 px-3 pt-6">
@@ -38,28 +43,40 @@ const WorkCard = ({ work, index }) => {
                 {work.title}
               </p>
             </div>
-            <img src={getSvg(index)} alt="icon" className="size-9 sm:size-12" />
+            <Avatar>
+              <AvatarImage src={work.client_id?.profileImage} />
+              <AvatarFallback>
+                <img
+                  src={getSvg(index)}
+                  alt="icon"
+                  className="size-9 sm:size-12"
+                />
+              </AvatarFallback>
+            </Avatar>
           </div>
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
             {work.skills_Required.map((skill, index) => (
-              <Pill skill={skill} key={index} />
+              <Badge
+                key={1 + index}
+                variant="outline"
+                className="border-gray-400 bg-transparent px-2 text-sm"
+              >
+                {skill}
+              </Badge>
             ))}
           </div>
         </div>
       </div>
-      <div className="flex h-1/6 justify-between rounded-3xl p-4 pb-1">
+      <div className="flex items-center justify-between rounded-3xl px-4 py-2">
         <div>
           <span className="font-semibold">$ {work.pay}</span>
           <p className="text-gray-600">Remote</p>
         </div>
         <div>
-          <button
-            onClick={handleClick}
-            className="rounded-3xl bg-black px-3 py-2 text-white sm:px-5"
-          >
+          <Button onClick={handleClick} className="rounded-3xl">
             Details
-          </button>
+          </Button>
         </div>
       </div>
     </motion.div>
@@ -93,11 +110,3 @@ const getSvg = (idx) => {
 };
 
 export default WorkCard;
-
-const Pill = ({ skill }) => {
-  return (
-    <span className="rounded-2xl border border-gray-400 px-2 py-1 text-sm sm:text-lg">
-      {skill}
-    </span>
-  );
-};

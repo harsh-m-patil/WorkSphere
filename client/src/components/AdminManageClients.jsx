@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 import { toast } from 'sonner';
-import { API_URL } from '../../utils/constants';
+import { API_URL } from '../utils/constants';
 
 const ManageUsers = () => {
   const [clients, setClients] = useState([]);

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ClientSideBar from './ClientSideBar';
-import { API_URL } from '../../utils/constants';
+import { API_URL } from '../utils/constants';
 
 const ClientWorksPosted = () => {
   const location = useLocation();

@@ -4,7 +4,7 @@ import { HiOutlineUsers } from 'react-icons/hi';
 import { FcBusinessman } from 'react-icons/fc';
 import { FcGraduationCap } from 'react-icons/fc';
 import axios from 'axios';
-import { API_URL } from '../../utils/constants';
+import { API_URL } from '../utils/constants.js';
 
 function DashboardStatsGrid() {
   const [stats, setStats] = useState(null);

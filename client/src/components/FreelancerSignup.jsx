@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import validator from 'validator'; // Ensure you have this installed
-import { API_URL } from '../../utils/constants';
+import { API_URL } from '../utils/constants.js';
 // import signupImage from '../assets/SignUp.png'; // Import the image
 
 const Freelancersignup = () => {
