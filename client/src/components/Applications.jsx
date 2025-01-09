@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { SearchBar } from './SearchBar';
-import { ApplicationListElement } from './ApplicationListElement';
 import { API_URL } from '../utils/constants';
 import { toast } from 'sonner';
 import { fetchApplications } from '../query/fetchApplications';
+import ApplicationsTable from './ApplicationsTable';
 
 // Separate API functions
 const cancelApplicationRequest = async (id) => {
@@ -58,73 +57,14 @@ const Applications = () => {
     }
   }
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
-
   const handleStatusChange = (e) => {
     setStatusFilter(e.target.value);
-  };
-
-  // Filter applications based on search query and status
-  const filteredAppls = applications.filter((appl) => {
-    const matchesSearch = appl.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      statusFilter === 'all' ||
-      getStatus(appl, id).toLowerCase() === statusFilter.toLowerCase();
-
-    return matchesSearch && matchesStatus;
-  });
-
-  const MobileApplicationCard = ({ appl, index, userId }) => {
-    const status = getStatus(appl, userId);
-
-    return (
-      <div className="mb-4 rounded-lg border border-gray-300 bg-white p-4 shadow">
-        <div className="mb-2 flex justify-between">
-          <span className="font-semibold">No:</span>
-          <span>{index}</span>
-        </div>
-        <div className="mb-2 flex justify-between">
-          <span className="font-semibold">Title:</span>
-          <span className="text-right">{appl.title}</span>
-        </div>
-        <div className="mb-2 flex justify-between">
-          <span className="font-semibold">Pay:</span>
-          <span>₹{appl.pay}</span>
-        </div>
-        <div className="mb-4 flex justify-between">
-          <span className="font-semibold">Status:</span>
-          <span
-            className={`rounded-full px-3 py-1 text-sm font-semibold ${
-              status === 'Accepted'
-                ? 'bg-green-100 text-green-800'
-                : status === 'Rejected'
-                  ? 'bg-red-100 text-red-800'
-                  : 'bg-yellow-100 text-yellow-800'
-            }`}
-          >
-            {status}
-          </span>
-        </div>
-        {status === 'Pending' && (
-          <button
-            onClick={() => cancelMutation.mutate(appl._id)}
-            disabled={cancelMutation.isPending}
-            className="w-full rounded-lg bg-red-500 px-4 py-2 text-white transition-all hover:bg-red-600 disabled:bg-red-300"
-          >
-            {cancelMutation.isPending ? 'Canceling...' : 'Cancel Application'}
-          </button>
-        )}
-      </div>
-    );
   };
 
   if (isLoading) {
     return (
       <div className="mt-4 flex w-full flex-col gap-4 rounded-lg bg-gray-50 p-4 shadow sm:mt-8 md:mt-12">
+        <ApplicationsTable />
         <div className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 text-white shadow-xl md:w-96">
           <h2 className="flex items-center text-lg font-extrabold tracking-tight sm:text-xl md:text-3xl">
             My Applications
@@ -152,13 +92,12 @@ const Applications = () => {
       <div className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-4 text-white shadow-xl md:w-96">
         <h2 className="flex items-center text-lg font-extrabold tracking-tight sm:text-xl md:text-3xl">
           My Applications
-          <span className="ml-2 rounded-full bg-white px-2 py-1 text-sm font-bold text-purple-700 md:ml-4 md:px-5 md:py-2 md:text-lg">
-            {filteredAppls.length}
-          </span>
         </h2>
       </div>
 
+      <ApplicationsTable data={applications} />
       {/* Search and Filter */}
+      {/*
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <div className="flex-1">
           <SearchBar onSearch={handleSearch} />
@@ -175,7 +114,6 @@ const Applications = () => {
         </select>
       </div>
 
-      {/* Desktop View - Table */}
       <div className="hidden overflow-x-auto rounded-lg shadow md:block">
         <table className="w-full border-collapse border border-gray-300 text-left">
           <thead className="bg-gray-200 text-sm uppercase text-gray-700">
@@ -226,8 +164,10 @@ const Applications = () => {
         </table>
       </div>
 
-      {/* Mobile View - Cards */}
-      <div className="md:hidden">
+*/}
+
+      {/* Mobile View - Cards 
+     <div className="md:hidden">
         {filteredAppls.length === 0 ? (
           <div className="rounded-lg border border-gray-300 bg-white py-4 text-center">
             No Applications Found
@@ -243,6 +183,7 @@ const Applications = () => {
           ))
         )}
       </div>
+      */}
     </div>
   );
 };
