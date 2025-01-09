@@ -27,7 +27,11 @@ export async function initServer() {
   app.use(cookieParser())
 
   const corsOptions = {
-    origin: ['http://localhost:5173', 'https://worksphere35.vercel.app'], // Add allowed origins
+    origin: [
+      'http://localhost:4173',
+      'http://localhost:5173',
+      'https://worksphere35.vercel.app',
+    ],
     credentials: true,
   }
 

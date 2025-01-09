@@ -186,7 +186,14 @@ router.get(
  *       200:
  *         description: User details retrieved successfully.
  */
-router.get('/:id', userController.getUser)
+router
+  .route('/:id')
+  .get(userController.getUser)
+  .delete(
+    authMiddleware.protect,
+    authMiddleware.restrictTo('admin'),
+    userController.deleteUser,
+  )
 
 /**
  * @openapi
