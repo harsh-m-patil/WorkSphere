@@ -1,5 +1,8 @@
 export function getDate(mongoDate) {
-  const date = new Date(mongoDate);
+  let date = new Date();
+  if (mongoDate) {
+    date = new Date(mongoDate);
+  }
   return (
     date.getDate() +
     ' ' +
@@ -9,7 +12,7 @@ export function getDate(mongoDate) {
   );
 }
 
-function getMonth(month) {
+export function getMonth(month) {
   const monthObj = {
     1: 'Jan',
     2: 'Feb',

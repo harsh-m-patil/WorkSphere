@@ -38,11 +38,10 @@ const Freelancers = () => {
   };
   return (
     <div className="flex">
-      <FreelancersSideBar />
       <div className="w-full p-10">
         {/* Header section */}
         <div className="py-3">
-          <h1 className="py-3 text-3xl font-medium">
+          <h1 className="py-3 text-2xl font-medium sm:text-3xl">
             Recommended Users
             <span className="m-2 rounded-2xl border bg-gray-50 p-2 text-xl">
               {filteredUsers?.length}

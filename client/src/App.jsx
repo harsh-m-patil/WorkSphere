@@ -33,6 +33,9 @@ import Freelancersignup from './components/FreelancerSignup';
 import Clientsignup from './components/ClientSignup';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import AdminDashboardLayOut from './pages/AdminDashboardLayOut';
+import Dummy from './pages/Dummy';
+import Overview from './components/admin/Overview';
 
 const queryClient = new QueryClient({});
 
@@ -59,6 +62,9 @@ function App() {
               <Route path="works" element={<MyWorks />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="profile" element={<ProfilePage />} />
+            </Route>
+            <Route path="/v2" element={<AdminDashboardLayOut />}>
+              <Route index element={<Overview />} />
             </Route>
             <Route path="/admin" element={<Layout />}>
               <Route index element={<Dashboard />} />
