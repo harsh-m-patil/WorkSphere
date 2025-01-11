@@ -1,4 +1,3 @@
-import APIFeatures from '../utils/apiFeatures.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
@@ -7,11 +6,6 @@ const factory = {
    * @param {mongoose.Model} Model
    * @returns {Function} delete Handler Function
    * @description Delete a document of a given Model by ID
-   * @example
-   * import {deleteOne} from '../controllers/factory.controller.js'
-   * import User from '../models/user.model.js'
-   *
-   * exports.deleteUser = deleteOne(User)
    */
   deleteOne: (Model) =>
     asyncHandler(async (req, res, next) => {
@@ -32,11 +26,6 @@ const factory = {
    * @param {mongoose.Model} Model
    * @returns {Function} update Handler Function
    * @description Update a document of a given Model by ID
-   * @example
-   * const {UpdateOne} = require('../controllers/factory.controller.js')
-   * import User from '../models/user.model.js'
-   *
-   * exports.updateUser = updateOne(User)
    */
   updateOne: (Model) =>
     asyncHandler(async (req, res, next) => {
@@ -60,13 +49,8 @@ const factory = {
 
   /**
    * @param {mongoose.Model} Model
-   * @returns {Function} delete Handler Function
+   * @returns {Function} Get Handler Function
    * @description Get a document of a given Model by ID
-   * @example
-   * import {getOne} from '../controllers/factory.controller.js'
-   * import User from '../models/user.model.js'
-   *
-   * exports.getUser = getOne(User)
    */
   getOne: (Model) =>
     asyncHandler(async (req, res, next) => {
@@ -89,11 +73,6 @@ const factory = {
    * @param {mongoose.Model} Model
    * @returns {Function} Post Handler Function
    * @description Create a new document of a given Model
-   * @example
-   * import {createOne} from '../controllers/factory.controller.js'
-   * import User from '../models/user.model.js'
-   *
-   * exports.createUser = createOne(User)
    */
   createOne: (Model) =>
     asyncHandler(async (req, res, next) => {
@@ -112,31 +91,30 @@ const factory = {
   /**
    * @param {mongoose.Model} Model
    * @returns {Function} get All Docs Handler Function
-   * @description get all documents of a given Model
-   * @example
-   * import {getAll} from '../controllers/factory.controller.js'
-   * import User from '../models/user.model.js'
-   *
-   * exports.getUsers = getAll(User)
-
+   * @description get all documents of a given Model with pagination and optional search
    */
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
-      const features = new APIFeatures(Model.find(), req.query)
-        .filter()
-        .sort()
-        .limitFields()
-        .paginate()
+      const { search, page = 1, limit = 10 } = req.query
 
-      const docs = await features.query
-      const modelName = Model.modelName.toLowerCase() + 's'
+      // Build the search condition using text index (optional)
+      const searchCondition = search ? { $text: { $search: search } } : {}
+
+      // Get total count
+      const total = await Model.countDocuments(searchCondition)
+
+      // Apply pagination
+      const skip = (page - 1) * limit
+      const docs = await Model.find(searchCondition)
+        .skip(skip)
+        .limit(parseInt(limit))
+        .sort({ createdAt: -1 }) // Example sort by latest created
 
       res.status(200).json({
         status: 'success',
         results: docs.length,
-        data: {
-          [modelName]: docs,
-        },
+        total,
+        data: docs,
       })
     }),
 }

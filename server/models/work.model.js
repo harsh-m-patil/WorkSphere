@@ -51,6 +51,8 @@ const workSchema = new mongoose.Schema(
   },
 )
 
+workSchema.index({ title: 'text' })
+
 workSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'client_id',

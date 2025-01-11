@@ -17,7 +17,7 @@ const WorkCard = ({ work, index }) => {
       className="group flex h-[24rem] w-72 flex-col justify-around rounded-3xl border p-2 pb-6 shadow-xl md:w-80 lg:h-[23rem]"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1.0 }}
-      whileHover={{ scale: 1.05, shadow: 1.1 }}
+      whileHover={{ scale: 1.01, shadow: 1.1 }}
     >
       <div
         className={`h-5/6 w-full rounded-3xl px-4 py-5 ${getColor(index)} flex flex-col`}
