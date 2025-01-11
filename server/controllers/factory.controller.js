@@ -95,7 +95,11 @@ const factory = {
    */
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
-      const { search, page = 1, limit = 10 } = req.query
+      const { search, page = 1, limit = 10, sort } = req.query
+
+      // Sanitize and validate input
+      const pageNum = Math.max(1, parseInt(page, 10)) // Ensuring page >= 1
+      const limitNum = parseInt(limit, 10) || 10 // Default to 10 if not provided or invalid
 
       // Build the search condition using text index (optional)
       const searchCondition = search ? { $text: { $search: search } } : {}
@@ -104,11 +108,17 @@ const factory = {
       const total = await Model.countDocuments(searchCondition)
 
       // Apply pagination
-      const skip = (page - 1) * limit
-      const docs = await Model.find(searchCondition)
-        .skip(skip)
-        .limit(parseInt(limit))
-        .sort({ createdAt: -1 }) // Example sort by latest created
+      const skip = (pageNum - 1) * limitNum
+      const query = Model.find(searchCondition).skip(skip).limit(limitNum)
+
+      // Sort by user-defined or fallback to createdAt
+      if (sort) {
+        query.sort(sort)
+      } else {
+        query.sort({ createdAt: -1 })
+      }
+
+      const docs = await query
 
       res.status(200).json({
         status: 'success',
