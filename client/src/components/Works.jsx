@@ -6,7 +6,7 @@ const Works = () => {
       <div className="w-full p-4 sm:p-10">
         {/* Header section */}
         <div className="py-3">
-          <h1 className="py-3 text-2xl font-medium sm:text-3xl">
+          <h1 className="py-3 text-center text-2xl font-medium sm:text-left sm:text-3xl">
             Recommended Jobs
           </h1>
         </div>

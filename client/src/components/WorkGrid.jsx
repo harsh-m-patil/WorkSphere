@@ -72,7 +72,7 @@ export default function WorkGrid() {
   }
   return (
     <div className="space-y-4">
-      <div className="mx-auto flex flex-col gap-4">
+      <div className="mx-auto flex flex-col gap-4 px-10 sm:p-0">
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
