@@ -48,15 +48,8 @@ export default function WorkGrid() {
   const { data, error, isLoading, isError } = useQuery({
     queryKey: ['search', page, debouncedSearch, sort],
     queryFn: () => fetchWorks(page, debouncedSearch, sort),
+    staleTime: 10 * 1000,
   });
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-[400px] w-full items-center justify-center">
-        <Loader2 className="text-muted-foreground h-10 w-10 animate-spin" />
-      </div>
-    );
-  }
 
   if (isError) {
     return (
@@ -70,6 +63,9 @@ export default function WorkGrid() {
       </div>
     );
   }
+
+  const totalPages = Math.ceil((data?.total || 0) / ITEMS_PER_PAGE);
+
   return (
     <div className="space-y-4">
       <div className="mx-auto flex flex-col gap-4 px-10 sm:p-0">
@@ -89,67 +85,65 @@ export default function WorkGrid() {
           </SelectContent>
         </Select>
       </div>
-      <div>
-        <div className="mx-auto flex w-full justify-center py-8">
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {data.data.map((work, index) => (
-              <WorkCard work={work} key={work._id} index={index} />
-            ))}
-          </div>
+      {isLoading ? (
+        <div
+          className="flex min-h-[400px] w-full items-center justify-center"
+          aria-busy="true"
+          aria-label="Loading"
+        >
+          <Loader2 className="text-muted-foreground h-10 w-10 animate-spin" />
         </div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                aria-disabled={page === 1}
-                className={page === 1 ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-            {Array.from(
-              { length: Math.ceil(data.total / ITEMS_PER_PAGE) },
-              (_, i) => i + 1
-            )
-              .slice(
-                Math.max(0, page - 2),
-                Math.min(page + 1, Math.ceil(data.total / ITEMS_PER_PAGE))
-              )
-              .map((pageNum) => (
-                <PaginationItem key={pageNum}>
-                  <PaginationLink
-                    href="#"
-                    onClick={() => setPage(pageNum)}
-                    isActive={pageNum === page}
-                  >
-                    {pageNum}
-                  </PaginationLink>
-                </PaginationItem>
+      ) : (
+        <>
+          <div className="mx-auto flex w-full justify-center py-8">
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {data?.data?.map((work, index) => (
+                <WorkCard work={work} key={work._id || index} index={index} />
               ))}
-            {page + 1 < Math.ceil(data.total / ITEMS_PER_PAGE) && (
+            </div>
+          </div>
+          <Pagination>
+            <PaginationContent>
               <PaginationItem>
-                <PaginationEllipsis />
+                <PaginationPrevious
+                  href="#"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  aria-disabled={page === 1}
+                  className={page === 1 ? 'pointer-events-none opacity-50' : ''}
+                />
               </PaginationItem>
-            )}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={() =>
-                  setPage((p) =>
-                    Math.min(Math.ceil(data.total / ITEMS_PER_PAGE), p + 1)
-                  )
-                }
-                aria-disabled={page === Math.ceil(data.total / ITEMS_PER_PAGE)}
-                className={
-                  page === Math.ceil(data.total / ITEMS_PER_PAGE)
-                    ? 'pointer-events-none opacity-50'
-                    : ''
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .slice(Math.max(0, page - 3), Math.min(page + 2, totalPages))
+                .map((pageNum) => (
+                  <PaginationItem key={pageNum}>
+                    <PaginationLink
+                      href="#"
+                      onClick={() => setPage(pageNum)}
+                      isActive={pageNum === page}
+                    >
+                      {pageNum}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+              {page + 2 < totalPages && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  aria-disabled={page === totalPages}
+                  className={
+                    page === totalPages ? 'pointer-events-none opacity-50' : ''
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </>
+      )}
     </div>
   );
 }
