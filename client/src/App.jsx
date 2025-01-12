@@ -6,7 +6,6 @@ import UserDashboard from './components/UserDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PageNotFound from './pages/404';
 import Applications from './components/Applications';
-import Works from './components/Works';
 import Work from './components/Work';
 import Freelancers from './components/Freelancers';
 import Freelancer from './components/Freelancer';
@@ -34,8 +33,8 @@ import Clientsignup from './components/ClientSignup';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import AdminDashboardLayOut from './pages/AdminDashboardLayOut';
-import Dummy from './pages/Dummy';
 import Overview from './components/admin/Overview';
+import WorkGrid from './components/WorkGrid';
 
 const queryClient = new QueryClient({});
 
@@ -80,7 +79,7 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="business" element={<BusinessModelPage />}></Route>
               <Route path="login" element={<Login />}></Route>
-              <Route path="works" element={<Works />}></Route>
+              <Route path="works" element={<WorkGrid />}></Route>
               <Route path="works/:id" element={<Work />}></Route>
               <Route path="freelancers" element={<Freelancers />}></Route>
               <Route path="freelancers/:id" element={<Freelancer />}></Route>

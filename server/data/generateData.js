@@ -112,7 +112,7 @@ const generateDummyWorks = async () => {
   const freelancers = await User.find({ role: 'freelancer' })
   const works = []
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 10; i++) {
     const client = faker.helpers.arrayElement(clients)
     const freelancer = faker.helpers.arrayElement(freelancers)
     const title = faker.helpers.arrayElement(jobTitles)
@@ -138,7 +138,7 @@ const generateDummyWorks = async () => {
   }
 
   // Pending applications
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 10; i++) {
     const client = faker.helpers.arrayElement(clients)
     const title = faker.helpers.arrayElement(jobTitles)
     const description = faker.lorem.paragraph()

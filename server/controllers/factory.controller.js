@@ -98,13 +98,10 @@ const factory = {
     asyncHandler(async (req, res, next) => {
       const { search } = req.query
 
-      // Build the search condition using text index (optional)
-      const searchCondition = search ? { $text: { $search: search } } : {}
+      const searchCondtions = search ? { $text: { $search: search } } : {}
+      let query = Model.find(searchCondtions)
 
-      // Initialize query with the base condition
-      let query = Model.find(searchCondition)
-
-      // Apply advanced filters, field selection, and sorting
+      //// Apply advanced filters, field selection, and sorting
       const features = new APIFeatures(query, req.query)
         .filter()
         .limitFields()
