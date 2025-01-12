@@ -4,6 +4,7 @@ import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import factory from './factory.controller.js'
 import { deleteFile } from '../utils/fileHelpers.js'
+import APIFeatures from '../utils/apiFeatures.js'
 
 const userController = {
   /**
@@ -27,16 +28,36 @@ const userController = {
     asyncHandler(async (req, res, next) => {
       const query = {}
 
-      if (roles.length > 0) query.role = { $in: roles }
+      // Add role-based filtering if roles are provided
+      if (roles.length > 0) {
+        query.role = { $in: roles }
+      }
 
-      const users = await User.find(query)
+      // Add text search if search query is provided
+      if (req.query.search) {
+        query.$text = { $search: req.query.search }
+      }
+
+      // Initialize the query
+      let dbQuery = User.find(query)
+
+      // Apply advanced filtering and sorting features
+      const features = new APIFeatures(dbQuery, req.query).filter().sort()
+
+      // Calculate total count after filtering (excluding pagination)
+      const total = await User.countDocuments(features.query.getFilter())
+
+      // Apply pagination
+      dbQuery = features.paginate().query
+
+      // Execute the final query to get the users
+      const users = await dbQuery
 
       res.status(200).json({
         status: 'success',
+        total,
         results: users.length,
-        data: {
-          users,
-        },
+        data: { users },
       })
     }),
 

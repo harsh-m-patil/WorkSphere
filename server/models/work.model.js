@@ -55,7 +55,7 @@ const workSchema = new mongoose.Schema(
   },
 )
 
-workSchema.index({ title: 'text' })
+workSchema.index({ title: 'text', skills_Required: 'text' })
 
 workSchema.pre(/^find/, function (next) {
   this.populate({

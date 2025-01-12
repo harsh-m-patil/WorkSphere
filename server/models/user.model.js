@@ -93,7 +93,12 @@ const userSchema = new mongoose.Schema(
   },
 )
 
-userSchema.index({ userName: 1 })
+userSchema.index({
+  firstName: 'text',
+  lastName: 'text',
+  userName: 'text',
+  skills: 'text',
+})
 
 //// VIRTUALS
 //userSchema.virtual('fullName').get(function () {

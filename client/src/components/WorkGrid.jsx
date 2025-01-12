@@ -23,6 +23,7 @@ import {
 import { fetchWorks } from '@/query/fetchWorks';
 import WorkCard from './WorkCard';
 import { Badge } from './ui/badge';
+import { Skeleton } from './ui/skeleton';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -37,8 +38,12 @@ export default function WorkGrid() {
   // Debounce search
   const debouncedSetSearch = useCallback(
     debounce((value) => {
-      setDebouncedSearch(value);
-      setPage(1);
+      if (value.length >= 5) {
+        setDebouncedSearch(value);
+        setPage(1);
+      } else {
+        setDebouncedSearch('');
+      }
     }, 500),
     []
   );
@@ -81,7 +86,7 @@ export default function WorkGrid() {
             variant="outline"
             className="flex size-10 items-center justify-center p-2 text-base"
           >
-            {data?.results}
+            {data?.results || 0}
           </Badge>
         </div>
         <div className="space-y-4">
@@ -161,6 +166,7 @@ export default function WorkGrid() {
               aria-label="Loading"
             >
               <Loader2 className="text-muted-foreground h-10 w-10 animate-spin" />
+              <Skeleton />
             </div>
           ) : (
             <>
