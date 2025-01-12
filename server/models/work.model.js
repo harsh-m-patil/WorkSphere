@@ -32,6 +32,9 @@ const workSchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
+    noOfApplicants: {
+      type: Number,
+    },
     active: {
       type: Boolean,
       default: true,
@@ -47,7 +50,8 @@ const workSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    virtuals: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 )
 

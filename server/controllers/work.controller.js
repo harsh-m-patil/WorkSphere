@@ -99,6 +99,7 @@ const workController = {
 
     // Add user to applied_status and save work
     work.applied_status.push(userId)
+    work.noOfApplicants = work.noOfApplicants + 1
     await work.save()
 
     res.status(200).json({

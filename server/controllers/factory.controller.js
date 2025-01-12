@@ -1,3 +1,4 @@
+import APIFeatures from '../utils/apiFeatures.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
@@ -95,29 +96,28 @@ const factory = {
    */
   getAll: (Model) =>
     asyncHandler(async (req, res, next) => {
-      const { search, page = 1, limit = 10, sort } = req.query
-
-      // Sanitize and validate input
-      const pageNum = Math.max(1, parseInt(page, 10)) // Ensuring page >= 1
-      const limitNum = parseInt(limit, 10) || 10 // Default to 10 if not provided or invalid
+      const { search } = req.query
 
       // Build the search condition using text index (optional)
       const searchCondition = search ? { $text: { $search: search } } : {}
 
-      // Get total count
-      const total = await Model.countDocuments(searchCondition)
+      // Initialize query with the base condition
+      let query = Model.find(searchCondition)
+
+      // Apply advanced filters, field selection, and sorting
+      const features = new APIFeatures(query, req.query)
+        .filter()
+        .limitFields()
+        .sort()
+
+      // Use the filtered query to get the total count
+      const total = await Model.countDocuments(features.query.getFilter())
 
       // Apply pagination
-      const skip = (pageNum - 1) * limitNum
-      const query = Model.find(searchCondition).skip(skip).limit(limitNum)
+      // eslint-disable-next-line prefer-destructuring
+      query = features.paginate().query
 
-      // Sort by user-defined or fallback to createdAt
-      if (sort) {
-        query.sort(sort)
-      } else {
-        query.sort({ createdAt: -1 })
-      }
-
+      // Execute the final query
       const docs = await query
 
       res.status(200).json({

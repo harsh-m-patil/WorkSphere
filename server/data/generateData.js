@@ -112,12 +112,12 @@ const generateDummyWorks = async () => {
   const freelancers = await User.find({ role: 'freelancer' })
   const works = []
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 50; i++) {
     const client = faker.helpers.arrayElement(clients)
     const freelancer = faker.helpers.arrayElement(freelancers)
     const title = faker.helpers.arrayElement(jobTitles)
     const description = faker.lorem.paragraph()
-    const pay = faker.number.int({ min: 100, max: 1000 })
+    const pay = faker.number.int({ min: 100, max: 2000 })
     const jobLevel = faker.helpers.arrayElement(['Easy', 'Medium', 'Hard'])
     const skillsRequired = faker.helpers.arrayElements(skillsList, 3)
     const applied_status = faker.helpers.arrayElements(freelancers, 10)
@@ -131,13 +131,14 @@ const generateDummyWorks = async () => {
       skills_Required: skillsRequired,
       client_id: client._id,
       freelancer_id: freelancer._id,
-      applied_status: applied_status, // Empty initially
+      applied_status: applied_status,
+      noOfApplicants: applied_status.length,
       createdAt: jobCreatedAt, // Attach the random date
     })
   }
 
   // Pending applications
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 50; i++) {
     const client = faker.helpers.arrayElement(clients)
     const title = faker.helpers.arrayElement(jobTitles)
     const description = faker.lorem.paragraph()
@@ -154,8 +155,9 @@ const generateDummyWorks = async () => {
       joblevel: jobLevel,
       skills_Required: skillsRequired,
       client_id: client._id,
-      applied_status: applied_status, // Empty initially
-      jobCreatedAt, // Attach the random date
+      applied_status: applied_status,
+      noOfApplicants: applied_status.length,
+      createdAt: jobCreatedAt, // Attach the random date
     })
   }
   await Work.insertMany(works)

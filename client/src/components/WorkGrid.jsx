@@ -22,13 +22,16 @@ import {
 } from '@/components/ui/pagination';
 import { fetchWorks } from '@/query/fetchWorks';
 import WorkCard from './WorkCard';
+import { Badge } from './ui/badge';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 12;
 
 export default function WorkGrid() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState('createdAt');
+  const [level, setLevel] = useState('All');
+  const [pay, setPay] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
   // Debounce search
@@ -46,8 +49,8 @@ export default function WorkGrid() {
   }, [debouncedSetSearch, search]);
 
   const { data, error, isLoading, isError } = useQuery({
-    queryKey: ['search', page, debouncedSearch, sort],
-    queryFn: () => fetchWorks(page, debouncedSearch, sort),
+    queryKey: ['search', page, debouncedSearch, sort, level, pay],
+    queryFn: () => fetchWorks(page, debouncedSearch, sort, level, pay),
     staleTime: 10 * 1000,
   });
 
@@ -68,22 +71,71 @@ export default function WorkGrid() {
 
   return (
     <div className="space-y-4">
-      <div className="mx-auto flex flex-col gap-4 px-10 sm:p-0">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-10 sm:p-0">
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search..."
           className="w-full"
         />
-        <Select value={sort} onValueChange={(value) => setSort(value)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="createdAt">Date Created</SelectItem>
-            <SelectItem value="pay">Pay</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex gap-2">
+            <Badge
+              variant="outline"
+              className="border-0 text-base text-slate-700"
+            >
+              Sort
+            </Badge>
+            <Select value={sort} onValueChange={(value) => setSort(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="createdAt">Date</SelectItem>
+                <SelectItem value="pay">Pay</SelectItem>
+                <SelectItem value="noOfApplicants">Applicants</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex gap-2">
+            <Badge
+              variant="outline"
+              className="border-0 text-base text-slate-700"
+            >
+              Level
+            </Badge>
+            <Select value={level} onValueChange={(value) => setLevel(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All</SelectItem>
+                <SelectItem value="Hard">Hard</SelectItem>
+                <SelectItem value="Medium">Medium</SelectItem>
+                <SelectItem value="Easy">Easy</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex gap-2">
+            <Badge
+              variant="outline"
+              className="border-0 text-base text-slate-700"
+            >
+              Pay
+            </Badge>
+            <Select value={pay} onValueChange={(value) => setPay(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="1000">Greater than $1000</SelectItem>
+                <SelectItem value="500">Greater than $500</SelectItem>
+                <SelectItem value="100">Greater than $100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
       {isLoading ? (
         <div

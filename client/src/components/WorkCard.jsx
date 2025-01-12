@@ -23,10 +23,11 @@ const WorkCard = ({ work, index }) => {
         className={`h-5/6 w-full rounded-3xl px-4 py-5 ${getColor(index)} flex flex-col`}
       >
         {/* Date Section */}
-        <div>
+        <div className="flex justify-between">
           <Badge variant="secondary" className="bg-white px-2 py-1 text-sm">
             {getDate(work.createdAt)}
           </Badge>
+          <Badge variant="outline">{work.joblevel}</Badge>
         </div>
         {/* More Info */}
         <div className="flex h-5/6 flex-col justify-between gap-10 px-3 pt-6">
