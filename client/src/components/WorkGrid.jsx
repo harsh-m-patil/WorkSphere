@@ -86,7 +86,7 @@ export default function WorkGrid() {
             variant="outline"
             className="flex size-10 items-center justify-center p-2 text-base"
           >
-            {data?.results || 0}
+            {data?.total || 0}
           </Badge>
         </div>
         <div className="space-y-4">
