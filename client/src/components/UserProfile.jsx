@@ -1,18 +1,23 @@
-import { motion } from 'motion/react';
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
 import {
-  User,
   Award,
   Briefcase,
-  Mail,
-  Edit,
   Clock,
   ExternalLink,
+  Mail,
+  Pencil,
+  User,
 } from 'lucide-react';
-import UserDashboardHeader from './UserDashboardHeader';
-import { fetchLoggedInUser } from '../query/fetchLoggedInUser';
-import { useQuery } from '@tanstack/react-query';
 
-const ProfileDashboard = () => {
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { fetchLoggedInUser } from '../query/fetchLoggedInUser';
+
+export default function ProfileDashboard() {
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['me'],
     queryFn: fetchLoggedInUser,
@@ -21,186 +26,213 @@ const ProfileDashboard = () => {
 
   if (isPending) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-slate-50">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-          <p className="text-lg font-medium text-gray-700">
-            Loading profile...
-          </p>
+      <div className="bg-background min-h-screen pb-16">
+        <div className="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:px-8">
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-[200px]" />
+            <div className="grid gap-8 lg:grid-cols-2">
+              {[...Array(4)].map((_, i) => (
+                <Card key={i}>
+                  <CardHeader>
+                    <Skeleton className="h-6 w-[150px]" />
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   if (isError) {
-    return <div>Error: {error.message}</div>; // Error state
+    return (
+      <div className="bg-background flex min-h-screen items-center justify-center">
+        <Card className="w-[400px]">
+          <CardHeader>
+            <CardTitle className="text-destructive">
+              Error Loading Profile
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">{error.message}</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
-  const ProfileSection = ({ icon: Icon, title, children, onEdit }) => (
-    <motion.div
-      className="relative w-full overflow-hidden rounded-xl bg-white p-6 shadow-lg transition-shadow hover:shadow-xl"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="rounded-lg bg-blue-50 p-2">
-            <Icon className="h-6 w-6 text-blue-600" />
-          </div>
-          <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-        </div>
-        {onEdit && (
-          <button
-            onClick={onEdit}
-            className="rounded-full p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
-          >
-            <Edit className="h-5 w-5" />
-          </button>
-        )}
-      </div>
-      <div className="space-y-4">{children}</div>
-    </motion.div>
-  );
-
-  const InfoField = ({ label, value, icon: Icon }) => (
-    <div className="group flex items-start space-x-3 rounded-lg p-2 transition-colors hover:bg-gray-50">
-      {Icon && <Icon className="mt-1 h-5 w-5 flex-shrink-0 text-gray-400" />}
-      <div className="flex-1">
-        <p className="text-sm font-medium text-gray-500">{label}</p>
-        <p className="mt-1 text-base text-gray-900">
-          {value || 'Not specified'}
-        </p>
-      </div>
-    </div>
-  );
-
-  const Badge = ({ children, color = 'blue' }) => (
-    <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${color === 'blue' ? 'bg-blue-50 text-blue-700' : ''} ${color === 'green' ? 'bg-green-50 text-green-700' : ''} ${color === 'yellow' ? 'bg-yellow-50 text-yellow-700' : ''}`}
-    >
-      {children}
-    </span>
-  );
-
   return (
-    <div className="min-h-screen bg-slate-50 pb-16">
+    <div className="bg-background min-h-screen w-full pb-16 pt-12">
       <div className="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:px-8">
-        <UserDashboardHeader title="Professional Profile" />
+        <div className="mb-8 flex items-center justify-between">
+          <h1 className="text-3xl font-bold tracking-tight">
+            Professional Profile
+          </h1>
+          <Button variant="outline" size="sm">
+            Edit Profile
+          </Button>
+        </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
-          {/* Personal Info Section */}
-          <ProfileSection
-            icon={User}
-            title="Personal Information"
-            onEdit={() => {}}
-          >
-            <div className="space-y-4">
-              <InfoField
-                label="Full Name"
-                value={`${data.firstName} ${data.lastName}`}
-              />
-              <InfoField label="Username" value={data.userName} />
-              <div className="mt-4 flex items-center text-sm text-gray-500">
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Personal Information */}
+          <Card>
+            <CardHeader className="flex flex-row items-center space-y-0">
+              <div className="flex items-center space-x-3">
+                <div className="bg-primary/10 rounded-lg p-2">
+                  <User className="text-primary h-6 w-6" />
+                </div>
+                <CardTitle>Personal Information</CardTitle>
+              </div>
+              <Button variant="ghost" size="icon" className="ml-auto">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm">Full Name</p>
+                <p>{`${data.firstName} ${data.lastName}`}</p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm">Username</p>
+                <p>{data.userName}</p>
+              </div>
+              <div className="text-muted-foreground flex items-center text-sm">
                 <Clock className="mr-2 h-4 w-4" />
                 Last updated: {new Date(data.lastUpdated).toLocaleDateString()}
               </div>
-            </div>
-          </ProfileSection>
+            </CardContent>
+          </Card>
 
-          {/* Contact Section */}
-          <ProfileSection icon={Mail} title="Contact Details" onEdit={() => {}}>
-            <div className="space-y-4">
-              <InfoField label="Email Address" value={data.email} />
-              <div className="rounded-lg bg-gray-50 p-4">
-                <p className="text-sm font-medium text-gray-500">About</p>
-                <p className="mt-2 whitespace-pre-line text-gray-700">
+          {/* Contact Details */}
+          <Card>
+            <CardHeader className="flex flex-row items-center space-y-0">
+              <div className="flex items-center space-x-3">
+                <div className="bg-primary/10 rounded-lg p-2">
+                  <Mail className="text-primary h-6 w-6" />
+                </div>
+                <CardTitle>Contact Details</CardTitle>
+              </div>
+              <Button variant="ghost" size="icon" className="ml-auto">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm">Email Address</p>
+                <p>{data.email}</p>
+              </div>
+              <div className="bg-muted rounded-lg p-4">
+                <p className="text-sm font-medium">About</p>
+                <p className="text-muted-foreground mt-2 whitespace-pre-line">
                   {data.description || 'No description provided'}
                 </p>
               </div>
-            </div>
-          </ProfileSection>
+            </CardContent>
+          </Card>
 
-          {/* Professional Profile Section */}
-          <ProfileSection
-            icon={Briefcase}
-            title="Professional Expertise"
-            onEdit={() => {}}
-          >
-            <div className="space-y-6">
-              <div>
-                <h3 className="mb-3 text-sm font-medium text-gray-500">
+          {/* Professional Expertise */}
+          <Card>
+            <CardHeader className="flex flex-row items-center space-y-0">
+              <div className="flex items-center space-x-3">
+                <div className="bg-primary/10 rounded-lg p-2">
+                  <Briefcase className="text-primary h-6 w-6" />
+                </div>
+                <CardTitle>Professional Expertise</CardTitle>
+              </div>
+              <Button variant="ghost" size="icon" className="ml-auto">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-3">
+                <h3 className="text-muted-foreground text-sm font-medium">
                   Technical Skills
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {data.skills.length > 0 ? (
                     data.skills.map((skill, index) => (
-                      <Badge key={index} color="blue">
+                      <Badge key={index} variant="secondary">
                         {skill}
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-gray-500">No skills listed yet</p>
+                    <p className="text-muted-foreground text-sm">
+                      No skills listed yet
+                    </p>
                   )}
                 </div>
               </div>
-
-              <div>
-                <h3 className="mb-3 text-sm font-medium text-gray-500">
+              <div className="space-y-3">
+                <h3 className="text-muted-foreground text-sm font-medium">
                   Languages
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {data.languages.length > 0 ? (
                     data.languages.map((lang, index) => (
-                      <Badge key={index} color="green">
+                      <Badge key={index} variant="outline">
                         {lang}
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-gray-500">No languages listed yet</p>
+                    <p className="text-muted-foreground text-sm">
+                      No languages listed yet
+                    </p>
                   )}
                 </div>
               </div>
-            </div>
-          </ProfileSection>
+            </CardContent>
+          </Card>
 
-          {/* Achievements Section */}
-          <ProfileSection
-            icon={Award}
-            title="Certifications & Achievements"
-            onEdit={() => {}}
-          >
-            {data.certificates.length > 0 ? (
-              <div className="space-y-3">
-                {data.certificates.map((cert, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <Award className="h-5 w-5 text-yellow-600" />
-                      <span className="text-gray-900">{cert}</span>
+          {/* Certifications & Achievements */}
+          <Card>
+            <CardHeader className="flex flex-row items-center space-y-0">
+              <div className="flex items-center space-x-3">
+                <div className="bg-primary/10 rounded-lg p-2">
+                  <Award className="text-primary h-6 w-6" />
+                </div>
+                <CardTitle>Certifications & Achievements</CardTitle>
+              </div>
+              <Button variant="ghost" size="icon" className="ml-auto">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </CardHeader>
+            <CardContent>
+              {data.certificates.length > 0 ? (
+                <div className="space-y-3">
+                  {data.certificates.map((cert, index) => (
+                    <div
+                      key={index}
+                      className="hover:bg-muted flex items-center justify-between rounded-lg border p-4 transition-colors"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <Award className="h-5 w-5 text-yellow-600" />
+                        <span>{cert}</span>
+                      </div>
+                      <Button variant="ghost" size="icon">
+                        <ExternalLink className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <ExternalLink className="h-4 w-4 text-gray-400" />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-lg border-2 border-dashed border-gray-200 p-6 text-center">
-                <Award className="mx-auto h-8 w-8 text-gray-400" />
-                <p className="mt-2 text-sm font-medium text-gray-500">
-                  No certificates added yet
-                </p>
-                <p className="mt-1 text-xs text-gray-400">
-                  Add your professional certifications and achievements
-                </p>
-              </div>
-            )}
-          </ProfileSection>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-lg border-2 border-dashed p-6 text-center">
+                  <Award className="text-muted-foreground mx-auto h-8 w-8" />
+                  <p className="mt-2 font-medium">No certificates added yet</p>
+                  <p className="text-muted-foreground mt-1 text-sm">
+                    Add your professional certifications and achievements
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
   );
-};
-
-export default ProfileDashboard;
+}

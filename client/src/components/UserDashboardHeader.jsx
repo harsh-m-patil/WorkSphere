@@ -5,7 +5,7 @@ const UserDashboardHeader = ({ title, array }) => {
     <motion.div
       initial={{ scale: 0.8 }}
       animate={{ scale: 1.0 }}
-      className="mb-6 max-w-96 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-6 text-white shadow-xl"
+      className="mb-6 max-w-96 rounded-xl p-6 text-slate-800"
     >
       <h2 className="mb-1 flex items-center text-2xl font-extrabold tracking-tight sm:text-3xl">
         {title}

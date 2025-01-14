@@ -1,15 +1,38 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { API_URL, IMAGE_URL } from '../utils/constants';
-import { toast } from 'sonner';
-import UserDashboardHeader from './UserDashboardHeader';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import axios from 'axios';
+import { Trash2, Upload } from 'lucide-react';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Label } from '@/components/ui/label';
+import { API_URL, IMAGE_URL } from '../utils/constants';
 import { fetchLoggedInUser } from '../query/fetchLoggedInUser';
 
-const UserSettings = () => {
-  const [newSkill, setNewSkill] = useState('');
+export default function UserSettings() {
   const queryClient = useQueryClient();
+  const [newSkill, setNewSkill] = useState('');
   const [newLanguage, setNewLanguage] = useState('');
   const [newCertificate, setNewCertificate] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
@@ -27,12 +50,12 @@ const UserSettings = () => {
   });
 
   const [formData, setFormData] = useState({
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
-    skills: user?.skills || [],
-    languages: user?.languages || [],
-    certificates: user?.certificates || [],
-    profileImage: user?.profileImage || null,
+    firstName: '',
+    lastName: '',
+    skills: [],
+    languages: [],
+    certificates: [],
+    profileImage: null,
   });
 
   // Update profile image mutation
@@ -98,7 +121,7 @@ const UserSettings = () => {
   });
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
       setSelectedImage(file);
       const reader = new FileReader();
@@ -115,92 +138,29 @@ const UserSettings = () => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleUpdate = async (e) => {
     e.preventDefault();
-    updateUserMutation.mutate({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      skills: formData.skills,
-      languages: formData.languages,
-      certificates: formData.certificates,
-    });
-  };
-
-  const handleDelete = async () => {
-    if (
-      window.confirm(
-        'Are you absolutely sure you want to delete your account? This action cannot be undone.'
-      )
-    ) {
-      deleteUserMutation.mutate();
-    }
+    updateUserMutation.mutate(formData);
   };
 
   // List management functions
-  const addSkill = () => {
-    if (newSkill.trim()) {
-      setFormData((prevData) => ({
-        ...prevData,
-        skills: [...prevData.skills, newSkill],
+  const addItem = (type, value, setter) => {
+    if (value.trim()) {
+      setFormData((prev) => ({
+        ...prev,
+        [type]: [...prev[type], value.trim()],
       }));
-      setNewSkill('');
+      setter('');
     }
   };
 
-  const removeSkill = (skillToRemove) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      skills: prevData.skills.filter((skill) => skill !== skillToRemove),
+  const removeItem = (type, item) => {
+    setFormData((prev) => ({
+      ...prev,
+      [type]: prev[type].filter((i) => i !== item),
     }));
   };
 
-  const addLanguage = () => {
-    if (newLanguage.trim()) {
-      setFormData((prevData) => ({
-        ...prevData,
-        languages: [...prevData.languages, newLanguage],
-      }));
-      setNewLanguage('');
-    }
-  };
-
-  const removeLanguage = (languageToRemove) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      languages: prevData.languages.filter(
-        (language) => language !== languageToRemove
-      ),
-    }));
-  };
-
-  const addCertificate = () => {
-    if (newCertificate.trim()) {
-      setFormData((prevData) => ({
-        ...prevData,
-        certificates: [...prevData.certificates, newCertificate],
-      }));
-      setNewCertificate('');
-    }
-  };
-
-  const removeCertificate = (certificateToRemove) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      certificates: prevData.certificates.filter(
-        (certificate) => certificate !== certificateToRemove
-      ),
-    }));
-  };
-
-  // Update formData when user data is fetched
   useEffect(() => {
     if (user) {
       setFormData({
@@ -215,244 +175,315 @@ const UserSettings = () => {
     }
   }, [user]);
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="h-32 w-32 animate-spin rounded-full border-t-2 border-blue-500"></div>
+      <div className="container mx-auto mt-12 space-y-6 p-6">
+        <Skeleton className="h-8 w-[200px]" />
+        <div className="grid gap-6 md:grid-cols-2">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader>
+                <Skeleton className="h-6 w-[150px]" />
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     );
+  }
 
-  if (isError)
+  if (isError) {
     return (
-      <div className="mt-10 text-center text-xl text-red-500">
-        {error.message}
-      </div>
+      <Card className="mx-auto mt-12 max-w-md">
+        <CardHeader>
+          <CardTitle className="text-destructive">
+            Error Loading Settings
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">{error.message}</p>
+        </CardContent>
+      </Card>
     );
+  }
 
   return (
-    <div className="mt-12 w-full p-3 sm:m-0 sm:p-10">
-      <UserDashboardHeader title="Settings" />
-      <form
-        onSubmit={handleUpdate}
-        className="grid grid-cols-1 gap-6 p-10 sm:grid-cols-2 lg:gap-10"
-      >
-        {/* Profile Image Section */}
-        <div className="flex flex-col items-center justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <div className="relative mb-4">
-            {imagePreview ? (
-              <img
-                src={`${IMAGE_URL}${imagePreview.split('/')[3]}`}
-                alt="Profile"
-                className="h-32 w-32 rounded-full object-cover"
-              />
-            ) : (
-              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gray-200"></div>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-              id="profile-image-input"
-            />
-            <label
-              htmlFor="profile-image-input"
-              className="mt-4 cursor-pointer rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-            >
-              {imagePreview ? 'Change Photo' : 'Add Photo'}
-            </label>
-          </div>
-          {selectedImage && (
-            <button
-              type="button"
-              onClick={handleImageUpdate}
-              className="mt-2 transform rounded-xl bg-gradient-to-r from-green-400 to-green-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-            >
-              Upload New Photo
-            </button>
-          )}
-        </div>
-        {/* Personal Info */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <div className="mb-3 flex flex-col items-center justify-between sm:flex-row">
-            <label className="p-2 text-xl text-gray-700">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="mb-3 flex flex-col items-center justify-between sm:flex-row">
-            <label className="p-2 text-xl text-gray-700">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        </div>
+    <div className="container mx-auto mt-12 space-y-6 p-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+      </div>
 
-        {/* Skills Section */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <label className="mb-3 text-center text-lg text-gray-700 md:text-xl">
-            Skills
-          </label>
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <div className="w-full space-y-2 p-2 sm:w-1/2">
-              <input
-                type="text"
-                value={newSkill}
-                onChange={(e) => setNewSkill(e.target.value)}
-                placeholder="Add a new skill"
-                className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:px-10"
-                onClick={addSkill}
-              >
-                Add
-              </button>
-            </div>
-            <div className="w-full sm:w-1/2">
-              <ul className="max-h-48 space-y-2 overflow-y-auto">
+      <form onSubmit={handleUpdate}>
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Profile Image Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Profile Image</CardTitle>
+              <CardDescription>Update your profile picture</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center space-y-4">
+              <div className="relative">
+                {imagePreview ? (
+                  <img
+                    src={`${IMAGE_URL}${imagePreview.split('/')[3]}`}
+                    alt="Profile"
+                    className="h-32 w-32 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="bg-muted flex h-32 w-32 items-center justify-center rounded-full">
+                    <span className="text-2xl">👤</span>
+                  </div>
+                )}
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="profile-image-input"
+                />
+              </div>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    document.getElementById('profile-image-input').click()
+                  }
+                >
+                  Choose Image
+                </Button>
+                {selectedImage && (
+                  <Button type="button" onClick={handleImageUpdate}>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Personal Information Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Personal Information</CardTitle>
+              <CardDescription>Update your personal details</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      firstName: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  value={formData.lastName}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      lastName: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Skills Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Skills</CardTitle>
+              <CardDescription>
+                Add or remove your technical skills
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  value={newSkill}
+                  onChange={(e) => setNewSkill(e.target.value)}
+                  placeholder="Add a new skill"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addItem('skills', newSkill, setNewSkill);
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() => addItem('skills', newSkill, setNewSkill)}
+                >
+                  Add
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 {formData.skills.map((skill) => (
-                  <li
+                  <Badge
                     key={skill}
-                    className="flex flex-col items-center justify-between gap-2 rounded-md bg-gray-100 p-2 sm:flex-row"
+                    variant="secondary"
+                    className="cursor-pointer"
+                    onClick={() => removeItem('skills', skill)}
                   >
-                    <span className="text-center text-gray-800 sm:text-left">
-                      {skill}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeSkill(skill)}
-                      className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
-                    >
-                      Remove
-                    </button>
-                  </li>
+                    {skill} ×
+                  </Badge>
                 ))}
-              </ul>
-            </div>
-          </div>
-        </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Languages Section */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <label className="mb-3 text-center text-lg text-gray-700 md:text-xl">
-            Languages
-          </label>
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <div className="w-full space-y-2 p-2 sm:w-1/2">
-              <input
-                type="text"
-                value={newLanguage}
-                onChange={(e) => setNewLanguage(e.target.value)}
-                placeholder="Add a new language"
-                className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                onClick={addLanguage}
-                className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:px-10"
-              >
-                Add
-              </button>
-            </div>
-            <div className="w-full sm:w-1/2">
-              <ul className="max-h-48 space-y-2 overflow-y-auto">
+          {/* Languages Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Languages</CardTitle>
+              <CardDescription>
+                Add or remove languages you speak
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  value={newLanguage}
+                  onChange={(e) => setNewLanguage(e.target.value)}
+                  placeholder="Add a new language"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addItem('languages', newLanguage, setNewLanguage);
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() =>
+                    addItem('languages', newLanguage, setNewLanguage)
+                  }
+                >
+                  Add
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 {formData.languages.map((language) => (
-                  <li
+                  <Badge
                     key={language}
-                    className="flex flex-col items-center justify-between gap-2 rounded-md bg-gray-100 p-2 sm:flex-row"
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => removeItem('languages', language)}
                   >
-                    <span className="text-center text-gray-800 sm:text-left">
-                      {language}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeLanguage(language)}
-                      className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
-                    >
-                      Remove
-                    </button>
-                  </li>
+                    {language} ×
+                  </Badge>
                 ))}
-              </ul>
-            </div>
-          </div>
-        </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Certificates Section */}
-        <div className="flex flex-col justify-center rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-          <label className="mb-3 text-center text-lg text-gray-700 md:text-xl">
-            Certificates
-          </label>
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <div className="w-full space-y-2 p-2 sm:w-1/2">
-              <input
-                type="text"
-                value={newCertificate}
-                onChange={(e) => setNewCertificate(e.target.value)}
-                placeholder="Add a new certificate"
-                className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                onClick={addCertificate}
-                className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:px-10"
-              >
-                Add
-              </button>
-            </div>
-            <div className="w-full sm:w-1/2">
-              <ul className="max-h-48 space-y-2 overflow-y-auto">
+          {/* Certificates Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Certificates</CardTitle>
+              <CardDescription>
+                Add or remove your certifications
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  value={newCertificate}
+                  onChange={(e) => setNewCertificate(e.target.value)}
+                  placeholder="Add a new certificate"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addItem(
+                        'certificates',
+                        newCertificate,
+                        setNewCertificate
+                      );
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  onClick={() =>
+                    addItem('certificates', newCertificate, setNewCertificate)
+                  }
+                >
+                  Add
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 {formData.certificates.map((certificate) => (
-                  <li
+                  <Badge
                     key={certificate}
-                    className="flex flex-col items-center justify-between gap-2 rounded-md bg-gray-100 p-2 sm:flex-row"
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => removeItem('certificates', certificate)}
                   >
-                    <span className="text-center text-gray-800 sm:text-left">
-                      {certificate}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeCertificate(certificate)}
-                      className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
-                    >
-                      Remove
-                    </button>
-                  </li>
+                    {certificate} ×
+                  </Badge>
                 ))}
-              </ul>
-            </div>
-          </div>
-        </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Action Buttons */}
-        <div className="flex max-h-24 flex-col justify-between gap-4 rounded-xl border bg-white p-4 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:flex-row">
-          <button
-            type="submit"
-            className="w-full transform rounded-xl bg-gradient-to-r from-sky-300 via-blue-500 to-blue-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
-          >
-            Update
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="w-full transform rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-red-600 p-2 px-4 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:w-auto sm:px-10"
-          >
-            Delete Account
-          </button>
+          {/* Actions Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Account Actions</CardTitle>
+              <CardDescription>Update or delete your account</CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-between gap-4">
+              <Button type="submit" className="flex-1">
+                Save Changes
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="flex-1">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete Account
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => deleteUserMutation.mutate()}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Delete Account
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </CardContent>
+          </Card>
         </div>
       </form>
     </div>
   );
-};
-
-export default UserSettings;
+}
