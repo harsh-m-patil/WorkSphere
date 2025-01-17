@@ -1,83 +1,75 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { SearchBar } from './SearchBar';
 import { toast } from 'sonner';
+import axios from 'axios';
 import { API_URL } from '../utils/constants';
 
+const fetchJobs = async () => {
+  const data = await axios.get(`${API_URL}/work`);
+  return data.data.data;
+};
+
+const deleteJob = async ({ id, token }) => {
+  await axios.delete(`${API_URL}/work/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+const downloadJobs = async (token) => {
+  const response = await axios.get(`${API_URL}/app/download?q=works`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: 'blob',
+  });
+  return response.data;
+};
+
 const Jobs = () => {
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filteredJobs, setFilteredJobs] = useState(jobs);
+  const queryClient = useQueryClient();
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch jobs from the API
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await fetch(`${API_URL}/work`);
-        const data = await response.json();
+  const {
+    data: jobs,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['jobs'],
+    queryFn: fetchJobs,
+  });
 
-        setJobs(data.data.works); // Update the jobs state with the fetched data
-        setFilteredJobs(data.data.works);
-        setLoading(false); // Stop loading once data is fetched
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-        setLoading(false); // Stop loading even on error
-      }
-    };
-
-    fetchJobs();
-  }, []);
-
-  // Function to delete a job
-  const handleDelete = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${API_URL}/work/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // Update the jobs list after deletion
-      setJobs(jobs.filter((job) => job._id !== id));
-      setFilteredJobs(jobs.filter((job) => job._id !== id));
-
+  const deleteMutation = useMutation({
+    mutationFn: deleteJob,
+    onSuccess: () => {
       toast.success('Deleted Job Successfully', { position: 'top-center' });
-    } catch (error) {
-      console.error('Error deleting job:', error);
-    }
-  };
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+    },
+    onError: () => {
+      toast.error('Failed to delete job.', { position: 'top-center' });
+    },
+  });
 
-  // Function to handle search
-  const handleSearch = (query) => {
-    const filtered = jobs.filter((job) =>
-      job.title.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredJobs(filtered);
+  const handleDelete = (id) => {
+    const token = localStorage.getItem('token');
+    deleteMutation.mutate({ id, token });
   };
 
   const handleDownload = async () => {
     try {
       const token = localStorage.getItem('token');
+      const fileData = await downloadJobs(token);
 
-      // Fetch the data with proper headers
-      const response = await axios.get(`${API_URL}/app/download?q=works`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        responseType: 'blob', // Important: ensures the response is treated as a file
-      });
-
-      // Create a Blob URL for the downloaded file
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(new Blob([fileData]));
       const link = document.createElement('a');
       link.href = url;
-
-      // Set the file name for the downloaded file
       link.setAttribute('download', 'works.json');
       document.body.appendChild(link);
       link.click();
-      link.remove(); // Clean up the link element
+      link.remove();
 
       toast.success('Jobs downloaded successfully!', {
         position: 'top-center',
@@ -88,8 +80,16 @@ const Jobs = () => {
     }
   };
 
-  if (loading) {
+  const filteredJobs = jobs?.filter((job) =>
+    job.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message || 'Something went wrong.'}</div>;
   }
 
   return (
@@ -98,19 +98,21 @@ const Jobs = () => {
         <h2 className="mb-4 flex items-center text-3xl font-extrabold tracking-tight">
           Available Jobs -
           <span className="ml-4 rounded-full bg-white px-5 py-2 text-lg font-bold text-cyan-700 shadow-lg transition-all duration-300 hover:scale-110 hover:bg-gray-200 hover:shadow-xl">
-            {jobs.length}
+            {filteredJobs?.length}
           </span>
         </h2>
       </div>
 
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar onSearch={setSearchQuery} />
+
       <button
         onClick={handleDownload}
         className="mb-6 transform rounded-lg bg-gradient-to-r from-blue-500 to-green-500 px-6 py-3 font-bold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:from-blue-600 hover:to-green-600 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300 active:scale-95"
       >
         Download Jobs as JSON
       </button>
-      {filteredJobs.length > 0 ? (
+
+      {filteredJobs?.length > 0 ? (
         <table className="min-w-full overflow-scroll rounded-lg bg-white shadow-md">
           <thead className="bg-gray-200 text-gray-900 shadow-md">
             <tr>
@@ -130,7 +132,7 @@ const Jobs = () => {
                 <td className="px-4 py-2 text-gray-700">{job._id}</td>
                 <td className="px-4 py-2 text-gray-700">{job.title}</td>
                 <td className="px-4 py-2 text-gray-700">
-                  {job.client_id ? job.client_id?.userName : 'Deleted User'}
+                  {job.client_id ? job.client_id.userName : 'Deleted User'}
                 </td>
                 <td className="px-4 py-2 text-gray-700">{job.pay}</td>
                 <td className="px-4 py-2 text-gray-700">
