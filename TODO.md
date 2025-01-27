@@ -13,3 +13,6 @@
 - [ ] Add reviews.
 - [ ] Make a company profile page.
 - [ ] Resume Parsing (if possible).
+- [ ] Add reset password functionality.
+- [ ] Email verification.
+- [ ] Welcome Emails.
