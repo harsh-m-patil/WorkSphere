@@ -9,3 +9,7 @@
 - [ ] Should be able to see past experience.
 - [ ] Chat between job posters and seekers.
 - [ ] Job Description should be in rtf.
+- [ ] Add payment intregation.
+- [ ] Add reviews.
+- [ ] Make a company profile page.
+- [ ] Resume Parsing (if possible).
