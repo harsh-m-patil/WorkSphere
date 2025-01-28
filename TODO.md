@@ -16,3 +16,4 @@
 - [ ] Add reset password functionality.
 - [ ] Email verification.
 - [ ] Welcome Emails.
+- [ ] Job Poster Verification.
