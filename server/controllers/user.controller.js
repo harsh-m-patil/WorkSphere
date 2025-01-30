@@ -66,6 +66,27 @@ const userController = {
    */
   getUser: factory.getOne(User),
 
+  getUserByUserName: asyncHandler(async (req, res, next) => {
+    const { username } = req.params
+
+    if (!username) {
+      return next(new AppError('Please provide a username', 400))
+    }
+
+    const user = await User.findOne({ userName: username })
+
+    if (!user) {
+      return next(
+        new AppError(`User with username '${username}' not found`, 404),
+      )
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: { user },
+    })
+  }),
+
   /**
    * @description Get details of logged in user by putting logged in users id
    * on req.params

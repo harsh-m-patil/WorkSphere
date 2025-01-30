@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken'
 import asyncHandler from '../utils/asyncHandler.js'
 import User from '../models/user.model.js'
 import AppError from '../utils/appError.js'
-import factory from './factory.controller.js'
 
 /**
  * @param {string} id

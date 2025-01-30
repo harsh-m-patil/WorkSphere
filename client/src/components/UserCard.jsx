@@ -11,7 +11,7 @@ const UserCard = ({ user, index }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/freelancers/${user._id}`);
+    navigate(`/freelancers/${user.userName}`);
   };
 
   return (

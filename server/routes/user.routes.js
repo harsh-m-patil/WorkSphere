@@ -197,6 +197,27 @@ router
 
 /**
  * @openapi
+ * /api/v1/users/u/{username}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get user by username
+ *     description: Retrieve details of a user by their username.
+ *     parameters:
+ *       - name: username
+ *         in: path
+ *         required: true
+ *         description: Username of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User details retrieved successfully.
+ */
+router.route('/u/:username').get(userController.getUserByUserName)
+
+/**
+ * @openapi
  * /api/v1/users/login:
  *   post:
  *     tags:

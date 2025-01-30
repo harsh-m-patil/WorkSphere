@@ -82,7 +82,10 @@ function App() {
               <Route path="works" element={<WorkGrid />}></Route>
               <Route path="works/:id" element={<Work />}></Route>
               <Route path="freelancers" element={<Freelancers />}></Route>
-              <Route path="freelancers/:id" element={<Freelancer />}></Route>
+              <Route
+                path="freelancers/:username"
+                element={<Freelancer />}
+              ></Route>
             </Route>
             <Route
               path="/client/dashboard"

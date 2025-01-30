@@ -3,13 +3,13 @@ import NoWorkFound from './NoWorkFound';
 import FreelancerStat from './FreelancerStat';
 import FreelancerDescCard from './FreelancerDescCard';
 import { useQuery } from '@tanstack/react-query';
-import { fetchUserById } from '../query/fetchUserById';
+import { fetchUserByUsername } from '@/query/fetchUserByUsername';
 
 const Freelancer = () => {
-  const { id } = useParams();
+  const { username } = useParams();
   const { data, isError, isLoading, error } = useQuery({
-    queryKey: [id],
-    queryFn: () => fetchUserById(id),
+    queryKey: [username],
+    queryFn: () => fetchUserByUsername(username),
     staleTime: 60 * 1000,
   });
 
