@@ -6,6 +6,11 @@
 
 - Freelancer/Job Board similar to Fiverr/LinkedIn
 
+## Demo
+
+[![Demo Video](https://img.youtube.com/vi/ykLvB1Hzy9o/0.jpg)](https://www.youtube.com/watch?v=ykLvB1Hzy9o)
+
+
 ## Team Members
 
 | Name                        | Roll No      |
