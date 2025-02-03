@@ -23,20 +23,37 @@ import {
 import { fetchFreelancers } from '@/query/fetchFreelancers';
 import { Badge } from './ui/badge';
 import UserCard from './UserCard';
+import { useSearchParams } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 12;
-const Freelancers = () => {
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [sort, setSort] = useState('createdAt');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  // Debounce search
+const Freelancers = () => {
+  // Initialize search parameters from the URL
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = searchParams.get('search') || '';
+  const initialPage = parseInt(searchParams.get('page'), 10) || 1;
+  const initialSort = searchParams.get('sort') || 'createdAt';
+
+  const [search, setSearch] = useState(initialSearch);
+  const [page, setPage] = useState(initialPage);
+  const [sort, setSort] = useState(initialSort);
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
+
+  // Update the URL parameters when state changes
+  useEffect(() => {
+    setSearchParams({
+      search: search,
+      page: page.toString(),
+      sort,
+    });
+  }, [search, page, sort, setSearchParams]);
+
+  // Debounce search value updates
   const debouncedSetSearch = useCallback(
     debounce((value) => {
       if (value.length >= 5) {
         setDebouncedSearch(value);
-        setPage(1);
+        setPage(1); // reset pagination on new search
       } else {
         setDebouncedSearch('');
       }
@@ -101,7 +118,13 @@ const Freelancers = () => {
                 >
                   Sort
                 </Badge>
-                <Select value={sort} onValueChange={(value) => setSort(value)}>
+                <Select
+                  value={sort}
+                  onValueChange={(value) => {
+                    setSort(value);
+                    setPage(1);
+                  }}
+                >
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
@@ -123,7 +146,7 @@ const Freelancers = () => {
             aria-busy="true"
             aria-label="Loading"
           >
-            <Loader2 className="text-muted-foreground h-10 w-10 animate-spin" />
+            <Loader2 className="h-10 w-10 animate-spin text-muted-foreground" />
           </div>
         ) : (
           <>

@@ -64,7 +64,7 @@ const generateDummyUsers = async () => {
       .username(firstName, lastName)
       .replace(/\d/g, '')
       .toLowerCase()
-    const email = `${userName}@${faker.internet.domainName()}`
+    const email = faker.internet.email(firstName, lastName)
     const role = faker.helpers.arrayElement(['freelancer', 'client'])
     const jobTitle = faker.helpers.arrayElement(Object.keys(skillsByJob))
 

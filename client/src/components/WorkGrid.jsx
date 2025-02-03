@@ -24,18 +24,38 @@ import { fetchWorks } from '@/query/fetchWorks';
 import WorkCard from './WorkCard';
 import { Badge } from './ui/badge';
 import { Skeleton } from './ui/skeleton';
+import { useSearchParams } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 12;
 
 export default function WorkGrid() {
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [sort, setSort] = useState('createdAt');
-  const [level, setLevel] = useState('All');
-  const [pay, setPay] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  // Initialize search params from URL
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = searchParams.get('search') || '';
+  const initialPage = parseInt(searchParams.get('page'), 10) || 1;
+  const initialSort = searchParams.get('sort') || 'createdAt';
+  const initialLevel = searchParams.get('level') || 'All';
+  const initialPay = searchParams.get('pay') || '';
 
-  // Debounce search
+  const [search, setSearch] = useState(initialSearch);
+  const [page, setPage] = useState(initialPage);
+  const [sort, setSort] = useState(initialSort);
+  const [level, setLevel] = useState(initialLevel);
+  const [pay, setPay] = useState(initialPay);
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
+
+  // Update the URL params when state changes
+  useEffect(() => {
+    setSearchParams({
+      search: search,
+      page: page.toString(),
+      sort,
+      level,
+      pay,
+    });
+  }, [search, page, sort, level, pay, setSearchParams]);
+
+  // Debounce search to avoid updating URL on every key stroke immediately
   const debouncedSetSearch = useCallback(
     debounce((value) => {
       if (value.length >= 5) {
@@ -165,7 +185,7 @@ export default function WorkGrid() {
               aria-busy="true"
               aria-label="Loading"
             >
-              <Loader2 className="text-muted-foreground h-10 w-10 animate-spin" />
+              <Loader2 className="h-10 w-10 animate-spin text-muted-foreground" />
               <Skeleton />
             </div>
           ) : (
