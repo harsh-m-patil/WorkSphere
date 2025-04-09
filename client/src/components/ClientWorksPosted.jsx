@@ -119,7 +119,7 @@ export default function ClientWorksPosted() {
 
   if (error) {
     return (
-      <div className="bg-background flex min-h-screen">
+      <div className="flex min-h-screen bg-background">
         <ClientSideBar client={client} />
         <div className="flex-1 p-6">
           <Card className="mx-auto max-w-md">
@@ -138,7 +138,7 @@ export default function ClientWorksPosted() {
   }
 
   return (
-    <div className="bg-background flex min-h-screen">
+    <div className="flex min-h-screen bg-background">
       <ClientSideBar client={client} />
       <div className="flex-1 space-y-6 p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -156,7 +156,7 @@ export default function ClientWorksPosted() {
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
-            <Search className="text-muted-foreground absolute left-2 top-2.5 h-4 w-4" />
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search works..."
               className="pl-8"
@@ -248,9 +248,9 @@ export default function ClientWorksPosted() {
         ) : filteredWorks.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-10">
-              <Briefcase className="text-muted-foreground h-10 w-10" />
+              <Briefcase className="h-10 w-10 text-muted-foreground" />
               <h3 className="mt-4 text-lg font-semibold">No Works Found</h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 Try adjusting your filters or post a new work.
               </p>
             </CardContent>
@@ -271,14 +271,14 @@ export default function ClientWorksPosted() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-sm text-muted-foreground">
                       Level:
                     </span>
                     <Badge variant="outline">{work.joblevel}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground text-sm">Pay:</span>
-                    <Badge variant="secondary">${work.pay}</Badge>
+                    <span className="text-sm text-muted-foreground">Pay:</span>
+                    <Badge variant="secondary">₹ {work.pay}</Badge>
                   </div>
                   <div className="flex flex-wrap gap-1">
                     {work.skills_Required.map((skill) => (
