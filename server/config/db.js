@@ -10,11 +10,9 @@ import logger from '../utils/logger.js'
  */
 export const connectDB = async () => {
   try {
-    let db_uri = 'mongodb://localhost:27017/WorkSpherev2'
-    if (process.env.NODE_ENV === 'production') {
-      db_uri = process.env.DB_URI
-    }
-    await mongoose.connect(db_uri, {})
+    // eslint-disable-next-line prefer-destructuring
+    const DB_URI = process.env.DB_URI
+    await mongoose.connect(DB_URI, {})
     logger.info('DB Connected')
   } catch (err) {
     logger.error('MongoDB Connection Error : ', err)

@@ -1,7 +1,6 @@
 import express from 'express'
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
-import xss from 'xss-clean'
 import helmet from 'helmet'
 import mongoSanitize from 'express-mongo-sanitize'
 import cors from 'cors'
@@ -51,7 +50,6 @@ export async function initServer() {
     }),
   )
 
-  app.use(xss()) // Clean user input in all requests
   app.use(mongoSanitize()) // Sanitize data to prevent NoSQL injection
   app.use(compression())
 

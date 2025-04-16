@@ -1,17 +1,16 @@
 import mongoose from 'mongoose'
 import { faker } from '@faker-js/faker'
+import bcrypt from 'bcrypt'
 import User from '../models/user.model.js'
 import Work from '../models/work.model.js'
-import bcrypt from 'bcrypt'
 
 const DATABASE_URL = 'mongodb://localhost:27017/WorkSpherev2'
 
 mongoose
   .connect(DATABASE_URL)
-  .then(() => console.log('Connected to the database'))
-  .catch((err) => console.error('Database connection error:', err))
+  .then(() => console.log('Connected to DB ✅'))
+  .catch((err) => console.error('Connection error ❌', err))
 
-// Skill Categories
 const skillsByJob = {
   'JavaScript Developer': ['JavaScript', 'React', 'Node.js'],
   'Node.js Developer': ['JavaScript', 'Node.js', 'MongoDB'],
@@ -30,7 +29,6 @@ const skillsByJob = {
   'Python Engineer': ['Python', 'Django', 'Data Science'],
 }
 
-// Languages & Certificates
 const languagesList = ['Marathi', 'Hindi', 'English', 'Kannada', 'Telugu']
 const certificatesList = {
   'JavaScript Developer': ['JavaScript Certification'],
@@ -43,7 +41,6 @@ const certificatesList = {
   'Full Stack Developer': ['MERN Stack Expert'],
 }
 
-// Generate a realistic creation date within the last 12 months
 const getRandomMonthDate = () => {
   const start = new Date()
   start.setMonth(start.getMonth() - 12)
@@ -52,7 +49,6 @@ const getRandomMonthDate = () => {
   )
 }
 
-// Generate Users (Freelancers & Clients)
 const generateDummyUsers = async () => {
   const users = []
   const password = await bcrypt.hash('Password123', 10)
@@ -60,10 +56,7 @@ const generateDummyUsers = async () => {
   for (let i = 0; i < 20; i++) {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
-    const userName = faker.internet
-      .username(firstName, lastName)
-      .replace(/\d/g, '')
-      .toLowerCase()
+    const userName = faker.internet.username()
     const email = faker.internet.email(firstName, lastName)
     const role = faker.helpers.arrayElement(['freelancer', 'client'])
     const jobTitle = faker.helpers.arrayElement(Object.keys(skillsByJob))
@@ -75,8 +68,9 @@ const generateDummyUsers = async () => {
       role === 'freelancer'
         ? faker.helpers.arrayElements(certificatesList[jobTitle] || [], 1)
         : []
-    const balance = faker.number.int({ min: 100, max: 5000 })
-    const createdAt = getRandomMonthDate()
+
+    const balance =
+      role === 'freelancer' ? 0 : faker.number.int({ min: 1000, max: 10000 })
 
     users.push({
       firstName,
@@ -84,37 +78,34 @@ const generateDummyUsers = async () => {
       userName,
       email,
       password,
-      passwordConfirm: password,
       role,
       jobTitle: role === 'freelancer' ? jobTitle : null,
       skills,
       languages,
       certificates,
       balance,
-      createdAt,
+      createdAt: getRandomMonthDate(),
     })
   }
 
-  // Admin User
   users.push({
     firstName: 'Admin',
     lastName: 'User',
     userName: 'admin',
     email: 'admin@work.com',
     password,
-    passwordConfirm: password,
+    passwordConfirm: 'Password123',
     role: 'admin',
-    createdAt: new Date(),
   })
 
-  await User.insertMany(users)
-  console.log('Dummy users added.')
+  await User.insertMany(users, { validateBeforeSave: false })
+  console.log('🧑‍🤝‍🧑 Dummy users added')
 }
 
-// Generate Work Listings
 const generateDummyWorks = async () => {
   const clients = await User.find({ role: 'client' })
   const freelancers = await User.find({ role: 'freelancer' })
+
   const works = []
 
   for (let i = 0; i < 15; i++) {
@@ -123,7 +114,6 @@ const generateDummyWorks = async () => {
     const description = `Looking for a skilled ${title} to help with ${faker.lorem.sentence()}`
     const jobLevel = faker.helpers.arrayElement(['Easy', 'Medium', 'Hard'])
 
-    // Ensure pay is reasonable based on difficulty
     const pay =
       jobLevel === 'Easy'
         ? faker.number.int({ min: 100, max: 500 })
@@ -131,57 +121,63 @@ const generateDummyWorks = async () => {
           ? faker.number.int({ min: 500, max: 1500 })
           : faker.number.int({ min: 1500, max: 5000 })
 
-    const skillsRequired = skillsByJob[title]
-    const applied_status = faker.helpers.arrayElements(
+    const appliedFreelancers = faker.helpers.arrayElements(
       freelancers,
-      faker.number.int({ min: 2, max: 8 }),
+      faker.number.int({ min: 2, max: 5 }),
     )
-    const createdAt = getRandomMonthDate()
+
+    const hiredFreelancer = faker.helpers.arrayElement(appliedFreelancers)
+
+    if (hiredFreelancer) {
+      hiredFreelancer.balance += pay
+      await hiredFreelancer.save({ validateBeforeSave: false })
+    }
 
     works.push({
       title,
       description,
       pay,
-      jobLevel,
-      skills_Required: skillsRequired,
+      joblevel: jobLevel,
+      skills_Required: skillsByJob[title],
+      applied_status: appliedFreelancers.map((f) => f._id),
+      noOfApplicants: appliedFreelancers.length,
+      freelancer_id: hiredFreelancer?._id || null,
       client_id: client._id,
-      applied_status: applied_status.map((user) => user._id),
-      noOfApplicants: applied_status.length,
-      createdAt,
+      createdAt: getRandomMonthDate(),
     })
   }
 
   await Work.insertMany(works)
-  console.log('Dummy works added.')
+  console.log('📄 Dummy works added')
 }
 
-// Update Freelancers with Number of Applications
-const updateUsers = async () => {
+const updateApplicationCounts = async () => {
   const freelancers = await User.find({ role: 'freelancer' })
-
   for (const freelancer of freelancers) {
-    const appliedJobs = await Work.find({ applied_status: freelancer._id })
-    freelancer.noOfApplications = appliedJobs.length
+    const count = await Work.countDocuments({ applied_status: freelancer._id })
+    freelancer.noOfApplications = count
     await freelancer.save({ validateBeforeSave: false })
   }
+
+  console.log('📊 Updated freelancer application counts')
 }
 
-// Seed Database
-const seedDatabase = async () => {
+const seedDB = async () => {
   try {
     await User.deleteMany({})
     await Work.deleteMany({})
+    console.log('🧹 Cleared database')
 
     await generateDummyUsers()
     await generateDummyWorks()
-    await updateUsers()
+    await updateApplicationCounts()
 
-    console.log('Database seeded successfully.')
+    console.log('🌱 Database seeded successfully')
     mongoose.connection.close()
   } catch (error) {
-    console.error('Error seeding database:', error)
+    console.error('❌ Seeder error:', error)
     mongoose.connection.close()
   }
 }
 
-seedDatabase()
+seedDB()

@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: worksphere-server
+    ports:
+      - 3000:3000
+    environment:
+        NODE_ENV: ${NODE_ENV}
+        PORT: ${PORT}
+        DB_URI: ${DB_URI}
+        JWT_SECRET: ${JWT_SECRET}
+        JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+        JWT_COOKIE_EXPIRES_IN: ${JWT_COOKIE_EXPIRES_IN}
+    env_file:
+        - ./.env
+    depends_on:
+      - mongodb
+    networks:
+        - worksphere-network
+
+  mongodb:
+    image: mongo
+    restart: always
+    container_name: worksphere-db
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - worksphere-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  worksphere-network:
