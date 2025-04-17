@@ -74,16 +74,10 @@ const sendErrorProd = (err, res) => {
  *  app.use(errorHandler)
  */
 const errorHandler = (err, req, res, next) => {
-  // console.log(err.name)
   err.statusCode = err.statusCode || 500
   err.status = err.status || 'error'
 
-  if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res)
-  } else if (
-    process.env.NODE_ENV === 'production' ||
-    process.env.NODE_ENV === 'test'
-  ) {
+  if (process.env.NODE_ENV === 'production') {
     let error = { ...err }
     error.message = err.message
     error.name = err.name
@@ -100,6 +94,8 @@ const errorHandler = (err, req, res, next) => {
     }
 
     sendErrorProd(error, res)
+  } else {
+    sendErrorDev(err, res)
   }
 }
 export default errorHandler

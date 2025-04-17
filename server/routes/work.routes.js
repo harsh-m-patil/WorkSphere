@@ -141,7 +141,6 @@ router.post(
   '/assign',
   authMiddleware.protect,
   authMiddleware.restrictTo('client'),
-  workController.deactivateWork,
   workController.assignWork,
 )
 

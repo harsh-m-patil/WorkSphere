@@ -8,11 +8,11 @@ import logger from '../utils/logger.js'
  *
  * connectDB()
  */
-export const connectDB = async () => {
+export const connectDB = async (uri) => {
   try {
     // eslint-disable-next-line prefer-destructuring
     const DB_URI = process.env.DB_URI
-    await mongoose.connect(DB_URI, {})
+    await mongoose.connect(uri ?? DB_URI, {})
     logger.info('DB Connected')
   } catch (err) {
     logger.error('MongoDB Connection Error : ', err)

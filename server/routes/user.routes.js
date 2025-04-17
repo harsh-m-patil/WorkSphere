@@ -264,6 +264,8 @@ router.post('/login', authController.login)
  *                 type: string
  *               password:
  *                 type: string
+ *               passwordConfirm:
+ *                 type: string
  *               role:
  *                 type: string
  *     responses:

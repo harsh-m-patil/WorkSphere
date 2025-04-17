@@ -54,6 +54,7 @@ const workController = {
       req.body.workId,
       {
         freelancer_id: req.body.freelancerId,
+        active: false,
       },
       { new: true },
     )

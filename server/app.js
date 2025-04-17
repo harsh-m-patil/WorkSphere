@@ -27,9 +27,9 @@ export async function initServer() {
 
   const corsOptions = {
     origin: [
-      'http://localhost:4173',
-      'http://localhost:5173',
-      'https://worksphere35.vercel.app',
+      process.env.NODE_ENV !== 'production'
+        ? 'http://localhost:5173'
+        : 'https://worksphere35.vercel.app',
     ],
     credentials: true,
   }
@@ -53,6 +53,7 @@ export async function initServer() {
   app.use(mongoSanitize()) // Sanitize data to prevent NoSQL injection
   app.use(compression())
 
+  app.get('/health', (req, res) => res.status(200).send('OK'))
   app.use('/api', limiter) // Apply rate limiting to all `/api` routes
   app.use('/api/v1/users', userRouter)
   app.use('/api/v1/reviews', reviewRouter)

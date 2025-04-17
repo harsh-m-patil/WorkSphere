@@ -34,6 +34,7 @@ const workSchema = new mongoose.Schema(
     ],
     noOfApplicants: {
       type: Number,
+      default: 0,
     },
     active: {
       type: Boolean,

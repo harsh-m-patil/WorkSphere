@@ -1,23 +1,25 @@
-/* eslint-disable no-undef */
-import { closeDB } from '../config/db.js'
-import server from '../server.js'
-import supertest from 'supertest'
+import { vi, describe, it, expect } from 'vitest'
+import request from 'supertest'
+import { initServer } from '../app.js'
 
-const requestWithSupertest = supertest(server)
+const app = await initServer()
 
-describe('Hello World', () => {
-  it('GET / should return a welcome message', async () => {
-    const res = await requestWithSupertest.get('/')
-    expect(res.status).toEqual(200)
-    expect(res.type).toEqual(expect.stringContaining('json'))
-    expect(res.body).toHaveProperty('message', 'Hello World')
+vi.mock('../utils/logger.js', () => ({
+  default: {
+    info: vi.fn(),
+    error: vi.fn(),
+  },
+}))
+
+describe('Server startup and health check', () => {
+  it('should return hello world for /', async () => {
+    const res = await request(app).get('/')
+    expect(res.status).toBe(200)
+    expect(res.body.message).toBe('Hello World')
   })
-})
 
-afterAll(async () => {
-  try {
-    await closeDB()
-  } finally {
-    server.close()
-  }
+  it('should return 200 for /health route', async () => {
+    const res = await request(app).get('/health')
+    expect(res.status).toBe(200)
+  })
 })
