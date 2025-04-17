@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import mongoose from 'mongoose'
 import { faker } from '@faker-js/faker'
 import bcrypt from 'bcrypt'

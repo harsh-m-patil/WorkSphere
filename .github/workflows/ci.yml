@@ -1,0 +1,22 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install -g pnpm && pnpm install
+        working-directory: server
+
+      - name: Test
+        run: pnpm run test
+        working-directory: server
+
+      - name: Lint
+        run: pnpm lint
+        working-directory: server
