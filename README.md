@@ -10,7 +10,6 @@
 
 [![Demo Video](https://img.youtube.com/vi/ykLvB1Hzy9o/0.jpg)](https://www.youtube.com/watch?v=ykLvB1Hzy9o)
 
-
 ## Team Members
 
 | Name                        | Roll No      |
@@ -117,9 +116,9 @@ JWT_COOKIE_EXPIRES_IN=90
 npm run dev
 ```
 
-## Docs 
+## Docs
 
-API Docs available at `localhost:3000/docs` or  [Here](https://worksphere-dq95.onrender.com/docs)
+API Docs available at `localhost:3000/docs` or [Here](https://worksphere-dq95.onrender.com/docs)
 
 ## Demo
 

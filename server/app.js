@@ -15,6 +15,7 @@ import AppError from './utils/appError.js'
 import logger from './utils/logger.js'
 import compression from 'compression'
 import swaggerDocs from './utils/swagger.js'
+import aiRouter from './routes/ai.routes.js'
 
 export async function initServer() {
   const app = express()
@@ -56,6 +57,7 @@ export async function initServer() {
   app.get('/health', (req, res) => res.status(200).send('OK'))
   app.use('/api', limiter) // Apply rate limiting to all `/api` routes
   app.use('/api/v1/users', userRouter)
+  app.use('/api/v1/ai', aiRouter)
   app.use('/api/v1/reviews', reviewRouter)
   app.use('/api/v1/work', workRouter)
   app.use('/api/v1/messages', messageRouter)

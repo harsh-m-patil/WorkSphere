@@ -131,7 +131,7 @@ export default function WorkGrid() {
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="createdAt">Date</SelectItem>
+                    <SelectItem value="-createdAt">Date</SelectItem>
                     <SelectItem value="pay">Pay</SelectItem>
                     <SelectItem value="noOfApplicants">Applicants</SelectItem>
                   </SelectContent>

@@ -14,6 +14,8 @@ import { Badge } from '@/components/ui/badge';
 import { fetchWorkById } from '../query/fetchWorkById';
 import { API_URL } from '../utils/constants';
 import NoWorkFound from './NoWorkFound';
+import { fetchSkillMatch } from '@/query/fetchSkillMatch';
+import MarkdownRenderer from './ai/MarkdownRenderer';
 
 const Work = () => {
   const { id } = useParams();
@@ -195,10 +197,35 @@ const StatCard = ({ icon, title, value, className }) => {
 };
 
 const DescriptionCard = ({ data }) => {
+  const [markdown, setMarkdown] = useState('');
+  const handleClick = async () => {
+    const { description, skills_Required } = data;
+
+    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+    if (!token) throw new Error('User not authenticated');
+
+    const response = await fetch(`${API_URL}/ai/skill-match`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ description, skills: skills_Required }),
+    });
+
+    const apiData = await response.json();
+
+    console.log(apiData.data.markdown);
+    setMarkdown(apiData.data.markdown);
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Job Description</CardTitle>
+        <div className="flex justify-between">
+          <CardTitle>Job Description</CardTitle>
+          <Button onClick={handleClick}>Analyze with ai</Button>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
@@ -219,6 +246,8 @@ const DescriptionCard = ({ data }) => {
           <h3 className="font-semibold">Requirements</h3>
           <p className="mt-2 text-muted-foreground">{data.requirements}</p>
         </div>
+        <hr />
+        <MarkdownRenderer markdown={markdown} />
       </CardContent>
     </Card>
   );
