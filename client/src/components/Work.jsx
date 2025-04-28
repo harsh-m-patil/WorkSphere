@@ -240,7 +240,7 @@ const DescriptionCard = ({ data }) => {
         </div>
         <div>
           <h3 className="font-semibold">Description</h3>
-          <p className="mt-2 text-muted-foreground">{data.description}</p>
+          <MarkdownRenderer markdown={data.description} />
         </div>
         <div>
           <h3 className="font-semibold">Requirements</h3>
