@@ -10,6 +10,7 @@ import userRouter from './routes/user.routes.js'
 import reviewRouter from './routes/review.routes.js'
 import appRouter from './routes/app.routes.js'
 import workRouter from './routes/work.routes.js'
+import messageRouter from './routes/message.routes.js'
 import AppError from './utils/appError.js'
 import logger from './utils/logger.js'
 import compression from 'compression'
@@ -20,7 +21,6 @@ export async function initServer() {
   // MIDDLEWARES
   if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'))
   app.use(express.static('uploads/profile-images'))
-  app.use(express.json())
   app.use(helmet()) // Apply secure headers to all routes
 
   app.use(cookieParser())
@@ -58,6 +58,7 @@ export async function initServer() {
   app.use('/api/v1/users', userRouter)
   app.use('/api/v1/reviews', reviewRouter)
   app.use('/api/v1/work', workRouter)
+  app.use('/api/v1/messages', messageRouter)
   app.use('/api/v1/app', appRouter)
 
   app.get('/', (req, res, next) => {

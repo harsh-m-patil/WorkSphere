@@ -2,13 +2,19 @@ import dotenv from 'dotenv'
 import { connectDB, closeDB } from './config/db.js'
 import logger from './utils/logger.js'
 import { initServer } from './app.js'
+import { initSocket } from './utils/socket.js'
+import http from 'node:http'
 
 dotenv.config()
 
 // CONNECT TO DB
 await connectDB()
 
-const server = await initServer()
+const app = await initServer()
+
+const server = http.createServer(app)
+
+initSocket(server)
 
 let port = process.env.PORT || 5000
 

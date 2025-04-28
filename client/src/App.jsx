@@ -33,6 +33,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import AdminDashboardLayOut from './pages/AdminDashboardLayOut';
 import Overview from './components/admin/Overview';
 import WorkGrid from './components/WorkGrid';
+import ChatPage from './pages/ChatPage';
 
 const queryClient = new QueryClient({});
 
@@ -40,10 +41,67 @@ function App() {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
+        <Toaster
+          richColors
+          toastOptions={{ className: 'text-xl border border-xl' }}
+        />
+        <Routes>
+          <Route path="/admin" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="ManageClients" element={<ManageClients />} />
+            <Route path="ManageUsers" element={<ManageUsers />} />
+            <Route path="ManageJobs" element={<ManageJobs />} />
+            <Route path="Analytics" element={<Analytics />} />
+          </Route>
+          <Route path="/user/dashboard" element={<DashboardLayout />}>
+            <Route index element={<UserDashboard />} />
+            <Route path="applications" element={<Applications />} />
+            <Route path="works" element={<MyWorks />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+          </Route>
+          <Route path="/v2" element={<AdminDashboardLayOut />}>
+            <Route index element={<Overview />} />
+          </Route>
+          <Route path="/admin" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="ManageClients" element={<ManageClients />} />
+            <Route path="ManageUsers" element={<ManageUsers />} />
+            <Route path="ManageJobs" element={<ManageJobs />} />
+            <Route path="Analytics" element={<Analytics />} />
+          </Route>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Home />} />
+            <Route path="/freelancer/signup" element={<Freelancersignup />} />
+            <Route path="/client/signup" element={<Clientsignup />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="business" element={<BusinessModelPage />}></Route>
+            <Route path="login" element={<Login />}></Route>
+            <Route path="works" element={<WorkGrid />}></Route>
+            <Route path="works/:id" element={<Work />}></Route>
+            <Route path="freelancers" element={<Freelancers />}></Route>
             <Route
+              path="freelancers/:username"
+              element={<Freelancer />}
             ></Route>
             <Route path="/chat/:username" element={<ChatPage />}></Route>
           </Route>
+          <Route path="/client/dashboard" element={<ClientDashboard />}></Route>
+          <Route
+            path="/client/dashboard/works"
+            element={<ClientWorksPosted />}
+          ></Route>
+          <Route
+            path="/client/dashboard/works/single"
+            element={<ClientFilterWork />}
+          ></Route>
+          <Route
+            path="/client/dashboard/postwork"
+            element={<ClientPostWork />}
+          ></Route>
+          {/* Catch-all route for 404 page */}
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </Router>
