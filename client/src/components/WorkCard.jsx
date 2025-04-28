@@ -57,7 +57,7 @@ const WorkCard = ({ work, index }) => {
           </div>
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
-            {work.skills_Required.map((skill, index) => (
+            {work.skills_Required.slice(0, 4).map((skill, index) => (
               <Badge
                 key={1 + index}
                 variant="outline"
