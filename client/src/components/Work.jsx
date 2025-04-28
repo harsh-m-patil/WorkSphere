@@ -51,7 +51,7 @@ const Work = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-[600px] items-center justify-center">
-        <Loader2 className="text-primary h-10 w-10 animate-spin" />
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
       </div>
     );
   }
@@ -93,7 +93,7 @@ const Work = () => {
                 </Avatar>
                 <div>
                   <h1 className="text-2xl font-semibold">{data.title}</h1>
-                  <p className="text-muted-foreground text-lg">
+                  <p className="text-lg text-muted-foreground">
                     {data.client_id?.userName}
                   </p>
                   <Badge
@@ -186,7 +186,7 @@ const StatCard = ({ icon, title, value, className }) => {
       <CardContent className="flex items-center gap-4 p-4">
         {icon}
         <div>
-          <p className="text-muted-foreground text-sm">{title}</p>
+          <p className="text-sm text-muted-foreground">{title}</p>
           <p className="text-xl font-semibold">{value}</p>
         </div>
       </CardContent>
@@ -213,11 +213,11 @@ const DescriptionCard = ({ data }) => {
         </div>
         <div>
           <h3 className="font-semibold">Description</h3>
-          <p className="text-muted-foreground mt-2">{data.description}</p>
+          <p className="mt-2 text-muted-foreground">{data.description}</p>
         </div>
         <div>
           <h3 className="font-semibold">Requirements</h3>
-          <p className="text-muted-foreground mt-2">{data.requirements}</p>
+          <p className="mt-2 text-muted-foreground">{data.requirements}</p>
         </div>
       </CardContent>
     </Card>
@@ -233,13 +233,13 @@ const CompanyCard = ({ data }) => {
       <CardContent className="space-y-4">
         <div>
           <h3 className="font-semibold">About</h3>
-          <p className="text-muted-foreground mt-2">
+          <p className="mt-2 text-muted-foreground">
             {data?.description || 'No company description available.'}
           </p>
         </div>
         <div>
           <h3 className="font-semibold">Contact</h3>
-          <p className="text-muted-foreground mt-2">
+          <p className="mt-2 text-muted-foreground">
             {data?.email || 'No contact information available.'}
           </p>
         </div>

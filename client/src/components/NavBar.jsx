@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   motion,
   AnimatePresence,
@@ -8,14 +7,13 @@ import {
   useMotionValueEvent,
 } from 'motion/react';
 import { Menu, X } from 'lucide-react';
-import { logout } from '../redux/authSlice';
+import useAuthStore from '@/store/authStore';
 import Button from './Button';
 
 const NavBar = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { user, logout } = useAuthStore();
   const { scrollY } = useScroll();
 
   // Handle scroll events
@@ -24,7 +22,7 @@ const NavBar = () => {
   });
 
   const handleLogout = () => {
-    dispatch(logout());
+    logout();
     setIsVisible(false);
   };
 

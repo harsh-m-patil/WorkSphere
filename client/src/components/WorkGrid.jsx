@@ -46,16 +46,14 @@ export default function WorkGrid() {
 
   // Update the URL params when state changes
   useEffect(() => {
-
     const searchParams = {};
-    if (search) searchParams.search = search
-    if (pay) searchParams.pay = pay
-    if (level) searchParams.level = level
-    if (sort) searchParams.sort = sort
-    if (page) searchParams.page = page.toString()
+    if (search) searchParams.search = search;
+    if (pay) searchParams.pay = pay;
+    if (level) searchParams.level = level;
+    if (sort) searchParams.sort = sort;
+    if (page) searchParams.page = page.toString();
 
     setSearchParams(searchParams);
-
   }, [search, page, sort, level, pay, setSearchParams]);
 
   // Debounce search to avoid updating URL on every key stroke immediately

@@ -12,6 +12,25 @@ export function getDate(mongoDate) {
   );
 }
 
+export function getDateWithTime(mongoDate) {
+  let date = new Date();
+  if (mongoDate) {
+    date = new Date(mongoDate);
+  }
+  return (
+    date.getHours() +
+    1 +
+    ':' +
+    date.getMinutes() +
+    ' ' +
+    date.getDate() +
+    ' ' +
+    getMonth(date.getMonth() + 1) +
+    ' ' +
+    date.getFullYear()
+  );
+}
+
 export function getMonth(month) {
   const monthObj = {
     1: 'Jan',

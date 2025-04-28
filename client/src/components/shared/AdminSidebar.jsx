@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { FcBullish } from 'react-icons/fc';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/authSlice';
+import useAuthStore from '@/store/authStore';
 import {
   DASHBOARD_SIDEBAR_BOTTOM_LINKS,
   DASHBOARD_SIDEBAR_LINKS,
@@ -14,11 +13,11 @@ const linkClasses =
   'flex items-center gap-4 font-semibold px-6 py-4 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 rounded-lg text-xl';
 
 export default function Sidebar() {
-  const dispatch = useDispatch();
+  const { logout } = useAuthStore();
   const navigate = useNavigate();
 
   function handleClick() {
-    dispatch(logout());
+    logout();
     navigate('/login');
   }
 

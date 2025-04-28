@@ -120,7 +120,7 @@ export default function ClientFilterWork() {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-muted-foreground text-sm">{work.description}</p>
+          <p className="text-sm text-muted-foreground">{work.description}</p>
           <Separator />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div className="space-y-1">
@@ -179,9 +179,9 @@ export default function ClientFilterWork() {
         ) : appliedUsers.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-10">
-              <Users className="text-muted-foreground h-10 w-10" />
+              <Users className="h-10 w-10 text-muted-foreground" />
               <h3 className="mt-4 text-lg font-semibold">No Applicants Yet</h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 When freelancers apply to this job, they'll appear here.
               </p>
             </CardContent>
@@ -202,7 +202,7 @@ export default function ClientFilterWork() {
                       </CardTitle>
                       <div className="flex items-center">
                         <Star className="mr-1 h-4 w-4 text-yellow-500" />
-                        <span className="text-muted-foreground text-sm">
+                        <span className="text-sm text-muted-foreground">
                           {user.ratingsAverage} ({user.noOfRatings} reviews)
                         </span>
                       </div>
@@ -211,8 +211,8 @@ export default function ClientFilterWork() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center space-x-2">
-                    <Mail className="text-muted-foreground h-4 w-4" />
-                    <span className="text-muted-foreground text-sm">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
                       {user.email}
                     </span>
                   </div>

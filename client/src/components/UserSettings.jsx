@@ -237,7 +237,7 @@ export default function UserSettings() {
                     className="h-32 w-32 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="bg-muted flex h-32 w-32 items-center justify-center rounded-full">
+                  <div className="flex h-32 w-32 items-center justify-center rounded-full bg-muted">
                     <span className="text-2xl">👤</span>
                   </div>
                 )}

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { SearchBar } from './SearchBar';
 import { MyWorksListElement } from './MyWorksListElement';
 import UserDashboardHeader from './UserDashboardHeader';
+import useAuthStore from '@/store/authStore';
 
 const MyWorks = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useAuthStore();
   const works = user.works;
   const [filteredWorks, setFilteredWorks] = useState([]);
 

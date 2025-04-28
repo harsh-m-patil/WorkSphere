@@ -57,7 +57,7 @@ export default function ApplicationsTable() {
   if (isLoading) {
     return (
       <div className="flex min-h-[400px] w-full items-center justify-center">
-        <Loader2 className="text-muted-foreground h-10 w-10 animate-spin" />
+        <Loader2 className="h-10 w-10 animate-spin text-muted-foreground" />
       </div>
     );
   }

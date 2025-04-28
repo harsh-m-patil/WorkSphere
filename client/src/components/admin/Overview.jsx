@@ -22,7 +22,7 @@ const Overview = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-[600px] items-center justify-center">
-        <Loader2 className="text-primary h-10 w-10 animate-spin" />
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
       </div>
     );
   }

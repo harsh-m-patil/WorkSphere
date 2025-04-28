@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { login } from '../redux/authSlice';
+import useAuthStore from '@/store/authStore';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { API_URL } from '../utils/constants';
@@ -10,8 +9,8 @@ import { API_URL } from '../utils/constants';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
   const navigate = useNavigate(); // Initialize navigate
+  const { login } = useAuthStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +24,7 @@ const Login = () => {
       console.log(response);
 
       // Dispatch login action
-      dispatch(login({ user, token }));
+      login({ user, token });
       toast.success('Login Successful', { position: 'top-center' });
 
       // Redirect to dashboard or homepage
