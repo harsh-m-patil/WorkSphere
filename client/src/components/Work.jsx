@@ -14,7 +14,6 @@ import { Badge } from '@/components/ui/badge';
 import { fetchWorkById } from '../query/fetchWorkById';
 import { API_URL } from '../utils/constants';
 import NoWorkFound from './NoWorkFound';
-import { fetchSkillMatch } from '@/query/fetchSkillMatch';
 import MarkdownRenderer from './ai/MarkdownRenderer';
 
 const Work = () => {
@@ -198,13 +197,14 @@ const StatCard = ({ icon, title, value, className }) => {
 
 const DescriptionCard = ({ data }) => {
   const [markdown, setMarkdown] = useState('');
+
   const handleClick = async () => {
     const { description, skills_Required } = data;
 
-    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+    const token = localStorage.getItem('token');
     if (!token) throw new Error('User not authenticated');
 
-    const response = await fetch(`${API_URL}/ai/skill-match`, {
+    const promise = fetch(`${API_URL}/ai/skill-match`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -213,9 +213,14 @@ const DescriptionCard = ({ data }) => {
       body: JSON.stringify({ description, skills: skills_Required }),
     });
 
-    const apiData = await response.json();
+    toast.promise(promise, {
+      loading: 'Generating Skill report...',
+      success: 'AI Based skill match report generated',
+      error: 'Error generating report',
+    });
 
-    console.log(apiData.data.markdown);
+    const response = await promise;
+    const apiData = await response.json();
     setMarkdown(apiData.data.markdown);
   };
 
@@ -241,10 +246,6 @@ const DescriptionCard = ({ data }) => {
         <div>
           <h3 className="font-semibold">Description</h3>
           <MarkdownRenderer markdown={data.description} />
-        </div>
-        <div>
-          <h3 className="font-semibold">Requirements</h3>
-          <p className="mt-2 text-muted-foreground">{data.requirements}</p>
         </div>
         <hr />
         <MarkdownRenderer markdown={markdown} />
