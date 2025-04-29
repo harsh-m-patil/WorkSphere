@@ -7,6 +7,8 @@ import {
   UserIcon,
 } from '@heroicons/react/outline'; // Importing icons
 
+import { Brain } from 'lucide-react';
+
 import { useNavigate } from 'react-router-dom';
 
 const UserSidebar = () => {
@@ -44,6 +46,11 @@ const UserSidebar = () => {
           text="Profile"
           to="profile"
           icon={<UserIcon className="h-5 w-5" />}
+        />
+        <SideBarElement
+          text="AI Studio"
+          to="ai"
+          icon={<Brain className="h-5 w-5" />}
         />
         <SideBarElement
           text="Settings"

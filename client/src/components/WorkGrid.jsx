@@ -33,7 +33,7 @@ export default function WorkGrid() {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialSearch = searchParams.get('search') || '';
   const initialPage = parseInt(searchParams.get('page'), 10) || 1;
-  const initialSort = searchParams.get('sort') || 'createdAt';
+  const initialSort = searchParams.get('sort') || '-createdAt';
   const initialLevel = searchParams.get('level') || 'All';
   const initialPay = searchParams.get('pay') || '';
 

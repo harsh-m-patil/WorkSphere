@@ -29,11 +29,11 @@ import AboutUs from './components/AboutUs';
 import Freelancersignup from './components/FreelancerSignup';
 import Clientsignup from './components/ClientSignup';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import AdminDashboardLayOut from './pages/AdminDashboardLayOut';
 import Overview from './components/admin/Overview';
 import WorkGrid from './components/WorkGrid';
 import ChatPage from './pages/ChatPage';
+import { AIStudio } from './components/ai/AIStudio';
 
 const queryClient = new QueryClient({});
 
@@ -59,6 +59,8 @@ function App() {
             <Route path="works" element={<MyWorks />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="ai" element={<AIStudio />} />
+            <Route path="ai/:id" element={<AIStudio />} />
           </Route>
           <Route path="/v2" element={<AdminDashboardLayOut />}>
             <Route index element={<Overview />} />
@@ -102,7 +104,6 @@ function App() {
           {/* Catch-all route for 404 page */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-        <ReactQueryDevtools />
       </QueryClientProvider>
     </Router>
   );

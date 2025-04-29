@@ -30,3 +30,29 @@ export const skillMatchSystemPrompt = async (input) => {
 
   return text
 }
+
+export const interviewQuestionSystemPrompt = async (input) => {
+  const { text } = await generateText({
+    model,
+    messages: [
+      {
+        role: 'system',
+        content:
+          `You are an AI assistant skilled in HR, talent acquisition, and technical recruitment. ` +
+          `Analyze the job description and generate a list of relevant, high-quality interview questions. ` +
+          `Include a mix of behavioral, technical, and situational questions that assess the key competencies, tools, and responsibilities outlined. ` +
+          `Tailor questions to the seniority level, required skills, and core objectives of the role. ` +
+          `Include no more than 3-5 questions per category: technical, behavioral, situational. ` +
+          `Structure output in clear markdown using bullet points and bold section headers (e.g., **Technical Questions**). ` +
+          `Avoid vague or generic questions. Do not include explanations or commentary. Only return the question list. ` +
+          `Prioritize precision, clarity, and alignment with the role’s scope.`,
+      },
+      {
+        role: 'user',
+        content: input,
+      },
+    ],
+  })
+
+  return text
+}

@@ -15,6 +15,9 @@ import { fetchWorkById } from '../query/fetchWorkById';
 import { API_URL } from '../utils/constants';
 import NoWorkFound from './NoWorkFound';
 import MarkdownRenderer from './ai/MarkdownRenderer';
+import { LinkIcon } from 'lucide-react';
+import { Brain } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Work = () => {
   const { id } = useParams();
@@ -197,8 +200,9 @@ const StatCard = ({ icon, title, value, className }) => {
 
 const DescriptionCard = ({ data }) => {
   const [markdown, setMarkdown] = useState('');
+  const navigate = useNavigate();
 
-  const handleClick = async () => {
+  const handleAnalyzeClick = async () => {
     const { description, skills_Required } = data;
 
     const token = localStorage.getItem('token');
@@ -224,12 +228,25 @@ const DescriptionCard = ({ data }) => {
     setMarkdown(apiData.data.markdown);
   };
 
+  const handleGenClick = () => {
+    navigate(`/user/dashboard/ai/${data._id}`);
+  };
+
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-between">
+        <div className="flex flex-col justify-between sm:flex-row sm:items-center">
           <CardTitle>Job Description</CardTitle>
-          <Button onClick={handleClick}>Analyze with ai</Button>
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <Button onClick={handleAnalyzeClick}>
+              Analyze with ai
+              <Brain />
+            </Button>
+            <Button onClick={handleGenClick} variant="generative">
+              Open in AI Studio
+              <LinkIcon />
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
