@@ -6,6 +6,8 @@ import factory from './factory.controller.js'
 import { deleteFile } from '../utils/fileHelpers.js'
 import APIFeatures from '../utils/apiFeatures.js'
 
+import redisClient from '../config/redis.js'
+
 const userController = {
   /**
    * @description Create a new User
@@ -38,6 +40,16 @@ const userController = {
         query.$text = { $search: req.query.search }
       }
 
+      // Generate a unique Redis key based on roles and query params
+      const redisKey = `getUsers:${JSON.stringify(roles)}:${JSON.stringify(req.query)}`
+
+      const cached = await redisClient.get(redisKey)
+
+      if (cached) {
+        console.log('Returned from cache')
+        return res.status(200).json(JSON.parse(cached))
+      }
+
       // Initialize the query
       let dbQuery = User.find(query)
 
@@ -52,6 +64,15 @@ const userController = {
 
       // Execute the final query to get the users
       const users = await dbQuery
+
+      const response = {
+        status: 'success',
+        total,
+        results: users.length,
+        data: { users },
+      }
+      await redisClient.setEx(redisKey, 20, JSON.stringify(response))
+      console.log('Cached in redis')
 
       res.status(200).json({
         status: 'success',
