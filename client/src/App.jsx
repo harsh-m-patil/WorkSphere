@@ -35,6 +35,7 @@ import WorkGrid from './components/WorkGrid';
 import ChatPage from './pages/ChatPage';
 import { AIStudio } from './components/ai/AIStudio';
 import Payment from './components/Payment';
+import Subscription from './components/Subscription';
 
 const queryClient = new QueryClient({});
 
@@ -102,10 +103,10 @@ function App() {
             path="/client/dashboard/postwork"
             element={<ClientPostWork />}
           ></Route>
-          <Route
-            path="/payment"
-            element={<Payment />}
-          ></Route>
+         <Route path="/payment" element={<Payment />} />
+         
+<Route path="/subscribe" element={<Subscription />} />
+
           {/* Catch-all route for 404 page */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>

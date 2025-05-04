@@ -4,6 +4,9 @@ import { API_URL } from "@/utils/constants";
 import { Button } from "./ui/button";
 import useAuthStore from "@/store/authStore";
 
+// Correct the import path to the image
+import premiumImage from "@/assets/premium.png";
+
 function Payment() {
   const amount = 500;
   const currency = "INR";
@@ -37,13 +40,12 @@ function Payment() {
 
       const order = await response.json();
       const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
-      console.log(RAZORPAY_KEY)
       const options = {
         key: RAZORPAY_KEY,
         amount,
         currency,
         name: "WorkSphere",
-        description: "Pro Subscription",
+        description: "Pro Subscription - Unlock premium features",
         image: "https://worksphere35.vercel.app/logo.svg",
         order_id: order.id,
         handler: async function (response) {
@@ -98,20 +100,41 @@ Payment ID: ${response.error.metadata.payment_id}
   };
 
   return (
-    <div className="product p-4">
-      <h2 className="text-xl font-bold">Tshirt</h2>
-      <p>Solid blue cotton Tshirt</p>
-      <br />
-      <Button onClick={paymentHandler}>Pay</Button>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-8 px-4">
+      {/* Card Container */}
+      <div className="bg-white p-8 rounded-xl shadow-lg max-w-xl w-full">
+        {/* Product Header */}
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">Premium Subscription</h2>
+        <p className="text-center text-gray-600 mb-6">Unlock all the premium features and elevate your experience with WorkSphere.</p>
 
-      {error && (
-        <Alert variant="destructive" className="mt-4">
-          <AlertTitle>Payment Failed</AlertTitle>
-          <AlertDescription>
-            <pre className="whitespace-pre-wrap">{error}</pre>
-          </AlertDescription>
-        </Alert>
-      )}
+        {/* Subscription Image */}
+        <div className="flex justify-center mb-6">
+  <img
+    src={premiumImage}
+    alt="Premium Subscription"
+    className="rounded-lg shadow-md w-3/4 h-auto" // Adjust the width to 75% and height auto to maintain aspect ratio
+  />
+</div>
+
+
+        {/* Payment Button */}
+        <Button
+          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+          onClick={paymentHandler}
+        >
+          Pay ₹{amount} for Premium
+        </Button>
+
+        {/* Error Alert */}
+        {error && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertTitle>Payment Failed</AlertTitle>
+            <AlertDescription>
+              <pre className="whitespace-pre-wrap">{error}</pre>
+            </AlertDescription>
+          </Alert>
+        )}
+      </div>
     </div>
   );
 }
