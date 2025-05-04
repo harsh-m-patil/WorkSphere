@@ -29,7 +29,7 @@ export async function initServer() {
       }),
     )
   }
-  app.use(express.static('uploads/profile-images'))
+  app.use('/uploads/profile-images/', express.static('uploads/profile-images'))
   app.use(helmet()) // Apply secure headers to all routes
 
   app.use(cookieParser())

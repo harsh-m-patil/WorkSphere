@@ -46,9 +46,7 @@ const UserCard = ({ user, index }) => {
               {user.profileImage === undefined ? (
                 ''
               ) : (
-                <AvatarImage
-                  src={`${IMAGE_URL}${user?.profileImage?.split('/')[3]}`}
-                />
+                <AvatarImage src={user.profileImage} />
               )}
               <AvatarFallback>
                 <img
@@ -61,7 +59,7 @@ const UserCard = ({ user, index }) => {
           </div>
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
-            {user.skills.map((skill, index) => (
+            {user.skills.slice(0, 3).map((skill, index) => (
               <Badge
                 key={1 + index}
                 variant="outline"

@@ -4,6 +4,7 @@ import FreelancerStat from './FreelancerStat';
 import FreelancerDescCard from './FreelancerDescCard';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserByUsername } from '@/query/fetchUserByUsername';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 const Freelancer = () => {
   const { username } = useParams();
@@ -46,7 +47,12 @@ const Freelancer = () => {
           {/* Profile header is now stack on mobile */}
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
-              <img src="/vite.svg" className="h-16 md:h-24" alt="Profile" />
+              <Avatar>
+                <AvatarImage src={data.profileImage} />
+                <AvatarFallback>
+                  {data.client_id?.userName.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
               <div className="text-center sm:text-left">
                 <p className="text-xl font-medium md:text-2xl">
                   {data.userName}

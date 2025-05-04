@@ -57,7 +57,7 @@ const WorkCard = ({ work, index }) => {
           </div>
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
-            {work.skills_Required.slice(0, 4).map((skill, index) => (
+            {work.skills_Required.slice(0, 2).map((skill, index) => (
               <Badge
                 key={1 + index}
                 variant="outline"
@@ -71,7 +71,7 @@ const WorkCard = ({ work, index }) => {
       </div>
       <div className="flex items-center justify-between rounded-3xl px-4 py-2">
         <div>
-          <span className="font-semibold">$ {work.pay}</span>
+          <span className="font-semibold">₹ {work.pay}</span>
           <p className="text-gray-600">Remote</p>
         </div>
         <div>

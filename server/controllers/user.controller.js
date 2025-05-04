@@ -204,7 +204,8 @@ const userController = {
     }
 
     // Generate the URL for the uploaded file
-    const imageUrl = `/uploads/profile-images/${req.file.filename}`
+    const BASE_URL = process.env.SERVER_URL || 'http://localhost:3000'
+    const imageUrl = `${BASE_URL}/${req.file.filename}`
 
     // Delete old image file if it exists
     if (user.profileImage) {

@@ -260,7 +260,7 @@ export default function UserSettings() {
               <div className="relative">
                 {imagePreview ? (
                   <img
-                    src={`${IMAGE_URL}${imagePreview.split('/')[3]}`}
+                    src={user.profileImage}
                     alt="Profile"
                     className="h-32 w-32 rounded-full object-cover"
                   />

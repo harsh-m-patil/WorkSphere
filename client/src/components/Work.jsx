@@ -5,7 +5,13 @@ import axios from 'axios';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
-import { Loader2, Building2, Users, Briefcase, DollarSign } from 'lucide-react';
+import {
+  Loader2,
+  Building2,
+  Users,
+  Briefcase,
+  IndianRupee,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -120,9 +126,9 @@ const Work = () => {
             {/* Stats Grid */}
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <StatCard
-                icon={<DollarSign className="h-4 w-4" />}
+                icon={<IndianRupee className="h-4 w-4" />}
                 title="Pay"
-                value={`$${data.pay}`}
+                value={data.pay}
                 className="border border-green-400 bg-green-50 transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg"
               />
               <StatCard

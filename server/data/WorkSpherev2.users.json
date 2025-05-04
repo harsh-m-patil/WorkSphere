@@ -1,0 +1,785 @@
+[{
+  "_id": {
+    "$oid": "67fff9186d31233ad9354d7e"
+  },
+  "firstName": "Mitchel",
+  "lastName": "Pacocha-Lang",
+  "userName": "lera.botsford",
+  "description": "No description provided",
+  "email": "beulah12@gmail.com",
+  "banner": "./banner.jpg",
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG",
+  "active": true,
+  "noOfApplications": 0,
+  "balance": 4159,
+  "role": "client",
+  "skills": [],
+  "languages": [],
+  "certificates": [],
+  "ratingsAverage": 4,
+  "noOfRatings": 0,
+  "createdAt": {
+    "$date": "2024-04-30T03:17:31.737Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-16T18:38:16.078Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67fff9186d31233ad9354d8b"
+  },
+  "firstName": "Augusta",
+  "lastName": "Rempel",
+  "userName": "benedict.emmerich",
+  "description": "No description provided",
+  "email": "jakob54@yahoo.com",
+  "banner": "./banner.jpg",
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG",
+  "active": true,
+  "noOfApplications": 0,
+  "balance": 2911,
+  "role": "client",
+  "skills": [],
+  "languages": [],
+  "certificates": [],
+  "ratingsAverage": 4,
+  "noOfRatings": 0,
+  "createdAt": {
+    "$date": "2024-11-19T05:43:18.822Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-16T18:38:16.079Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67fff9186d31233ad9354d8c"
+  },
+  "firstName": "Dudley",
+  "lastName": "Stiedemann",
+  "userName": "weldon_hodkiewicz-leuschke",
+  "description": "No description provided",
+  "email": "elody30@yahoo.com",
+  "banner": "./banner.jpg",
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG",
+  "active": true,
+  "noOfApplications": 0,
+  "balance": 7296,
+  "role": "client",
+  "skills": [],
+  "languages": [],
+  "certificates": [],
+  "ratingsAverage": 4,
+  "noOfRatings": 0,
+  "createdAt": {
+    "$date": "2024-12-23T00:48:04.058Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-16T18:38:16.079Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67fff9186d31233ad9354d8d"
+  },
+  "firstName": "Lurline",
+  "lastName": "Gislason",
+  "userName": "alek12",
+  "description": "No description provided",
+  "email": "nelda75@gmail.com",
+  "banner": "./banner.jpg",
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG",
+  "active": true,
+  "noOfApplications": 0,
+  "balance": 1347,
+  "role": "client",
+  "skills": [],
+  "languages": [],
+  "certificates": [],
+  "ratingsAverage": 4,
+  "noOfRatings": 0,
+  "createdAt": {
+    "$date": "2024-09-22T10:26:24.133Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-16T18:38:16.080Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67fff9186d31233ad9354d8e"
+  },
+  "firstName": "Admin",
+  "lastName": "User",
+  "userName": "admin",
+  "description": "No description provided",
+  "email": "admin@work.com",
+  "banner": "./banner.jpg",
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG",
+  "passwordConfirm": "Password123",
+  "active": true,
+  "noOfApplications": 0,
+  "balance": 0,
+  "role": "admin",
+  "skills": [],
+  "languages": [],
+  "certificates": [],
+  "ratingsAverage": 4,
+  "noOfRatings": 0,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-04-16T18:38:16.080Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-16T18:38:16.080Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b24"
+  },
+  "firstName": "Anya",
+  "lastName": "Sharma",
+  "userName": "anya.sharma",
+  "description": "Experienced graphic designer specializing in brand identity and web design.",
+  "email": "anya.sharma@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/1.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Graphic Design",
+    "Branding",
+    "Web Design (UI/UX)",
+    "Adobe Creative Suite",
+    "Figma"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b25"
+  },
+  "firstName": "Rohan",
+  "lastName": "Verma",
+  "userName": "rohan.verma",
+  "description": "Full-stack developer with expertise in Node.js, React, and MongoDB.",
+  "email": "rohan.verma@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/1.jpg",
+  "role": "freelancer",
+  "skills": [
+    "JavaScript",
+    "Node.js",
+    "React",
+    "MongoDB",
+    "Express.js",
+    "REST APIs"
+  ],
+  "languages": [
+    "English"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b26"
+  },
+  "firstName": "Priya",
+  "lastName": "Singh",
+  "userName": "priya.singh",
+  "description": "Content writer and editor focused on creating engaging and SEO-friendly content.",
+  "email": "priya.singh@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/2.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Content Writing",
+    "Copywriting",
+    "Editing",
+    "SEO",
+    "Blogging",
+    "Proofreading"
+  ],
+  "languages": [
+    "English",
+    "Bengali"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b27"
+  },
+  "firstName": "Amit",
+  "lastName": "Patel",
+  "userName": "amit.patel",
+  "description": "Digital marketing specialist with a focus on social media and performance marketing.",
+  "email": "amit.patel@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/2.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Digital Marketing",
+    "Social Media Marketing",
+    "SEO",
+    "SEM",
+    "Google Analytics",
+    "Facebook Ads"
+  ],
+  "languages": [
+    "English",
+    "Gujarati"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b28"
+  },
+  "firstName": "Sneha",
+  "lastName": "Desai",
+  "userName": "sneha.desai",
+  "description": "Virtual assistant providing administrative, technical, and creative assistance.",
+  "email": "sneha.desai@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/3.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Administrative Support",
+    "Email Management",
+    "Scheduling",
+    "Data Entry",
+    "Customer Service"
+  ],
+  "languages": [
+    "English",
+    "Marathi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b29"
+  },
+  "firstName": "Vijay",
+  "lastName": "Kumar",
+  "userName": "vijay.kumar",
+  "description": "Data analyst proficient in Python, R, and data visualization tools.",
+  "email": "vijay.kumar@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/3.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Data Analysis",
+    "Python",
+    "R",
+    "SQL",
+    "Tableau",
+    "Data Visualization"
+  ],
+  "languages": [
+    "English",
+    "Tamil"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b2a"
+  },
+  "firstName": "Neha",
+  "lastName": "Reddy",
+  "userName": "neha.reddy",
+  "description": "UX/UI designer creating user-centered digital products.",
+  "email": "neha.reddy@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/4.jpg",
+  "role": "freelancer",
+  "skills": [
+    "UX Design",
+    "UI Design",
+    "Wireframing",
+    "Prototyping",
+    "Figma",
+    "Sketch"
+  ],
+  "languages": [
+    "English",
+    "Telugu"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b2b"
+  },
+  "firstName": "Sandeep",
+  "lastName": "Sharma",
+  "userName": "sandeep.sharma",
+  "description": "Mobile app developer specializing in Android and iOS development.",
+  "email": "sandeep.sharma@example.com",
+  "profileImage": "/uploads/profile-images/111c0c85-ed65-44de-a153-4d42e78e6251.png",
+  "role": "freelancer",
+  "skills": [
+    "Mobile Development",
+    "Android Development",
+    "iOS Development",
+    "React Native",
+    "Flutter"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": true,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG",
+  "balance": 0,
+  "banner": "./banner.jpg",
+  "certificates": [],
+  "noOfApplications": 0,
+  "noOfRatings": 0,
+  "proExpiresAt": {
+    "$date": "2025-06-05T14:17:14.741Z"
+  },
+  "ratingsAverage": 4,
+  "updatedAt": {
+    "$date": "2025-05-06T14:26:30.624Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b2c"
+  },
+  "firstName": "Anjali",
+  "lastName": "Singh",
+  "userName": "anjali.singh",
+  "description": "Translator and localization expert for English and French.",
+  "email": "anjali.singh@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/5.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Translation",
+    "Localization",
+    "English",
+    "French",
+    "Proofreading",
+    "Editing"
+  ],
+  "languages": [
+    "English",
+    "French",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b2d"
+  },
+  "firstName": "Rahul",
+  "lastName": "Gupta",
+  "userName": "rahul.gupta",
+  "description": "Financial consultant providing services in accounting and financial planning.",
+  "email": "rahul.gupta@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/5.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Financial Consulting",
+    "Accounting",
+    "Financial Planning",
+    "Bookkeeping",
+    "Tax Preparation"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b2e"
+  },
+  "firstName": "Pooja",
+  "lastName": "Mehta",
+  "userName": "pooja.mehta",
+  "description": "Project manager with experience in agile methodologies.",
+  "email": "pooja.mehta@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/6.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Project Management",
+    "Agile",
+    "Scrum",
+    "Jira",
+    "Team Leadership",
+    "Communication"
+  ],
+  "languages": [
+    "English",
+    "Gujarati"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b2f"
+  },
+  "firstName": "Vikram",
+  "lastName": "Yadav",
+  "userName": "vikram.yadav",
+  "description": "Cybersecurity expert specializing in penetration testing and security audits.",
+  "email": "vikram.yadav@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/6.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Cybersecurity",
+    "Penetration Testing",
+    "Security Audits",
+    "Network Security",
+    "Ethical Hacking"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b30"
+  },
+  "firstName": " Deepika",
+  "lastName": "Singh",
+  "userName": "deepika.singh",
+  "description": "Experienced photographer specializing in portraits and events.",
+  "email": "deepika.singh@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/7.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Photography",
+    "Portrait Photography",
+    "Event Photography",
+    "Photo Editing",
+    "Adobe Photoshop"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b31"
+  },
+  "firstName": "Arjun",
+  "lastName": "Nair",
+  "userName": "arjun.nair",
+  "description": "Video editor and motion graphics designer.",
+  "email": "arjun.nair@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/7.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Video Editing",
+    "Motion Graphics",
+    "Adobe After Effects",
+    "Adobe Premiere Pro",
+    "Final Cut Pro"
+  ],
+  "languages": [
+    "English",
+    "Malayalam"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b32"
+  },
+  "firstName": "Sakshi",
+  "lastName": "Joshi",
+  "userName": "sakshi.joshi",
+  "description": "Social media manager building online presence for brands.",
+  "email": "sakshi.joshi@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/8.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Social Media Management",
+    "Content Strategy",
+    "Community Management",
+    "Social Media Advertising"
+  ],
+  "languages": [
+    "English",
+    "Marathi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b33"
+  },
+  "firstName": "Rohit",
+  "lastName": "Mishra",
+  "userName": "rohit.mishra",
+  "description": "Backend developer focused on building scalable server-side applications.",
+  "email": "rohit.mishra@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/8.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Backend Development",
+    "Node.js",
+    "Python (Django/Flask)",
+    "SQL",
+    "APIs"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b34"
+  },
+  "firstName": "Aditi",
+  "lastName": "Shah",
+  "userName": "aditi.shah",
+  "description": "E-commerce specialist helping businesses set up and optimize online stores.",
+  "email": "aditi.shah@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/9.jpg",
+  "role": "freelancer",
+  "skills": [
+    "E-commerce",
+    "Shopify",
+    "WooCommerce",
+    "Online Store Optimization",
+    "Digital Marketing"
+  ],
+  "languages": [
+    "English",
+    "Gujarati"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b35"
+  },
+  "firstName": "Kunal",
+  "lastName": "Das",
+  "userName": "kunal.das",
+  "description": " illustrator creating unique digital and traditional artwork.",
+  "email": "kunal.das@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/9.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Illustration",
+    "Digital Art",
+    "Traditional Art",
+    "Character Design",
+    "Concept Art"
+  ],
+  "languages": [
+    "English",
+    "Bengali"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b36"
+  },
+  "firstName": "Ishaan",
+  "lastName": "Malhotra",
+  "userName": "ishaan.malhotra",
+  "description": "SEO specialist improving website visibility and organic search rankings.",
+  "email": "ishaan.malhotra@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/10.jpg",
+  "role": "freelancer",
+  "skills": [
+    "SEO",
+    "Keyword Research",
+    "On-page SEO",
+    "Off-page SEO",
+    "Technical SEO",
+    "Google Analytics"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b37"
+  },
+  "firstName": "Tanya",
+  "lastName": "Gupta",
+  "userName": "tanya.gupta",
+  "description": "Business consultant providing strategy and growth advice.",
+  "email": "tanya.gupta@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/10.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Business Consulting",
+    "Strategy",
+    "Market Research",
+    "Business Development",
+    "Financial Analysis"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b38"
+  },
+  "firstName": "Aditya",
+  "lastName": "Singh",
+  "userName": "aditya.singh",
+  "description": "Cloud computing expert with AWS and Azure experience.",
+  "email": "aditya.singh@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/11.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Cloud Computing",
+    "AWS",
+    "Azure",
+    "Cloud Architecture",
+    "DevOps"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b39"
+  },
+  "firstName": "Ritu",
+  "lastName": "Sharma",
+  "userName": "ritu.sharma",
+  "description": "Copy editor and proofreader ensuring high-quality written content.",
+  "email": "ritu.sharma@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/11.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Copy Editing",
+    "Proofreading",
+    "Grammar",
+    "Style Guides",
+    "Academic Editing"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b3a"
+  },
+  "firstName": "Siddharth",
+  "lastName": "Mehra",
+  "userName": "siddharth.mehra",
+  "description": "Machine learning engineer building predictive models.",
+  "email": "siddharth.mehra@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/12.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Machine Learning",
+    "Python",
+    "TensorFlow",
+    "PyTorch",
+    "Data Science",
+    "Predictive Modeling"
+  ],
+  "languages": [
+    "English",
+    "Punjabi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b3b"
+  },
+  "firstName": "Divya",
+  "lastName": "Chopra",
+  "userName": "divya.chopra",
+  "description": "Travel consultant planning personalized itineraries.",
+  "email": "divya.chopra@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/women/12.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Travel Planning",
+    "Itinerary Creation",
+    "Destination Knowledge",
+    "Booking Management"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+},
+{
+  "_id": {
+    "$oid": "681a15df2c801014ddaf3b3c"
+  },
+  "firstName": "Manish",
+  "lastName": "Yadav",
+  "userName": "manish.yadav",
+  "description": "Network administrator ensuring smooth network operations.",
+  "email": "manish.yadav@example.com",
+  "profileImage": "https://randomuser.me/api/portraits/men/13.jpg",
+  "role": "freelancer",
+  "skills": [
+    "Network Administration",
+    "Cisco",
+    "TCP/IP",
+    "Network Security",
+    "Troubleshooting"
+  ],
+  "languages": [
+    "English",
+    "Hindi"
+  ],
+  "pro": false,
+  "password": "$2b$10$iE4vOnDJ29eNKFB3E2FtVuUQOrSQ/1XbynzdpgegeEwGqGVwa6VMG"
+}]
