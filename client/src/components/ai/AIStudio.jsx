@@ -90,7 +90,7 @@ export const AIStudio = () => {
       setAnalyzeMarkdown(apiData.data.markdown);
       setMode('analyze');
     } catch (err) {
-      console.error('Error analyzing skills:', err);
+      toast.error('Failed to analyze skills. Please try again later.');
     }
   };
 
