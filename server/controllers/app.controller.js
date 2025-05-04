@@ -1,7 +1,8 @@
-import User from '../models/user.model.js'
 import mongoose from 'mongoose'
+import User from '../models/user.model.js'
 import Work from '../models/work.model.js'
 import asyncHandler from '../utils/asyncHandler.js'
+import Setting from '../models/setting.model.js'
 
 export const getAppInfo = asyncHandler(async (req, res, next) => {
   const [
@@ -149,3 +150,32 @@ export const downloadData = asyncHandler(async (req, res) => {
   res.header('Content-Disposition', `attachment; filename=${fileName}`)
   res.status(200).json(docs)
 })
+
+export const getAppSettings = async (req, res) => {
+  try {
+    const setting = await Setting.findOne()
+    if (!setting) return res.status(404).json({ message: 'Settings not found' })
+    res.json(setting)
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+export const updateAppSettings = async (req, res) => {
+  try {
+    const update = {
+      clientSubscription: req.body.clientSubscription,
+      freelancerSubcription: req.body.freelancerSubcription,
+    }
+
+    const setting = await Setting.findOneAndUpdate({}, update, {
+      new: true,
+      upsert: true, // creates if not found
+      setDefaultsOnInsert: true,
+    })
+
+    res.status(200).json(setting)
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update settings' })
+  }
+}

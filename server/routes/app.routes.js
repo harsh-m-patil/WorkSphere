@@ -3,13 +3,111 @@ const router = express.Router()
 import { downloadData, getAppInfo } from '../controllers/app.controller.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
 import Transaction from '../models/transaction.model.js'
+import {
+  getAppSettings,
+  updateAppSettings,
+} from '../controllers/app.controller.js'
+
+/**
+ * @openapi
+ * /api/v1/app/settings:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get application settings
+ *     description: Retrieve the current application settings (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Application settings retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 clientSubscription:
+ *                   type: number
+ *                   description: Client subscription configuration
+ *                 freelancerSubcription:
+ *                   type: number
+ *                   description: Freelancer subscription configuration
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *       403:
+ *         description: Forbidden - User is not an admin
+ *       404:
+ *         description: Settings not found
+ *       500:
+ *         description: Server error
+ */
+router.get(
+  '/settings',
+  authMiddleware.protect,
+  authMiddleware.restrictTo('admin'),
+  getAppSettings,
+)
+
+/**
+ * @openapi
+ * /api/v1/app/settings:
+ *   put:
+ *     tags:
+ *       - Admin
+ *     summary: Update application settings
+ *     description: Update the application settings (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               clientSubscription:
+ *                 type: number
+ *                 description: Client subscription configuration
+ *               freelancerSubcription:
+ *                 type: number
+ *                 description: Freelancer subscription configuration
+ *             required:
+ *               - clientSubscription
+ *               - freelancerSubcription
+ *     responses:
+ *       200:
+ *         description: Settings updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 clientSubscription:
+ *                   type: number
+ *                   description: Updated client subscription configuration
+ *                 freelancerSubcription:
+ *                   type: number
+ *                   description: Updated freelancer subscription configuration
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *       403:
+ *         description: Forbidden - User is not an admin
+ *       500:
+ *         description: Failed to update settings
+ */
+router.put(
+  '/settings',
+  authMiddleware.protect,
+  authMiddleware.restrictTo('admin'),
+  updateAppSettings,
+)
 
 /**
  * @openapi
  * /api/v1/app/info/users:
  *   get:
  *     tags:
- *       - AppInfo
+ *       - Admin
  *     summary: Get app data for the admin dashboard
  *     description: Get App data for the admin dashboard
  *     responses:
@@ -27,7 +125,7 @@ router.get('/info/users', authMiddleware.protect, getAppInfo)
  *     summary: Download data as JSON
  *     description: Fetches data from the specified MongoDB collection (model) and downloads it as a JSON file.
  *     tags:
- *       - Download
+ *       - Admin
  *     parameters:
  *       - in: query
  *         name: q
@@ -78,6 +176,38 @@ router.get(
   authMiddleware.restrictTo('admin'),
   downloadData,
 )
+
+/**
+ * @openapi
+ * /api/v1/app/revenue:
+ *   get:
+ *     tags:
+ *       - Revenue
+ *     summary: Get total revenue
+ *     description: Calculates and returns the total revenue from all transactions
+ *     responses:
+ *       200:
+ *         description: Total revenue calculated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalRevenue:
+ *                   type: number
+ *                   description: The total revenue amount
+ *                   example: 25000.50
+ *       500:
+ *         description: Failed to calculate revenue
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                   example: Failed to calculate revenue
+ */
 router.get('/revenue', async (req, res) => {
   try {
     const result = await Transaction.aggregate([
@@ -88,9 +218,7 @@ router.get('/revenue', async (req, res) => {
         },
       },
     ])
-
     const totalRevenue = result[0]?.totalRevenue || 0
-
     res.json({ totalRevenue })
   } catch (error) {
     console.error(error)

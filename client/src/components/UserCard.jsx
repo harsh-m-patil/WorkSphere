@@ -6,6 +6,7 @@ import { Avatar, AvatarImage } from './ui/avatar';
 import { AvatarFallback } from '@radix-ui/react-avatar';
 import { getDate } from '@/utils/convertDate';
 import { Button } from './ui/button';
+import { Verified } from 'lucide-react';
 
 const UserCard = ({ user, index }) => {
   const navigate = useNavigate();
@@ -25,10 +26,11 @@ const UserCard = ({ user, index }) => {
         className={`h-5/6 w-full rounded-3xl px-4 py-5 ${getColor(index)} flex flex-col`}
       >
         {/* Date Section */}
-        <div>
+        <div className="flex items-center justify-between gap-2">
           <Badge variant="secondary" className="bg-white px-2 py-1 text-sm">
             {getDate(user.createdAt)}
           </Badge>
+          {user.pro ? <Verified /> : ''}
         </div>
         {/* More Info */}
         <div className="flex h-5/6 flex-col justify-between gap-10 px-3 pt-6">
@@ -37,9 +39,7 @@ const UserCard = ({ user, index }) => {
               <p className="pb-1 text-sm text-gray-700">{user.userName}</p>
               {/* Add multi-line truncation for the title */}
               <p className="line-clamp-2 max-w-36 overflow-hidden text-2xl font-medium">
-                {user.firstName +
-                  ' ' +
-                  (user.LastName === undefined ? '' : user.LastName)}
+                {user.firstName}
               </p>
             </div>
             <Avatar>

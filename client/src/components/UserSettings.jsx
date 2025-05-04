@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Trash2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
-
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -29,6 +28,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Label } from '@/components/ui/label';
 import { API_URL, IMAGE_URL } from '../utils/constants';
 import { fetchLoggedInUser } from '../query/fetchLoggedInUser';
+import { getDate } from '@/utils/convertDate';
+import { useNavigate } from 'react-router-dom';
 
 export default function UserSettings() {
   const queryClient = useQueryClient();
@@ -38,6 +39,7 @@ export default function UserSettings() {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const navigate = useNavigate();
   const {
     data: user,
     isLoading,
@@ -161,6 +163,10 @@ export default function UserSettings() {
     }));
   };
 
+  const handleSubscribe = () => {
+    navigate('/subscribe');
+  };
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -218,6 +224,28 @@ export default function UserSettings() {
     <div className="container mx-auto mt-12 space-y-6 p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+        {user.pro ? (
+          <div className="flex items-center justify-center gap-2">
+            <Badge className="text-md border border-green-600 bg-green-100 px-4 py-1 text-green-950 hover:bg-green-100">
+              Pro Plan
+            </Badge>
+            <Badge className="text-md border border-blue-600 bg-blue-100 px-4 py-1 text-blue-950 hover:bg-blue-100">
+              Expires on {getDate(user.proExpiresAt)}
+            </Badge>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-4">
+            <Badge className="text-md border border-red-600 bg-red-100 px-4 py-1 text-red-950 hover:bg-red-100">
+              Free Plan
+            </Badge>
+            <Button
+              className="bg-green-400 text-green-950 hover:bg-green-500"
+              onClick={handleSubscribe}
+            >
+              Buy Pro Plan
+            </Button>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleUpdate}>

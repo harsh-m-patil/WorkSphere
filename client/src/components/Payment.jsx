@@ -1,16 +1,18 @@
-import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { API_URL } from "@/utils/constants";
-import { Button } from "./ui/button";
-import useAuthStore from "@/store/authStore";
+import { useState } from 'react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { API_URL } from '@/utils/constants';
+import { Button } from './ui/button';
+import useAuthStore from '@/store/authStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 // Correct the import path to the image
-import premiumImage from "@/assets/premium.png";
+import premiumImage from '@/assets/premium.png';
 
 function Payment() {
+  const queryClient = useQueryClient();
   const amount = 500;
-  const currency = "INR";
-  const receiptId = "qwsaq1";
+  const currency = 'INR';
+  const receiptId = 'qwsaq1';
 
   const [error, setError] = useState(null);
   const user = useAuthStore((state) => state.user);
@@ -19,21 +21,21 @@ function Payment() {
     e.preventDefault();
     setError(null);
     if (!user) {
-      setError("User not logged in.");
+      setError('User not logged in.');
       return;
     }
 
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}/payment/order`, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({
           amount,
           currency,
           receipt: receiptId,
         }),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
@@ -44,42 +46,41 @@ function Payment() {
         key: RAZORPAY_KEY,
         amount,
         currency,
-        name: "WorkSphere",
-        description: "Pro Subscription - Unlock premium features",
-        image: "https://worksphere35.vercel.app/logo.svg",
+        name: 'WorkSphere',
+        description: 'Pro Subscription - Unlock premium features',
+        image: 'https://worksphere35.vercel.app/logo.svg',
         order_id: order.id,
         handler: async function (response) {
           const body = { ...response };
           const token = localStorage.getItem('token');
 
-          const validateRes = await fetch(
-            `${API_URL}/payment/order/validate`,
-            {
-              method: "POST",
-              body: JSON.stringify(body),
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-              },
-            }
-          );
+          const validateRes = await fetch(`${API_URL}/payment/order/validate`, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
           const jsonRes = await validateRes.json();
+          queryClient.invalidateQueries({ queryKey: ['me'] });
+          await useAuthStore.getState().refetchUser();
         },
         prefill: {
           name: `${user.firstName} ${user.lastName}`,
           email: user.email,
-          contact: "9000000000",
+          contact: '9000000000',
         },
         notes: {
-          address: "Razorpay Corporate Office",
+          address: 'WorkSphere Corporate Office',
         },
         theme: {
-          color: "#1EA0AA",
+          color: '#1EA0AA',
         },
       };
 
       const rzp1 = new window.Razorpay(options);
-      rzp1.on("payment.failed", function (response) {
+      rzp1.on('payment.failed', function (response) {
         const errMsg = `
 Code: ${response.error.code}
 Description: ${response.error.description}
@@ -94,32 +95,36 @@ Payment ID: ${response.error.metadata.payment_id}
 
       rzp1.open();
     } catch (err) {
-      setError("Something went wrong during the payment process.");
+      setError('Something went wrong during the payment process.');
       console.error(err);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-8 px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 py-8">
       {/* Card Container */}
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-xl w-full">
+      <div className="w-full max-w-xl rounded-xl bg-white p-8 shadow-lg">
         {/* Product Header */}
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">Premium Subscription</h2>
-        <p className="text-center text-gray-600 mb-6">Unlock all the premium features and elevate your experience with WorkSphere.</p>
+        <h2 className="mb-4 text-center text-2xl font-bold text-gray-800">
+          Premium Subscription
+        </h2>
+        <p className="mb-6 text-center text-gray-600">
+          Unlock all the premium features and elevate your experience with
+          WorkSphere.
+        </p>
 
         {/* Subscription Image */}
-        <div className="flex justify-center mb-6">
-  <img
-    src={premiumImage}
-    alt="Premium Subscription"
-    className="rounded-lg shadow-md w-3/4 h-auto" // Adjust the width to 75% and height auto to maintain aspect ratio
-  />
-</div>
-
+        <div className="mb-6 flex justify-center">
+          <img
+            src={premiumImage}
+            alt="Premium Subscription"
+            className="h-auto w-3/4 rounded-lg shadow-md" // Adjust the width to 75% and height auto to maintain aspect ratio
+          />
+        </div>
 
         {/* Payment Button */}
         <Button
-          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+          className="w-full rounded-lg bg-blue-600 py-3 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
           onClick={paymentHandler}
         >
           Pay ₹{amount} for Premium

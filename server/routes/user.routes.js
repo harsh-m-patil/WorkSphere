@@ -16,7 +16,7 @@ router.use('/:id/reviews', reviewRouter)
  * /api/v1/users/appInfo:
  *   get:
  *     tags:
- *       - Users
+ *       - Admin
  *     summary: Get application information
  *     description: Retrieve application information such as user statistics for the admin dashboard.
  *     responses:
