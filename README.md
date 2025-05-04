@@ -10,6 +10,17 @@
 
 [![Demo Video](https://img.youtube.com/vi/ykLvB1Hzy9o/0.jpg)](https://www.youtube.com/watch?v=ykLvB1Hzy9o)
 
+## Performance Results
+
+| Metric     | Without Cache | With Cache | Improvement      |
+| ---------- | ------------- | ---------- | ---------------- |
+| **Min**    | 8 ms          | 1 ms       | **87.5% faster** |
+| **Max**    | 79 ms         | 41 ms      | **48.1% faster** |
+| **Mean**   | 10.4 ms       | 2.1 ms     | **79.8% faster** |
+| **Median** | 10.1 ms       | 2 ms       | **80.2% faster** |
+| **P95**    | 13.1 ms       | 3 ms       | **77.1% faster** |
+| **P99**    | 26.8 ms       | 4 ms       | **85.1% faster** |
+
 ## Team Members
 
 | Name                        | Roll No      |
