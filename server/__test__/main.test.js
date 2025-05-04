@@ -10,6 +10,9 @@ vi.mock('../utils/logger.js', () => ({
     error: vi.fn(),
   },
 }))
+console.log = vi.fn()
+console.error = vi.fn()
+console.warn = vi.fn()
 
 describe('Server startup and health check', () => {
   it('should return hello world for /', async () => {

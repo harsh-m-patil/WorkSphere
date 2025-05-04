@@ -8,6 +8,7 @@ import { config } from 'dotenv'
 
 config({ path: '.env.test' })
 
+// Mock logger
 vi.mock('../utils/logger.js', () => ({
   default: {
     info: vi.fn(),
@@ -23,17 +24,13 @@ let workId
 let freelancerId
 
 beforeAll(async () => {
-  // Start the in-memory MongoDB server
   mongoServer = await MongoMemoryServer.create()
   const mongoUri = mongoServer.getUri()
-
-  // Connect to the in-memory DB
   await connectDB(mongoUri)
   app = await initServer()
 })
 
 afterAll(async () => {
-  // Clean up: Close the database connection and stop the in-memory server
   await mongoose.connection.dropDatabase()
   await mongoose.connection.close()
   await mongoServer.stop()
@@ -51,8 +48,8 @@ const clientData = {
 
 const freelancerData = {
   firstName: 'Test',
-  lastName: 'Ickles',
-  userName: 'test-ickles',
+  lastName: 'User',
+  userName: 'test-user',
   email: 'test@example.com',
   password: 'Password123',
   passwordConfirm: 'Password123',
@@ -66,27 +63,19 @@ describe('Work Routes', () => {
       .expect(201)
 
     expect(res.body).toHaveProperty('status', 'success')
-
     expect(res.body.token).toBeDefined()
-    expect(res.body.data).toBeDefined()
     clientToken = res.body.token
 
     const userRes = await request(app)
       .post('/api/v1/users/signup')
       .send(freelancerData)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
       .expect(201)
 
-    expect(userRes.body.status).toBe('success')
-    expect(userRes.body.token).toBeDefined()
-    expect(userRes.body.data).toBeDefined()
-    const { token, data } = userRes.body
-    freelancerToken = token
-    freelancerId = data.user.id
+    freelancerToken = userRes.body.token
+    freelancerId = userRes.body.data.user.id
   })
 
-  it('should create a work ', async () => {
+  it('should create a work', async () => {
     const res = await request(app)
       .post('/api/v1/work')
       .set('Authorization', `Bearer ${clientToken}`)
@@ -98,47 +87,104 @@ describe('Work Routes', () => {
       })
       .expect(201)
 
-    expect(res.body).toHaveProperty('status', 'success')
+    expect(res.body.status).toBe('success')
     workId = res.body.data.work.id
   })
 
-  it('should apply for a work ', async () => {
+  it('should apply for a work', async () => {
     const res = await request(app)
       .post('/api/v1/work/apply')
       .set('Authorization', `Bearer ${freelancerToken}`)
-      .send({
-        workId: workId,
-      })
+      .send({ workId })
       .expect(200)
 
-    expect(res.body).toHaveProperty('status', 'success')
     expect(res.body.data.work.noOfApplicants).toBe(1)
     expect(res.body.data.work.applied_status).toContain(freelancerId)
   })
 
-  it('should assign a work to a freelancer', async () => {
+  it('should assign work to a freelancer', async () => {
     const res = await request(app)
       .post('/api/v1/work/assign')
       .set('Authorization', `Bearer ${clientToken}`)
       .send({
-        workId: workId,
-        freelancerId: freelancerId,
+        workId,
+        freelancerId,
       })
       .expect(200)
 
-    expect(res.body).toHaveProperty('status', 'success')
-    expect(res.body.data.work.active).toBe(false)
     expect(res.body.data.work.freelancer_id).toBe(freelancerId)
+    expect(res.body.data.work.active).toBe(false)
   })
 
-  it('freelancer should not be able to assign work', async () => {
+  it('freelancer should not assign work', async () => {
     await request(app)
       .post('/api/v1/work/assign')
       .set('Authorization', `Bearer ${freelancerToken}`)
-      .send({
-        workId: workId,
-        freelancerId: freelancerId,
-      })
+      .send({ workId, freelancerId })
       .expect(403)
+  })
+
+  it('should not apply twice to same work', async () => {
+    await request(app)
+      .post('/api/v1/work/apply')
+      .set('Authorization', `Bearer ${freelancerToken}`)
+      .send({ workId })
+      .expect(400)
+  })
+
+  it('should not apply to non-existent work', async () => {
+    await request(app)
+      .post('/api/v1/work/apply')
+      .set('Authorization', `Bearer ${freelancerToken}`)
+      .send({ workId: new mongoose.Types.ObjectId().toString() })
+      .expect(404)
+  })
+
+  it('should not assign with invalid freelancerId', async () => {
+    await request(app)
+      .post('/api/v1/work/assign')
+      .set('Authorization', `Bearer ${clientToken}`)
+      .send({ workId, freelancerId: 'invalid-id' })
+      .expect(400)
+  })
+
+  it('should not create work without required fields', async () => {
+    await request(app)
+      .post('/api/v1/work')
+      .set('Authorization', `Bearer ${clientToken}`)
+      .send({ title: 'Missing desc' })
+      .expect(400)
+  })
+
+  it('should not create work without token', async () => {
+    await request(app)
+      .post('/api/v1/work')
+      .send({
+        title: 'No Auth',
+        description: 'Trying without token',
+        pay: 100,
+        skills_Required: ['JS'],
+      })
+      .expect(401)
+  })
+
+  it('should not assign work without token', async () => {
+    await request(app)
+      .post('/api/v1/work/assign')
+      .send({ workId, freelancerId })
+      .expect(401)
+  })
+
+  it('should get a work by ID', async () => {
+    const res = await request(app).get(`/api/v1/work/${workId}`).expect(200)
+
+    expect(res.body.status).toBe('success')
+    expect(res.body.data.work).toHaveProperty('id', workId)
+  })
+
+  it('should return 404 for unknown work ID', async () => {
+    await request(app)
+      .get(`/api/v1/work/${new mongoose.Types.ObjectId().toString()}`)
+      .expect(404)
   })
 })

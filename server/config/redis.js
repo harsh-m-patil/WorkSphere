@@ -1,5 +1,6 @@
 import { createClient } from 'redis'
 import { config } from 'dotenv'
+import logger from '../utils/logger.js'
 
 config()
 
@@ -9,15 +10,15 @@ const redisClient = createClient({
 
 // Handle Redis connection events
 redisClient.on('error', (err) => {
-  console.error('❌ Redis Client Error:', err)
+  logger.error('Redis Client Error:', err)
 })
 
 redisClient.on('connect', () => {
-  console.log('✅ Redis client connected successfully')
+  logger.info('Redis client connected successfully')
 })
 
 redisClient.on('ready', () => {
-  console.log('🚀 Redis client is ready to use')
+  logger.info('Redis client is ready to use')
 })
 
 // Connect to Redis
@@ -25,7 +26,7 @@ redisClient.on('ready', () => {
   try {
     await redisClient.connect()
   } catch (err) {
-    console.error('❌ Redis connection failed:', err)
+    logger.error('Redis connection failed:', err)
   }
 })()
 

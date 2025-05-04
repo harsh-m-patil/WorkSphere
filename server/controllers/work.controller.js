@@ -50,28 +50,36 @@ const workController = {
    */
 
   assignWork: asyncHandler(async (req, res, next) => {
-    const work = await Work.findByIdAndUpdate(
-      req.body.workId,
-      {
-        freelancer_id: req.body.freelancerId,
-        active: false,
-      },
-      { new: true },
-    )
+    const { workId, freelancerId } = req.body
 
-    await User.findByIdAndUpdate(req.body.freelancerId, {
-      $inc: { balance: work.pay },
-    })
-
-    if (!work) {
-      return next(new AppError(`No Work with that id found`, 404))
+    if (!workId || !freelancerId) {
+      return next(new AppError('workId and freelancerId are required', 400))
     }
+
+    const work = await Work.findById(workId)
+    if (!work) {
+      return next(new AppError(`No work found with id: ${workId}`, 404))
+    }
+
+    if (!work.active) {
+      return next(new AppError('Work has already been assigned or closed', 400))
+    }
+
+    const freelancer = await User.findById(freelancerId)
+    if (!freelancer || freelancer.role !== 'freelancer') {
+      return next(new AppError('Invalid freelancer ID', 400))
+    }
+
+    work.freelancer_id = freelancerId
+    work.active = false
+    await work.save()
+
+    freelancer.balance += work.pay
+    await freelancer.save({ validateBeforeSave: false })
 
     res.status(200).json({
       status: 'success',
-      data: {
-        work,
-      },
+      data: { work },
     })
   }),
 

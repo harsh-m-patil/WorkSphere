@@ -18,6 +18,10 @@ vi.mock('../utils/logger.js', () => ({
 let app
 let mongoServer
 
+console.log = vi.fn()
+console.error = vi.fn()
+console.warn = vi.fn()
+
 beforeAll(async () => {
   // Start the in-memory MongoDB server
   mongoServer = await MongoMemoryServer.create()
@@ -37,8 +41,8 @@ afterAll(async () => {
 
 const userData = {
   firstName: 'Test',
-  lastName: 'Ickles',
-  userName: 'test-ickles',
+  lastName: 'User',
+  userName: 'testuser',
   email: 'test@example.com',
   password: 'Password123',
   passwordConfirm: 'Password123',

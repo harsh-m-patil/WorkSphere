@@ -22,6 +22,8 @@ export async function fetchWorks(page, search, sort, joblevel, pay) {
     searchParams.append('pay[gte]', pay);
   }
 
+  searchParams.append('active', true);
+
   const response = await fetch(`${API_URL}/work?${searchParams.toString()}`);
   const data = await response.json();
 
