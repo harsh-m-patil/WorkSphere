@@ -6,10 +6,18 @@ import authMiddleware from '../middlewares/auth.middleware.js'
 import reviewRouter from './review.routes.js'
 import { upload } from '../middlewares/upload.js'
 import { getAppInfo } from '../controllers/app.controller.js'
+import rateLimit from 'express-rate-limit'
 
 const router = express.Router()
 
 router.use('/:id/reviews', reviewRouter)
+const limiter = rateLimit({
+  max: 100, // Maximum number of requests allowed per IP within the window
+  windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
+  message: 'Too many requests from this IP, please try again in an hour.', // Custom error message sent when limit is exceeded
+  standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers (deprecated)
+})
 
 /**
  * @openapi
@@ -218,6 +226,21 @@ router.route('/u/:username').get(userController.getUserByUserName)
 
 /**
  * @openapi
+ * /api/v1/users/logout:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Log out the authenticated user
+ *     description: Log out the currently authenticated user and invalidate their session.
+ *     responses:
+ *       200:
+ *         description: Logout successful.
+ */
+router.post('/logout', authController.logout)
+
+router.use(limiter)
+/**
+ * @openapi
  * /api/v1/users/login:
  *   post:
  *     tags:
@@ -273,19 +296,5 @@ router.post('/login', authController.login)
  *         description: User registered successfully.
  */
 router.post('/signup', authController.signup)
-
-/**
- * @openapi
- * /api/v1/users/logout:
- *   post:
- *     tags:
- *       - Authentication
- *     summary: Log out the authenticated user
- *     description: Log out the currently authenticated user and invalidate their session.
- *     responses:
- *       200:
- *         description: Logout successful.
- */
-router.post('/logout', authController.logout)
 
 export default router
