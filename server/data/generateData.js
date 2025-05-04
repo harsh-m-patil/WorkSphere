@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import User from '../models/user.model.js'
 import Work from '../models/work.model.js'
 
-const DATABASE_URL = 'mongodb://localhost:27017/WorkSpherev2'
+const DATABASE_URL = 'mongodb://worksphere-db:27017/WorkSpherev2'
 
 mongoose
   .connect(DATABASE_URL)

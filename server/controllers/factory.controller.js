@@ -2,6 +2,8 @@ import APIFeatures from '../utils/apiFeatures.js'
 import AppError from '../utils/appError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
+import redisClient from '../config/redis.js'
+
 const factory = {
   /**
    * @param {mongoose.Model} Model
@@ -98,6 +100,15 @@ const factory = {
     asyncHandler(async (req, res, next) => {
       const { search } = req.query
 
+      // Create a Redis key using model name and query
+      const redisKey = `getAll:${Model.modelName}:${JSON.stringify(req.query)}`
+
+      const cacheData = await redisClient.get(redisKey)
+      if (cacheData) {
+        console.log('Returned from redis cache')
+        return res.status(200).json(JSON.parse(cacheData))
+      }
+
       const searchCondtions = search ? { $text: { $search: search } } : {}
       let query = Model.find(searchCondtions)
 
@@ -116,6 +127,17 @@ const factory = {
 
       // Execute the final query
       const docs = await query
+
+      const response = {
+        status: 'success',
+        results: docs.length,
+        total,
+        data: docs,
+      }
+
+      await redisClient.setEx(redisKey, 20, JSON.stringify(response))
+
+      console.log('Response cached in redis')
 
       res.status(200).json({
         status: 'success',
