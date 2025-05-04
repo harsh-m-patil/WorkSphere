@@ -1,4 +1,4 @@
-import { IMAGE_URL } from '@/utils/constants';
+import { API_URL, IMAGE_URL } from '@/utils/constants';
 import { create } from 'zustand';
 import { io } from 'socket.io-client';
 
@@ -17,6 +17,26 @@ const useAuthStore = create((set, get) => ({
     localStorage.setItem('token', token);
 
     set({ user, token });
+  },
+
+  refetchUser: async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+      const res = await fetch(`${API_URL}/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error('Failed to fetch user');
+
+      const user = await res.json();
+      get().login({ user, token });
+    } catch (err) {
+      console.error('Refetch user error:', err);
+    }
   },
 
   logout: () => {

@@ -12,6 +12,7 @@ aiRouter.post(
   '/skill-match',
   authMiddleware.protect,
   authMiddleware.restrictTo('freelancer'),
+  authMiddleware.requirePro,
   async (req, res, next) => {
     if (!req.body.description) {
       return next(new AppError('Empty Job description'))
@@ -50,6 +51,7 @@ aiRouter.post(
   '/interview',
   authMiddleware.protect,
   authMiddleware.restrictTo('freelancer'),
+  authMiddleware.requirePro,
   async (req, res, next) => {
     if (!req.body.description) {
       return next(new AppError('Empty Job description'))

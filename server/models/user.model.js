@@ -76,6 +76,8 @@ const userSchema = new mongoose.Schema(
     skills: [String],
     languages: [String],
     certificates: [String],
+    pro: { type: Boolean, default: false },
+    proExpiresAt: { type: Date },
     ratingsAverage: {
       type: Number,
       min: 1,

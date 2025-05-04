@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Brain } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -10,14 +10,25 @@ import { fetchWorkById } from '@/query/fetchWorkById';
 import MarkdownRenderer from './MarkdownRenderer';
 import { API_URL } from '@/utils/constants';
 import { toast } from 'sonner';
-import { Brain } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { fetchLoggedInUser } from '@/query/fetchLoggedInUser';
 
 export const AIStudio = () => {
   const { id: idFromURL } = useParams();
+  const {
+    data: user,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+    error: errorUser,
+  } = useQuery({
+    queryKey: ['me'],
+    queryFn: fetchLoggedInUser,
+    staleTime: 60 * 1000,
+  });
   const [analyzeMarkdown, setAnalyzeMarkdown] = useState(
     'Analyzing the job description according to your profile ...'
   );
-  const [generatedQuestions, setGenerationsQuestions] = useState(
+  const [generatedQuestions, setGeneratedQuestions] = useState(
     'Generating interview questions according to the job description and your profile ...'
   );
 
@@ -39,60 +50,88 @@ export const AIStudio = () => {
     staleTime: 60 * 1000,
   });
 
-  const updateWorkId = (id) => {
-    setWorkId(id);
+  const updateWorkId = () => {
+    setWorkId(inputId);
   };
 
   const handleAnalyzeClick = async () => {
+    if (!data) return;
+
     const { description, skills_Required } = data;
 
     const token = localStorage.getItem('token');
-    if (!token) throw new Error('User not authenticated');
+    if (!token) {
+      toast.error('User not authenticated');
+      return;
+    }
 
-    const promise = fetch(`${API_URL}/ai/skill-match`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ description, skills: skills_Required }),
-    });
+    try {
+      const promise = fetch(`${API_URL}/ai/skill-match`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ description, skills: skills_Required }),
+      });
 
-    toast.promise(promise, {
-      loading: 'Generating Skill report...',
-      success: 'AI Based skill match report generated',
-      error: 'Error generating report',
-    });
+      toast.promise(promise, {
+        loading: 'Generating Skill report...',
+        success: 'AI Based skill match report generated',
+        error: 'Error generating report',
+      });
 
-    const response = await promise;
-    const apiData = await response.json();
-    setAnalyzeMarkdown(apiData.data.markdown);
+      const response = await promise;
+      if (!response.ok) {
+        throw new Error('Failed to generate report');
+      }
+
+      const apiData = await response.json();
+      setAnalyzeMarkdown(apiData.data.markdown);
+      setMode('analyze');
+    } catch (err) {
+      toast.error('Failed to analyze skills. Please try again later.');
+    }
   };
 
   const handleGenQuestions = async () => {
+    if (!data) return;
+
     const { description, skills_Required } = data;
 
     const token = localStorage.getItem('token');
-    if (!token) throw new Error('User not authenticated');
+    if (!token) {
+      toast.error('User not authenticated');
+      return;
+    }
 
-    const promise = fetch(`${API_URL}/ai/interview`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ description, skills: skills_Required }),
-    });
+    try {
+      const promise = fetch(`${API_URL}/ai/interview`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ description, skills: skills_Required }),
+      });
 
-    toast.promise(promise, {
-      loading: 'Generating Skill report...',
-      success: 'AI Based skill match report generated',
-      error: 'Error generating report',
-    });
+      toast.promise(promise, {
+        loading: 'Generating interview questions...',
+        success: 'Interview questions generated successfully',
+        error: 'Error generating interview questions',
+      });
 
-    const response = await promise;
-    const apiData = await response.json();
-    setGenerationsQuestions(apiData.data.markdown);
+      const response = await promise;
+      if (!response.ok) {
+        throw new Error('Failed to generate interview questions');
+      }
+
+      const apiData = await response.json();
+      setGeneratedQuestions(apiData.data.markdown);
+      setMode('interview');
+    } catch (err) {
+      console.error('Error generating questions:', err);
+    }
   };
 
   return (
@@ -117,29 +156,20 @@ export const AIStudio = () => {
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
               <div className="flex flex-col gap-4 md:flex-row">
                 <Button
-                  onClick={() => {
-                    handleAnalyzeClick();
-                    setMode('analyze');
-                  }}
+                  onClick={handleAnalyzeClick}
+                  disabled={!user?.pro || !workId}
                 >
                   Analyze with AI
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    handleGenQuestions();
-                    setMode('interview');
-                  }}
+                  disabled={!user?.pro || !workId}
+                  onClick={handleGenQuestions}
                 >
                   Generate Sample Interview Questions
                 </Button>
               </div>
-              <Button
-                onClick={() => {
-                  updateWorkId(inputId);
-                }}
-                variant="generative"
-              >
+              <Button onClick={updateWorkId} variant="generative">
                 Update ID
               </Button>
             </div>
@@ -162,6 +192,22 @@ export const AIStudio = () => {
           </Alert>
         )}
 
+        {/* User Loading/Error States */}
+        {isLoadingUser && (
+          <div className="flex justify-center pt-10">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+
+        {isErrorUser && (
+          <Alert variant="destructive">
+            <AlertTitle>User Error</AlertTitle>
+            <AlertDescription>
+              {errorUser?.message || 'Failed to load user details'}
+            </AlertDescription>
+          </Alert>
+        )}
+
         {/* Main Grid View */}
         {data && (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -169,7 +215,8 @@ export const AIStudio = () => {
             <Card className="max-h-[80vh] overflow-y-auto">
               <CardHeader>
                 <CardTitle>
-                  {data.title} at {data.client_id?.userName}
+                  {data.title}{' '}
+                  {data.client_id?.userName && `at ${data.client_id.userName}`}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -189,16 +236,24 @@ export const AIStudio = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {mode === 'analyze' && (
-                  <MarkdownRenderer markdown={analyzeMarkdown} />
-                )}
-                {mode === 'interview' && (
-                  <MarkdownRenderer markdown={generatedQuestions} />
-                )}
-                {!mode && (
-                  <p className="text-muted-foreground">
-                    Select a mode to begin.
-                  </p>
+                {user?.pro ? (
+                  <>
+                    {mode === 'analyze' && (
+                      <MarkdownRenderer markdown={analyzeMarkdown} />
+                    )}
+                    {mode === 'interview' && (
+                      <MarkdownRenderer markdown={generatedQuestions} />
+                    )}
+                    {!mode && (
+                      <p className="text-muted-foreground">
+                        Select a mode to begin.
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <Badge className="text-md border border-red-600 bg-red-100 px-4 py-1 text-red-950 hover:bg-red-100">
+                    You need a pro subscription to use this feature
+                  </Badge>
                 )}
               </CardContent>
             </Card>

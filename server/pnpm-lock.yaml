@@ -29,14 +29,14 @@ importers:
         specifier: ^16.4.5
         version: 16.4.5
       express:
-        specifier: ^4.19.2
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       express-mongo-sanitize:
         specifier: ^2.2.0
         version: 2.2.0
       express-rate-limit:
         specifier: ^7.5.0
-        version: 7.5.0(express@4.21.1)
+        version: 7.5.0(express@4.21.2)
       helmet:
         specifier: ^8.0.0
         version: 8.0.0
@@ -52,6 +52,9 @@ importers:
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
+      razorpay:
+        specifier: ^2.9.6
+        version: 2.9.6
       slugify:
         specifier: ^1.6.6
         version: 1.6.6
@@ -63,7 +66,7 @@ importers:
         version: 6.2.8(openapi-types@12.1.3)
       swagger-ui-express:
         specifier: ^5.0.1
-        version: 5.0.1(express@4.21.1)
+        version: 5.0.1(express@4.21.2)
       uuid:
         specifier: ^11.0.4
         version: 11.0.4
@@ -83,9 +86,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 3.1.1
         version: 3.1.1(vitest@3.1.1(@types/node@22.10.1))
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
       eslint:
         specifier: ^8.57.0
         version: 8.57.1
@@ -1095,6 +1095,12 @@ packages:
         integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==,
       }
 
+  axios@1.9.0:
+    resolution:
+      {
+        integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==,
+      }
+
   b4a@1.6.7:
     resolution:
       {
@@ -1464,14 +1470,6 @@ packages:
         integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==,
       }
     engines: { node: '>= 0.10' }
-
-  cross-env@7.0.3:
-    resolution:
-      {
-        integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==,
-      }
-    engines: { node: '>=10.14', npm: '>=6', yarn: '>=1' }
-    hasBin: true
 
   cross-spawn@7.0.6:
     resolution:
@@ -1887,10 +1885,10 @@ packages:
     peerDependencies:
       express: ^4.11 || 5 || ^5.0.0-beta.1
 
-  express@4.21.1:
+  express@4.21.2:
     resolution:
       {
-        integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==,
+        integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==,
       }
     engines: { node: '>= 0.10.0' }
 
@@ -3105,10 +3103,10 @@ packages:
       }
     engines: { node: '>=16 || 14 >=14.18' }
 
-  path-to-regexp@0.1.10:
+  path-to-regexp@0.1.12:
     resolution:
       {
-        integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==,
+        integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==,
       }
 
   pathe@2.0.3:
@@ -3199,6 +3197,12 @@ packages:
       }
     engines: { node: '>= 0.10' }
 
+  proxy-from-env@1.1.0:
+    resolution:
+      {
+        integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==,
+      }
+
   pstree.remy@1.1.8:
     resolution:
       {
@@ -3238,6 +3242,12 @@ packages:
         integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==,
       }
     engines: { node: '>= 0.8' }
+
+  razorpay@2.9.6:
+    resolution:
+      {
+        integrity: sha512-zsHAQzd6e1Cc6BNoCNZQaf65ElL6O6yw0wulxmoG5VQDr363fZC90Mp1V5EktVzG45yPyNomNXWlf4cQ3622gQ==,
+      }
 
   react@19.1.0:
     resolution:
@@ -4619,6 +4629,14 @@ snapshots:
 
   asynckit@0.4.0: {}
 
+  axios@1.9.0:
+    dependencies:
+      follow-redirects: 1.15.9(debug@4.4.0)
+      form-data: 4.0.2
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   b4a@1.6.7: {}
 
   balanced-match@1.0.2: {}
@@ -4832,10 +4850,6 @@ snapshots:
     dependencies:
       object-assign: 4.1.1
       vary: 1.1.2
-
-  cross-env@7.0.3:
-    dependencies:
-      cross-spawn: 7.0.6
 
   cross-spawn@7.0.6:
     dependencies:
@@ -5100,11 +5114,11 @@ snapshots:
 
   express-mongo-sanitize@2.2.0: {}
 
-  express-rate-limit@7.5.0(express@4.21.1):
+  express-rate-limit@7.5.0(express@4.21.2):
     dependencies:
-      express: 4.21.1
+      express: 4.21.2
 
-  express@4.21.1:
+  express@4.21.2:
     dependencies:
       accepts: 1.3.8
       array-flatten: 1.1.1
@@ -5125,7 +5139,7 @@ snapshots:
       methods: 1.1.2
       on-finished: 2.4.1
       parseurl: 1.3.3
-      path-to-regexp: 0.1.10
+      path-to-regexp: 0.1.12
       proxy-addr: 2.0.7
       qs: 6.13.0
       range-parser: 1.2.1
@@ -5846,7 +5860,7 @@ snapshots:
       lru-cache: 10.4.3
       minipass: 7.1.2
 
-  path-to-regexp@0.1.10: {}
+  path-to-regexp@0.1.12: {}
 
   pathe@2.0.3: {}
 
@@ -5885,6 +5899,8 @@ snapshots:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
 
+  proxy-from-env@1.1.0: {}
+
   pstree.remy@1.1.8: {}
 
   punycode@2.3.1: {}
@@ -5903,6 +5919,12 @@ snapshots:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       unpipe: 1.0.0
+
+  razorpay@2.9.6:
+    dependencies:
+      axios: 1.9.0
+    transitivePeerDependencies:
+      - debug
 
   react@19.1.0: {}
 
@@ -6192,9 +6214,9 @@ snapshots:
     dependencies:
       '@scarf/scarf': 1.4.0
 
-  swagger-ui-express@5.0.1(express@4.21.1):
+  swagger-ui-express@5.0.1(express@4.21.2):
     dependencies:
-      express: 4.21.1
+      express: 4.21.2
       swagger-ui-dist: 5.18.2
 
   swr@2.3.3(react@19.1.0):

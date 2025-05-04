@@ -16,6 +16,7 @@ import logger from './utils/logger.js'
 import compression from 'compression'
 import swaggerDocs from './utils/swagger.js'
 import aiRouter from './routes/ai.routes.js'
+import paymentRouter from './routes/payment.routes.js'
 
 export async function initServer() {
   const app = express()
@@ -62,6 +63,7 @@ export async function initServer() {
   app.use('/api/v1/work', workRouter)
   app.use('/api/v1/messages', messageRouter)
   app.use('/api/v1/app', appRouter)
+  app.use('/api/v1/payment', paymentRouter)
 
   app.get('/', (req, res, next) => {
     res.status(200).json({
