@@ -2,6 +2,7 @@ import express from 'express'
 const router = express.Router()
 import { downloadData, getAppInfo } from '../controllers/app.controller.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
+import Transaction from '../models/transaction.model.js'
 
 /**
  * @openapi
@@ -77,5 +78,24 @@ router.get(
   authMiddleware.restrictTo('admin'),
   downloadData,
 )
+router.get('/revenue', async (req, res) => {
+  try {
+    const result = await Transaction.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$amount" }
+        }
+      }
+    ])
+
+    const totalRevenue = result[0]?.totalRevenue || 0
+
+    res.json({ totalRevenue })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ msg: "Failed to calculate revenue" })
+  }
+})
 
 export default router

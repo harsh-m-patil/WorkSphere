@@ -49,6 +49,16 @@ const authMiddleware = {
       }
       next()
     },
+
+    requirePro: (req, res, next) => {
+      const user = req.user;
+      // console.log(user.pro,user.proExpiresAt)
+      if (!user || !user.pro || new Date() > new Date(user.proExpiresAt)) {
+        return res.status(403).json({ msg: "Pro subscription required or expired" });
+      }
+      next();
+    },
+    
 }
 
 export default authMiddleware

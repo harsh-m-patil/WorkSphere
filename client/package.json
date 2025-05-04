@@ -34,6 +34,7 @@
     "axios": "^1.7.8",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
+    "client": "file:",
     "clsx": "^2.1.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.464.0",

@@ -5,6 +5,7 @@ import { initServer } from './app.js'
 import { initSocket } from './utils/socket.js'
 import http from 'node:http'
 
+
 dotenv.config()
 
 // CONNECT TO DB
