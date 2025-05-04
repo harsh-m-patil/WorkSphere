@@ -65,7 +65,6 @@ export async function initServer() {
   app.use('/api/v1/app', appRouter)
   app.use('/api/v1/payment', paymentRouter)
 
-
   app.get('/', (req, res, next) => {
     res.status(200).json({
       status: 'success',

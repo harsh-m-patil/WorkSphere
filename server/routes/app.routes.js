@@ -84,9 +84,9 @@ router.get('/revenue', async (req, res) => {
       {
         $group: {
           _id: null,
-          totalRevenue: { $sum: "$amount" }
-        }
-      }
+          totalRevenue: { $sum: '$amount' },
+        },
+      },
     ])
 
     const totalRevenue = result[0]?.totalRevenue || 0
@@ -94,7 +94,7 @@ router.get('/revenue', async (req, res) => {
     res.json({ totalRevenue })
   } catch (error) {
     console.error(error)
-    res.status(500).json({ msg: "Failed to calculate revenue" })
+    res.status(500).json({ msg: 'Failed to calculate revenue' })
   }
 })
 
