@@ -17,7 +17,6 @@
   "description": "",
   "dependencies": {
     "@ai-sdk/google": "^1.2.13",
-    "@worksphere/server": "file:",
     "ai": "^4.3.10",
     "bcrypt": "^5.1.1",
     "compression": "^1.7.5",
