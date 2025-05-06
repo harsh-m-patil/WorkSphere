@@ -257,8 +257,10 @@ router.use(limiter)
  *             properties:
  *               email:
  *                 type: string
+ *                 example: "test@example.com"
  *               password:
  *                 type: string
+ *                 example: "Password123"
  *     responses:
  *       200:
  *         description: Login successful.
@@ -281,7 +283,11 @@ router.post('/login', authController.login)
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               userName:
  *                 type: string
  *               email:
  *                 type: string
@@ -291,6 +297,9 @@ router.post('/login', authController.login)
  *                 type: string
  *               role:
  *                 type: string
+ *                 enum: [freelancer, client]
+ *                 default: freelancer
+ *                 example: freelancer
  *     responses:
  *       201:
  *         description: User registered successfully.
