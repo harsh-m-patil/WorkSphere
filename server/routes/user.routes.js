@@ -49,6 +49,65 @@ router.route('/').get(userController.getUsers('freelancer', 'client'))
 
 /**
  * @openapi
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         firstName:
+ *           type: string
+ *         lastName:
+ *           type: string
+ *         userName:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         description:
+ *           type: string
+ *         profileImage:
+ *           type: string
+ *         banner:
+ *           type: string
+ *         role:
+ *           type: string
+ *           enum: [freelancer, client, admin]
+ *         skills:
+ *           type: array
+ *           items:
+ *             type: string
+ *         languages:
+ *           type: array
+ *           items:
+ *             type: string
+ *         certificates:
+ *           type: array
+ *           items:
+ *             type: string
+ *         pro:
+ *           type: boolean
+ *         proExpiresAt:
+ *           type: string
+ *           format: date-time
+ *         ratingsAverage:
+ *           type: number
+ *           minimum: 1
+ *           maximum: 5
+ *         noOfRatings:
+ *           type: number
+ *         noOfApplications:
+ *           type: number
+ *         balance:
+ *           type: number
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *
  * /api/v1/users/me:
  *   get:
  *     tags:
@@ -57,15 +116,58 @@ router.route('/').get(userController.getUsers('freelancer', 'client'))
  *     description: Retrieve information about the currently authenticated user.
  *     responses:
  *       200:
- *         description: User information retrieved successfully.
+ *         description: User information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
  *   patch:
  *     tags:
  *       - Users
  *     summary: Update the authenticated user's information
  *     description: Update details of the currently authenticated user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               profileImage:
+ *                 type: string
+ *               banner:
+ *                 type: string
+ *               skills:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               languages:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               certificates:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
- *         description: User updated successfully.
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid request data
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     tags:
  *       - Users
@@ -73,7 +175,9 @@ router.route('/').get(userController.getUsers('freelancer', 'client'))
  *     description: Remove the currently authenticated user's account.
  *     responses:
  *       204:
- *         description: User deleted successfully.
+ *         description: User deleted successfully
+ *       401:
+ *         description: Unauthorized
  */
 router
   .route('/me')
@@ -257,8 +361,10 @@ router.use(limiter)
  *             properties:
  *               email:
  *                 type: string
+ *                 example: "test@example.com"
  *               password:
  *                 type: string
+ *                 example: "Password123"
  *     responses:
  *       200:
  *         description: Login successful.
@@ -281,7 +387,11 @@ router.post('/login', authController.login)
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               userName:
  *                 type: string
  *               email:
  *                 type: string
@@ -291,6 +401,9 @@ router.post('/login', authController.login)
  *                 type: string
  *               role:
  *                 type: string
+ *                 enum: [freelancer, client]
+ *                 default: freelancer
+ *                 example: freelancer
  *     responses:
  *       201:
  *         description: User registered successfully.

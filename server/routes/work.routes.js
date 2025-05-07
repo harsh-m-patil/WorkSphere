@@ -92,9 +92,40 @@ router.delete(
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - title
+ *               - description
+ *               - pay
+ *               - skills_Required
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Build a landing page
+ *               description:
+ *                 type: string
+ *                 example: Create a responsive landing page using React and TailwindCSS.
+ *               pay:
+ *                 type: number
+ *                 example: 150
+ *               joblevel:
+ *                 type: string
+ *                 enum: [Easy, Medium, Hard]
+ *                 default: Medium
+ *                 example: Medium
+ *               skills_Required:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["React", "TailwindCSS"]
  *     responses:
  *       201:
  *         description: Work created successfully.
+ *       400:
+ *         description: Invalid input data
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Only clients can create work
  */
 router.post(
   '/',
@@ -133,6 +164,11 @@ router.get('/', workController.getWorks)
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               workId:
+ *                 type: string
+ *               freelancerId:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Work assigned successfully.
@@ -159,6 +195,9 @@ router.post(
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               workId:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Application submitted successfully.

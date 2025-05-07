@@ -43,6 +43,9 @@ export const getAppInfo = asyncHandler(async (req, res, next) => {
     // Work stats for active jobs
     Work.aggregate([
       {
+        $match: { active: true },
+      },
+      {
         $group: {
           _id: '$active',
           totalTasks: { $sum: 1 },

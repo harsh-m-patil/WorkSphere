@@ -20,7 +20,7 @@ const plans = [
   },
   {
     name: 'Pro',
-    price: 12,
+    price: 500,
     description: 'For professionals who want to maximize exposure.',
     features: [
       'AI-based job recommendations',
