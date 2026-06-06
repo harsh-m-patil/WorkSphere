@@ -1,7 +1,7 @@
 import { google } from '@ai-sdk/google'
 import { generateText } from 'ai'
 
-const model = google('gemini-2.0-flash-001')
+const model = google('gemini-3-flash-preview')
 
 export const skillMatchSystemPrompt = async (input) => {
   const { text } = await generateText({
