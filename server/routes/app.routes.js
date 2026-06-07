@@ -218,7 +218,7 @@ router.get('/revenue', async (req, res) => {
         },
       },
     ])
-    const totalRevenue = result[0]?.totalRevenue || 0
+    const totalRevenue = result[0]?.totalRevenue / 100 || 0
     res.json({ totalRevenue })
   } catch (error) {
     console.error(error)

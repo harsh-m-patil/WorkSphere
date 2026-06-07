@@ -38,7 +38,7 @@ export async function initServer() {
     origin: [
       process.env.NODE_ENV !== 'production'
         ? 'http://localhost:5173'
-        : 'https://worksphere35.vercel.app',
+        : 'https://workspherev2.vercel.app',
     ],
     credentials: true,
   }
